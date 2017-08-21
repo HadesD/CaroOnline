@@ -1,2 +1,2 @@
-# Client-Server.CPP
-Sample client-server module in C++
+# Caro Game Online
+Caro game Online use TCP/IP - C++
