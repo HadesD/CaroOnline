@@ -1,8 +1,10 @@
+#include <memory>
 #include <iostream>
 #include <cassert>
 #include <cmath>
 
 #include "app/Game.hpp"
+#include "app/MoveManager.hpp"
 
 #include "../Common/Config.hpp"
 
@@ -60,13 +62,20 @@ namespace app {
 
       this->drawGameBoard();
 
-      std::string k;
-      std::cin >> k;
-      if (k == "q")
+      this->update();
+
+      if (m_keyPushed == 'q')
       {
         break;
       }
+
     }
+  }
+
+  void Game::update()
+  {
+    std::shared_ptr<MoveManager> move(new MoveManager(*(this)));
+    move->waitKeyboardEvent();
   }
 
   // #undef GAMEBOARD_ONEOBJ_SIZE
@@ -150,5 +159,10 @@ namespace app {
       // std::cout << std::endl;
     }
     drawBarrier(GAMEBOARD_ONEOBJ_SIZE);
+  }
+
+  void Game::setKeyPushed(const int key)
+  {
+    m_keyPushed = key;
   }
 }

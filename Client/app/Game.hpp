@@ -26,13 +26,17 @@ namespace app {
       void init();
       void run();
       void drawGameBoard();
+      void update();
 
     public:
       Cursor getCursor() const;
+      void setKeyPushed(const int key);
+      int getKeyPushed() const;
 
     protected:
       GameBoard m_gameBoard;
       Cursor m_cursor;
+      int m_keyPushed;
 
   };
 

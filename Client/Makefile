@@ -10,7 +10,9 @@ default: build
 build:
 	$(CXX) -I. -o bin/caro \
 		src/main.cpp \
-		src/Game.cpp
+		src/Game.cpp \
+		src/Kbhit.cpp \
+		src/MoveManager.cpp
 
 run:
 	cd bin && ./caro

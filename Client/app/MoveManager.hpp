@@ -1,6 +1,5 @@
 #ifndef APP_MOVE_MANAGER_HPP
 #define APP_MOVE_MANAGER_HPP
-#include "Kbhit.h"
 
 namespace app {
 
@@ -9,11 +8,16 @@ namespace app {
   class MoveManager
   {
     public:
-      MoveManager(Game g);
+      MoveManager(Game &g);
       ~MoveManager();
+
+    public:
+      void waitKeyboardEvent();
+      void onKeyboardEvent();
 
     protected:
       Game &p_game;
+      int m_getch;
 
   };
 
