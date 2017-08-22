@@ -1,0 +1,7 @@
+#ifndef APP_CONFIG_HPP
+#define APP_CONFIG_HPP
+
+#define GAMEBOARD_COLS 20
+#define GAMEBOARD_ROWS 20
+
+#endif
