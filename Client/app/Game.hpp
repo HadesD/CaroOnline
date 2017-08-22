@@ -8,6 +8,13 @@ namespace app {
   {
     public:
       typedef std::vector< std::vector< int > > GameBoard;
+      struct Cursor
+      {
+        Cursor(int x, int y);
+        Cursor();
+        int x;
+        int y;
+      };
 
     public:
       Game();
@@ -18,8 +25,12 @@ namespace app {
       void run();
       void drawGameBoard();
 
+    public:
+      Cursor getCursor() const;
+
     protected:
       GameBoard m_gameBoard;
+      Cursor m_cursor();
 
   };
 

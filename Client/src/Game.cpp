@@ -7,10 +7,20 @@
 #include "../Common/Config.hpp"
 
 namespace app {
+  Game::Cursor::Cursor()
+  {
+    x = 0;
+    y = 0;
+  }
+  Game::Cursor::Cursor(int x, int y) : x(x), y(y)
+  {
+  }
 
   Game::Game()
   {
     m_gameBoard.assign(GAMEBOARD_ROWS, std::vector< int >(GAMEBOARD_COLS, 0));
+
+
   }
 
   Game::~Game()
@@ -76,7 +86,33 @@ namespace app {
       // std::cout << std::endl;
       for (size_t y = 0; y < m_gameBoard.at(x).size(); y++)
       {
-        drawLine(std::to_string(m_gameBoard.at(x).at(y)));
+        std::string curr;
+        if (m_cursor.x == x && m_cursor.y == y)
+        {
+        }
+        else
+        {
+          switch (m_gameBoard.at(x).at(y))
+          {
+            case 0:
+              {
+
+              }
+              break;
+            case 1:
+              {
+
+              }
+              break;
+            case 2:
+              {
+
+              }
+              break;
+          }
+        }
+
+        drawLine(curr);
       }
       std::cout << '|';
       std::cout << std::endl;
