@@ -14,8 +14,9 @@ namespace app {
       ~Game();
 
     public:
-      void run();
       void init();
+      void run();
+      void drawGameBoard();
 
     protected:
       GameBoard m_gameBoard;
