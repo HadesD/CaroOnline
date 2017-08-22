@@ -7,14 +7,16 @@ namespace app {
   class Game
   {
     public:
-      typedef std::vector< std::vector< int > > GameBoard;
       struct Cursor
       {
-        Cursor(int x, int y);
+        bool operator==(Cursor &c);
         Cursor();
+        Cursor(int x, int y);
+        ~Cursor();
         int x;
         int y;
       };
+      typedef std::vector< std::vector< int > > GameBoard;
 
     public:
       Game();
@@ -30,7 +32,7 @@ namespace app {
 
     protected:
       GameBoard m_gameBoard;
-      Cursor m_cursor();
+      Cursor m_cursor;
 
   };
 

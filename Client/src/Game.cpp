@@ -7,20 +7,39 @@
 #include "../Common/Config.hpp"
 
 namespace app {
+
+  //------ Cursor
+
   Game::Cursor::Cursor()
   {
-    x = 0;
-    y = 0;
   }
+
+  Game::Cursor::~Cursor()
+  {
+  }
+
   Game::Cursor::Cursor(int x, int y) : x(x), y(y)
   {
   }
 
+  bool Game::Cursor::operator==(Game::Cursor &c)
+  {
+    return (x == c.x) && (y == c.y);
+  }
+
+  //------ End Cursor
+
+  Game::Cursor Game::getCursor() const
+  {
+    return m_cursor;
+  }
+
   Game::Game()
   {
-    m_gameBoard.assign(GAMEBOARD_ROWS, std::vector< int >(GAMEBOARD_COLS, 0));
-
-
+    m_gameBoard.assign(
+      GAMEBOARD_ROWS,
+      std::vector< int >(GAMEBOARD_COLS, 1)
+      );
   }
 
   Game::~Game()
@@ -50,8 +69,8 @@ namespace app {
     }
   }
 
-// #undef GAMEBOARD_ONEOBJ_SIZE
-// #define GAMEBOARD_ONEOBJ_SIZE 5
+  // #undef GAMEBOARD_ONEOBJ_SIZE
+  // #define GAMEBOARD_ONEOBJ_SIZE 5
 
   void Game::drawGameBoard()
   {
@@ -69,10 +88,10 @@ namespace app {
 
     // Body
     auto drawLine = [](const std::string s){
-        std::cout << '|';
-        std::cout << std::string(GAMEBOARD_ONEOBJ_SIZE / 2, ' ');
-        std::cout << s;
-        std::cout << std::string(GAMEBOARD_ONEOBJ_SIZE / 2, ' ');
+      std::cout << '|';
+      std::cout << std::string(GAMEBOARD_ONEOBJ_SIZE / 2, ' ');
+      std::cout << s;
+      std::cout << std::string(GAMEBOARD_ONEOBJ_SIZE / 2, ' ');
     };
 
     for (size_t x = 0; x < m_gameBoard.size(); x++)
@@ -87,32 +106,39 @@ namespace app {
       for (size_t y = 0; y < m_gameBoard.at(x).size(); y++)
       {
         std::string curr;
-        if (m_cursor.x == x && m_cursor.y == y)
-        {
-        }
-        else
+        std::string color;
+
+        Game::Cursor cXY(x, y);
         {
           switch (m_gameBoard.at(x).at(y))
           {
             case 0:
               {
-
+                color.clear();
+                curr = " ";
               }
               break;
             case 1:
               {
-
+                color = "\e[38;5;196m";
+                curr = "x";
               }
               break;
             case 2:
               {
-
+                color = "\e[38;5;22m";
+                curr = "o";
               }
               break;
           }
         }
+        if (m_cursor == cXY)
+        {
+          color = "\e[48;5;255m";
+        }
+        curr += "\e[0m";
 
-        drawLine(curr);
+        drawLine(color + curr);
       }
       std::cout << '|';
       std::cout << std::endl;
