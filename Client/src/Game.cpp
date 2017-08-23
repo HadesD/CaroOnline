@@ -6,8 +6,8 @@
 // #include <thread>
 
 #include "app/Game.hpp"
-#include "app/MoveManager.hpp"
 #include "app/Player.hpp"
+#include "app/Kbhit.h"
 
 #include "../Common/Config.hpp"
 
@@ -53,6 +53,15 @@ namespace app {
 
   void Game::init()
   {
+    // try
+    {
+      std::shared_ptr<Player> p = std::make_shared<Player>();
+      this->addPlayer(p);
+    }
+    // catch (std::bad_weak_ptr &e)
+    {
+      // std::cout << e.what() << std::endl;
+    }
   }
 
   void Game::run()
@@ -80,13 +89,17 @@ namespace app {
   void Game::update()
   {
     // std::shared_ptr<MoveManager> move(new MoveManager(*(this)));
-    // try {
-    MoveManager move(*this);
-    move.waitKeyboardEvent();
-    // } catch(std::bad_weak_ptr& e) {
-    // undefined behavior (until C++17) and std::bad_weak_ptr thrown (since C++17)
-    // std::cout << e.what() << '\n';
-    // }
+    this->waitKeyboardEvent();
+
+    for (auto &p : m_listPlayer)
+    {
+      p.lock()->onKeyboardEvent();
+    }
+  }
+
+  void Game::waitKeyboardEvent()
+  {
+    m_keyPushed = (new ::Kbhit())->getch();
   }
 
   // #undef GAMEBOARD_ONEOBJ_SIZE
@@ -175,6 +188,11 @@ namespace app {
     m_keyPushed = key;
   }
 
+  int Game::getKeyPushed() const
+  {
+    return m_keyPushed;
+  }
+
   void Game::setCursor(const Game::Cursor &c)
   {
     m_cursor = c;
@@ -189,9 +207,10 @@ namespace app {
   {
     m_gameBoard = gb;
   }
+
   void Game::addPlayer(std::shared_ptr<Player> player)
   {
-    player->setGame(this->shared_from_this());
     m_listPlayer.push_back(player);
+    player->setGame(this->shared_from_this());
   }
 }

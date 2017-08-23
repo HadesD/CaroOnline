@@ -29,6 +29,7 @@ namespace app {
       void run();
       void drawGameBoard();
       void update();
+      void waitKeyboardEvent();
 
     public:
       void addPlayer(std::shared_ptr<Player> player);

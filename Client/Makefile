@@ -12,7 +12,6 @@ build:
 		src/main.cpp \
 		src/Game.cpp \
 		src/Kbhit.cpp \
-		src/MoveManager.cpp \
 		src/Player.cpp
 
 run:

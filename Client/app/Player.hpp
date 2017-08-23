@@ -16,18 +16,18 @@ namespace app {
     public:
       void setId(const int &id);
       int getId() const;
-
       void setName(const std::string &name);
       std::string getName() const;
-
       void setGame(std::shared_ptr<Game> game);
+
+      void onKeyboardEvent();
 
     protected:
       int m_id;
       std::string m_name;
       bool m_isTurn;
       Game::Cursor m_cursor;
-      std::weak_ptr<Game> p_game;
+      std::shared_ptr<Game> p_game;
 
   };
 
