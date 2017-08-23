@@ -22,8 +22,14 @@ namespace app {
     {
       case 10:
       case 32:
+      case 'o':
+      case 'e':
+      case 'm':
         {
-          gb[cursor.x][cursor.y] = this->mark;
+          if (gb.at(cursor.x).at(cursor.y) == 0)
+          {
+            gb[cursor.x][cursor.y] = this->mark;
+          }
         }
         break;
       case 'k':
@@ -63,7 +69,7 @@ namespace app {
         }
         break;
     }
-    // if (!(cursor == Game::Cursor(toX, toY)))
+    if (this->isTurn)
     {
       pGame->setCursor(cursor);
     }
@@ -88,5 +94,15 @@ namespace app {
   int Player::getMark() const
   {
     return this->mark;
+  }
+
+  void Player::setIsTurn(const bool &isTurn)
+  {
+    this->isTurn = isTurn;
+  }
+
+  bool Player::getIsTurn() const
+  {
+    return this->isTurn;
   }
 }

@@ -21,6 +21,8 @@ namespace app {
       void setGame(std::shared_ptr<Game> game);
       int getMark() const;
       void setMark(const int &mark);
+      void setIsTurn(const bool &isTurn);
+      bool getIsTurn() const;
 
     public:
       void onKeyboardEvent();
