@@ -53,17 +53,13 @@ namespace app {
 
   void Game::init()
   {
-    // try
-    {
-      std::shared_ptr<Player> p(new Player());
-      this->addPlayer(p);
-      std::cout << p << std::endl;
-      std::string k; std::cin >> k;
-    }
-    // catch (std::bad_weak_ptr &e)
-    {
-      // std::cout << e.what() << std::endl;
-    }
+    std::shared_ptr<Player> p(new Player());
+    p->setId(1);
+    this->addPlayer(p);
+    std::shared_ptr<Player> p2(new Player());
+    this->addPlayer(p2);
+    // std::cout << p << std::endl;
+    // std::string k; std::cin >> k;
   }
 
   void Game::run()
@@ -94,16 +90,20 @@ namespace app {
   {
     // std::shared_ptr<MoveManager> move(new MoveManager(*(this)));
     this->waitKeyboardEvent();
-
-    for (auto &p : m_listPlayer)
-    {
-      p->onKeyboardEvent();
-    }
   }
 
   void Game::waitKeyboardEvent()
   {
     m_keyPushed = (new ::Kbhit())->getch();
+
+    for (auto &p : m_listPlayer)
+    {
+      if (p->getId() == 1)
+      {
+        p->onKeyboardEvent();
+      }
+    }
+
   }
 
   // #undef GAMEBOARD_ONEOBJ_SIZE

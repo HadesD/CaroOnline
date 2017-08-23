@@ -11,18 +11,18 @@ namespace app {
 
   void Player::setGame(std::shared_ptr<Game> game)
   {
-    p_game = game;
+    pGame = game;
   }
 
   void Player::onKeyboardEvent()
   {
-    Game::GameBoard gb = p_game->getGameBoard();
-    Game::Cursor gc = p_game->getCursor();
+    Game::GameBoard gb = pGame->getGameBoard();
+    Game::Cursor gc = pGame->getCursor();
 
     int toX = gc.x;
     int toY = gc.y;
 
-    switch (p_game->getKeyPushed())
+    switch (pGame->getKeyPushed())
     {
       case 10:
       case 32:
@@ -68,8 +68,18 @@ namespace app {
     }
     if (!(gc == Game::Cursor(toX, toY)))
     {
-      p_game->setCursor(Game::Cursor(toX, toY));
+      pGame->setCursor(Game::Cursor(toX, toY));
     }
-    p_game->setGameBoard(gb);
+    pGame->setGameBoard(gb);
+  }
+
+  void Player::setId(const int &id)
+  {
+    this->id = id;
+  }
+
+  int Player::getId() const
+  {
+    return this->id;
   }
 }

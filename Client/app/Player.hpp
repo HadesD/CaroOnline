@@ -23,11 +23,11 @@ namespace app {
       void onKeyboardEvent();
 
     protected:
-      int m_id;
-      std::string m_name;
-      bool m_isTurn;
-      Game::Cursor m_cursor;
-      std::shared_ptr<Game> p_game;
+      int id;
+      std::string name;
+      bool isTurn;
+      Game::Cursor cursor;
+      std::shared_ptr<Game> pGame;
 
   };
 
