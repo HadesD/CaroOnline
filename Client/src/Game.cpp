@@ -45,6 +45,8 @@ namespace app {
       GAMEBOARD_ROWS,
       std::vector< int >(GAMEBOARD_COLS, 0)
       );
+
+    isFinish = false;
   }
 
   Game::~Game()
@@ -68,7 +70,7 @@ namespace app {
   {
     this->init();
 
-    while (true)
+    while (this->isFinish == false)
     {
       system("clear");
 
@@ -90,7 +92,8 @@ namespace app {
 
   void Game::update()
   {
-    // std::shared_ptr<MoveManager> move(new MoveManager(*(this)));
+    this->checkFinish();
+
     this->waitKeyboardEvent();
   }
 
@@ -105,7 +108,12 @@ namespace app {
         p->onKeyboardEvent();
       }
     }
+  }
 
+  void Game::checkFinish()
+  {
+
+    // this->isFinish = true;
   }
 
   // #undef GAMEBOARD_ONEOBJ_SIZE

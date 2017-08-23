@@ -30,6 +30,7 @@ namespace app {
       void drawGameBoard();
       void update();
       void waitKeyboardEvent();
+      void checkFinish();
 
     public:
       void addPlayer(std::shared_ptr<Player> player);
@@ -47,6 +48,7 @@ namespace app {
       Cursor m_cursor;
       int m_keyPushed;
       std::vector< std::shared_ptr< Player > > m_listPlayer;
+      bool isFinish;
   };
 
 }
