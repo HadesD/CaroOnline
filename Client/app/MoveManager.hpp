@@ -15,6 +15,12 @@ namespace app {
       void waitKeyboardEvent();
       void onKeyboardEvent();
 
+    public:
+      void moveUp();
+      void moveDown();
+      void moveLeft();
+      void moveRight();
+
     protected:
       Game &p_game;
       int m_getch;

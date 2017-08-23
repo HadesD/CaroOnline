@@ -9,7 +9,9 @@ namespace app {
     public:
       struct Cursor
       {
-        bool operator==(Cursor &c);
+        bool operator==(const Cursor &c);
+        Cursor &operator-(const Cursor &c);
+        Cursor &operator+(const Cursor &c);
         Cursor();
         Cursor(int x, int y);
         ~Cursor();
@@ -30,14 +32,16 @@ namespace app {
 
     public:
       Cursor getCursor() const;
-      void setKeyPushed(const int key);
+      void setCursor(const Cursor &c);
       int getKeyPushed() const;
+      void setKeyPushed(const int &key);
+      GameBoard getGameBoard() const;
+      void setGameBoard(const Game::GameBoard &gb);
 
     protected:
-      GameBoard m_gameBoard;
-      Cursor m_cursor;
-      int m_keyPushed;
-
+      GameBoard mGameBoard;
+      Cursor mCursor;
+      int mKeyPushed;
   };
 
 }
