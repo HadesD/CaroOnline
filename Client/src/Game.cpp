@@ -31,32 +31,18 @@ namespace app {
     return (x == c.x) && (y == c.y);
   }
 
-  Game::Cursor &Game::Cursor::operator+(const Game::Cursor &c)
-  {
-    x += c.x;
-    y += c.y;
-    return *this;
-  }
-
-  Game::Cursor &Game::Cursor::operator-(const Game::Cursor &c)
-  {
-    x -= c.x;
-    y -= c.y;
-    return *this;
-  }
-
   //------ End Cursor
 
   Game::Cursor Game::getCursor() const
   {
-    return mCursor;
+    return m_cursor;
   }
 
   Game::Game()
   {
-    mGameBoard.assign(
+    m_gameBoard.assign(
       GAMEBOARD_ROWS,
-      std::vector< int >(GAMEBOARD_COLS, 1)
+      std::vector< int >(GAMEBOARD_COLS, 0)
       );
   }
 
@@ -80,7 +66,7 @@ namespace app {
 
       this->update();
 
-      if (mKeyPushed == 'q')
+      if (m_keyPushed == 'q')
       {
         break;
       }
@@ -104,7 +90,7 @@ namespace app {
   {
     assert((GAMEBOARD_ONEOBJ_SIZE % 2) != 0);
     // Barrier
-    auto drawBarrier = [](int len){
+    auto drawBarrier = [](const int &len){
       for (size_t i = 0; i < GAMEBOARD_COLS; i++)
       {
         std::cout << '+';
@@ -115,52 +101,50 @@ namespace app {
     };
 
     // Body
-    auto drawLine = [](const std::string s){
+    auto drawLine = [](const std::string &s){
       std::cout << '|';
       std::cout << std::string(GAMEBOARD_ONEOBJ_SIZE / 2, ' ');
       std::cout << s;
       std::cout << std::string(GAMEBOARD_ONEOBJ_SIZE / 2, ' ');
     };
 
-    for (size_t x = 0; x < mGameBoard.size(); x++)
+    for (size_t x = 0; x < m_gameBoard.size(); x++)
     {
       drawBarrier(GAMEBOARD_ONEOBJ_SIZE);
-      // for (size_t y = 0; y < mGameBoard.at(x).size(); y++)
+      // for (size_t y = 0; y < m_gameBoard.at(x).size(); y++)
       // {
       //   drawBody(" ");
       // }
       // std::cout << '|';
       // std::cout << std::endl;
-      for (size_t y = 0; y < mGameBoard.at(x).size(); y++)
+      for (size_t y = 0; y < m_gameBoard.at(x).size(); y++)
       {
         std::string curr;
         std::string color;
 
-        Game::Cursor cXY(x, y);
+        switch (m_gameBoard.at(x).at(y))
         {
-          switch (mGameBoard.at(x).at(y))
-          {
-            case 0:
-              {
-                color.clear();
-                curr = " ";
-              }
-              break;
-            case 1:
-              {
-                color = "\e[38;5;196m";
-                curr = "x";
-              }
-              break;
-            case 2:
-              {
-                color = "\e[38;5;22m";
-                curr = "o";
-              }
-              break;
-          }
+          default:
+          case 0:
+            {
+              color.clear();
+              curr = " ";
+            }
+            break;
+          case 1:
+            {
+              color = "\e[38;5;196m";
+              curr = "x";
+            }
+            break;
+          case 2:
+            {
+              color = "\e[38;5;22m";
+              curr = "o";
+            }
+            break;
         }
-        if (mCursor == cXY)
+        if (m_cursor == Game::Cursor(x, y))
         {
           color = "\e[48;5;255m";
         }
@@ -170,7 +154,7 @@ namespace app {
       }
       std::cout << '|';
       std::cout << std::endl;
-      // for (size_t y = 0; y < mGameBoard.at(x).size(); y++)
+      // for (size_t y = 0; y < m_gameBoard.at(x).size(); y++)
       // {
       //   drawBody(" ");
       // }
@@ -182,21 +166,21 @@ namespace app {
 
   void Game::setKeyPushed(const int &key)
   {
-    mKeyPushed = key;
+    m_keyPushed = key;
   }
 
   void Game::setCursor(const Game::Cursor &c)
   {
-    mCursor = c;
+    m_cursor = c;
   }
 
   Game::GameBoard Game::getGameBoard() const
   {
-    return mGameBoard;
+    return m_gameBoard;
   }
 
   void Game::setGameBoard(const Game::GameBoard &gb)
   {
-    mGameBoard = gb;
+    m_gameBoard = gb;
   }
 }

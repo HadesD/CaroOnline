@@ -78,7 +78,10 @@ namespace app {
         }
         break;
     }
-    p_game.setCursor(Game::Cursor(toX, toY));
+    if (!(gc == Game::Cursor(toX, toY)))
+    {
+      p_game.setCursor(Game::Cursor(toX, toY));
+    }
     p_game.setGameBoard(gb);
   }
 

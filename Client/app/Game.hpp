@@ -9,12 +9,10 @@ namespace app {
     public:
       struct Cursor
       {
-        bool operator==(const Cursor &c);
-        Cursor &operator-(const Cursor &c);
-        Cursor &operator+(const Cursor &c);
         Cursor();
         Cursor(int x, int y);
         ~Cursor();
+        bool operator==(const Cursor &c);
         int x;
         int y;
       };
@@ -39,9 +37,9 @@ namespace app {
       void setGameBoard(const Game::GameBoard &gb);
 
     protected:
-      GameBoard mGameBoard;
-      Cursor mCursor;
-      int mKeyPushed;
+      GameBoard m_gameBoard;
+      Cursor m_cursor;
+      int m_keyPushed;
   };
 
 }
