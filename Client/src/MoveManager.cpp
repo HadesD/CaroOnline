@@ -26,6 +26,9 @@ namespace app {
     Game::GameBoard gb = p_game.getGameBoard();
     Game::Cursor gc = p_game.getCursor();
 
+    int toX = gc.x;
+    int toY = gc.y;
+
     switch (m_getch)
     {
       case 'q':
@@ -41,28 +44,41 @@ namespace app {
       case 'k':
       case 'w':
         {
-          p_game.setCursor(gc - Game::Cursor(1, 0));
+          if (gc.x > 0)
+          {
+            toX -= 1;
+          }
         }
         break;
       case 'j':
       case 's':
         {
-          p_game.setCursor(gc + Game::Cursor(1, 0));
+          if (gc.x < (static_cast<int>(gb.size()) - 1))
+          {
+            toX += 1;
+          }
         }
         break;
       case 'h':
       case 'a':
         {
-          p_game.setCursor(gc - Game::Cursor(0, 1));
+          if (gc.y > 0)
+          {
+            toY -= 1;
+          }
         }
         break;
       case 'd':
       case 'l':
         {
-          p_game.setCursor(gc + Game::Cursor(0, 1));
+          if (gc.y < (static_cast<int>(gb.at(gc.x).size()) - 1))
+          {
+            toY += 1;
+          }
         }
         break;
     }
+    p_game.setCursor(Game::Cursor(toX, toY));
     p_game.setGameBoard(gb);
   }
 
