@@ -4,6 +4,6 @@
 #define GAMEBOARD_COLS 20
 #define GAMEBOARD_ROWS 20
 
-#define GAMEBOARD_ONEOBJ_SIZE 3
+#define GAMEBOARD_ONEOBJ_SIZE 1
 
 #endif

@@ -46,7 +46,7 @@ namespace app {
       GameBoard m_gameBoard;
       Cursor m_cursor;
       int m_keyPushed;
-      std::vector< std::weak_ptr< Player > > m_listPlayer;
+      std::vector< std::shared_ptr< Player > > m_listPlayer;
   };
 
 }

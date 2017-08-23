@@ -55,8 +55,10 @@ namespace app {
   {
     // try
     {
-      std::shared_ptr<Player> p = std::make_shared<Player>();
+      std::shared_ptr<Player> p(new Player());
       this->addPlayer(p);
+      std::cout << p << std::endl;
+      std::string k; std::cin >> k;
     }
     // catch (std::bad_weak_ptr &e)
     {
@@ -73,6 +75,8 @@ namespace app {
       system("clear");
 
       this->drawGameBoard();
+
+      std::cout << "Players: " << m_listPlayer.size() << std::endl;
 
       this->update();
 
@@ -93,7 +97,7 @@ namespace app {
 
     for (auto &p : m_listPlayer)
     {
-      p.lock()->onKeyboardEvent();
+      p->onKeyboardEvent();
     }
   }
 
@@ -210,7 +214,7 @@ namespace app {
 
   void Game::addPlayer(std::shared_ptr<Player> player)
   {
-    m_listPlayer.push_back(player);
+    m_listPlayer.emplace_back(player);
     player->setGame(this->shared_from_this());
   }
 }
