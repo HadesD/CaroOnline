@@ -7,6 +7,7 @@
 
 #include "app/Game.hpp"
 #include "app/MoveManager.hpp"
+#include "app/Player.hpp"
 
 #include "../Common/Config.hpp"
 
@@ -79,8 +80,13 @@ namespace app {
   void Game::update()
   {
     // std::shared_ptr<MoveManager> move(new MoveManager(*(this)));
-    MoveManager move(*(this));
+    // try {
+    MoveManager move(*this);
     move.waitKeyboardEvent();
+    // } catch(std::bad_weak_ptr& e) {
+    // undefined behavior (until C++17) and std::bad_weak_ptr thrown (since C++17)
+    // std::cout << e.what() << '\n';
+    // }
   }
 
   // #undef GAMEBOARD_ONEOBJ_SIZE
@@ -182,5 +188,10 @@ namespace app {
   void Game::setGameBoard(const Game::GameBoard &gb)
   {
     m_gameBoard = gb;
+  }
+  void Game::addPlayer(std::shared_ptr<Player> player)
+  {
+    player->setGame(this->shared_from_this());
+    m_listPlayer.push_back(player);
   }
 }

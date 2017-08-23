@@ -1,10 +1,12 @@
 #ifndef APP_GAME_HPP
 #define APP_GAME_HPP
+#include <memory>
 #include <vector>
 
 namespace app {
 
-  class Game
+  class Player;
+  class Game : public std::enable_shared_from_this<Game>
   {
     public:
       struct Cursor
@@ -29,6 +31,9 @@ namespace app {
       void update();
 
     public:
+      void addPlayer(std::shared_ptr<Player> player);
+
+    public:
       Cursor getCursor() const;
       void setCursor(const Cursor &c);
       int getKeyPushed() const;
@@ -40,6 +45,7 @@ namespace app {
       GameBoard m_gameBoard;
       Cursor m_cursor;
       int m_keyPushed;
+      std::vector< std::weak_ptr< Player > > m_listPlayer;
   };
 
 }
