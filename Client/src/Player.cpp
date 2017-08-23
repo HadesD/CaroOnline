@@ -17,58 +17,55 @@ namespace app {
   void Player::onKeyboardEvent()
   {
     Game::GameBoard gb = pGame->getGameBoard();
-    Game::Cursor gc = pGame->getCursor();
-
-    int toX = gc.x;
-    int toY = gc.y;
 
     switch (pGame->getKeyPushed())
     {
       case 10:
       case 32:
         {
+          gb[cursor.x][cursor.y] = this->mark;
         }
         break;
       case 'k':
       case 'w':
         {
-          if (gc.x > 0)
+          if (cursor.x > 0)
           {
-            toX -= 1;
+            cursor.x -= 1;
           }
         }
         break;
       case 'j':
       case 's':
         {
-          if (gc.x < (static_cast<int>(gb.size()) - 1))
+          if (cursor.x < (static_cast<int>(gb.size()) - 1))
           {
-            toX += 1;
+            cursor.x += 1;
           }
         }
         break;
       case 'h':
       case 'a':
         {
-          if (gc.y > 0)
+          if (cursor.y > 0)
           {
-            toY -= 1;
+            cursor.y -= 1;
           }
         }
         break;
       case 'd':
       case 'l':
         {
-          if (gc.y < (static_cast<int>(gb.at(gc.x).size()) - 1))
+          if (cursor.y < (static_cast<int>(gb.at(cursor.x).size()) - 1))
           {
-            toY += 1;
+            cursor.y += 1;
           }
         }
         break;
     }
-    if (!(gc == Game::Cursor(toX, toY)))
+    // if (!(cursor == Game::Cursor(toX, toY)))
     {
-      pGame->setCursor(Game::Cursor(toX, toY));
+      pGame->setCursor(cursor);
     }
     pGame->setGameBoard(gb);
   }
@@ -81,5 +78,15 @@ namespace app {
   int Player::getId() const
   {
     return this->id;
+  }
+
+  void Player::setMark(const int &mark)
+  {
+    this->mark = mark;
+  }
+
+  int Player::getMark() const
+  {
+    return this->mark;
   }
 }

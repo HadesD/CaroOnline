@@ -55,6 +55,7 @@ namespace app {
   {
     std::shared_ptr<Player> p(new Player());
     p->setId(1);
+    p->setMark(1);
     this->addPlayer(p);
     std::shared_ptr<Player> p2(new Player());
     this->addPlayer(p2);
