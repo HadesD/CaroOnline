@@ -23,6 +23,7 @@ namespace app {
       void setMark(const int &mark);
       void setIsTurn(const bool &isTurn);
       bool getIsTurn() const;
+      Game::Cursor getCursor() const;
 
     public:
       void onKeyboardEvent();

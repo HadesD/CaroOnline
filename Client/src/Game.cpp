@@ -120,6 +120,10 @@ namespace app {
       if (p->getIsTurn() == true)
       {
         p->onKeyboardEvent();
+        if (!(this->m_cursor == p->getCursor()))
+        {
+          this->m_cursor = p->getCursor();
+        }
         std::cout << "Turn: " << i << std::endl;
       }
     }
@@ -244,17 +248,29 @@ namespace app {
     m_gameBoard = gb;
   }
 
-  void Game::addPlayer(std::shared_ptr<Player> player)
+  void Game::addPlayer(const std::shared_ptr<Player> &player)
   {
     for (auto &p : m_listPlayer)
     {
-      if ( (player == p) || (player->getId() == p->getId()))
+      if (player == p)
       {
         return;
       }
     }
     m_listPlayer.emplace_back(player);
     player->setGame(this->shared_from_this());
+  }
+
+  void Game::removePlayer(const std::shared_ptr<Player> &player)
+  {
+    for (std::size_t i = 0; i < m_listPlayer.size(); i++)
+    {
+      if (player == m_listPlayer.at(i))
+      {
+        // m_listPlayer.erase(m_listPlayer.begin() + i);
+        break;
+      }
+    }
   }
 
   Game::ListPlayer Game::getListPlayer() const

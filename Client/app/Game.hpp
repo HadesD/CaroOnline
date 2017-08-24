@@ -34,7 +34,8 @@ namespace app {
       void checkFinish();
 
     public:
-      void addPlayer(std::shared_ptr<Player> player);
+      void addPlayer(const std::shared_ptr<Player> &player);
+      void removePlayer(const std::shared_ptr<Player> &player);
 
     public:
       Cursor getCursor() const;

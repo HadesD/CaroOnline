@@ -45,6 +45,7 @@ namespace app {
                 }
               }
             }
+            // pGame->removePlayer(this->shared_from_this());
           }
         }
         break;
@@ -86,10 +87,6 @@ namespace app {
         break;
     }
 
-    if (this->isTurn == true)
-    {
-      pGame->setCursor(cursor);
-    }
     pGame->setGameBoard(gb);
   }
 
@@ -106,6 +103,11 @@ namespace app {
   void Player::setMark(const int &mark)
   {
     this->mark = mark;
+  }
+
+  Game::Cursor Player::getCursor() const
+  {
+    return this->cursor;
   }
 
   int Player::getMark() const
