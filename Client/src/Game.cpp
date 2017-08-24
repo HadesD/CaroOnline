@@ -8,6 +8,7 @@
 #include "app/Game.hpp"
 #include "app/Player.hpp"
 #include "app/Kbhit.h"
+#include "app/WindowManager.h"
 
 #include "../Common/Config.hpp"
 
@@ -70,6 +71,8 @@ namespace app {
   {
     this->init();
 
+    WindowManager wm;
+
     while (this->isFinish == false)
     {
       system("clear");
@@ -77,6 +80,12 @@ namespace app {
       this->drawGameBoard();
 
       std::cout << "Players: " << m_listPlayer.size() << std::endl;
+      std::cout
+        << "Windows Size: "
+        << wm.getWidth()
+        << "x"
+        << wm.getWidth()
+        << std::endl;
 
       this->update();
 
