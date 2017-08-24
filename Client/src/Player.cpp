@@ -42,6 +42,7 @@ namespace app {
                 if (lp.at(i) == this->shared_from_this())
                 {
                   lp.at(i + 1)->setIsTurn(true);
+                  break;
                 }
               }
             }

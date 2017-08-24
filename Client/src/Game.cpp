@@ -97,6 +97,8 @@ namespace app {
         break;
       }
 
+      m_keyPushed = 0;
+
       // std::this_thread::sleep_for(std::chrono::milliseconds(80));
 
     }
@@ -131,7 +133,6 @@ namespace app {
 
   void Game::checkFinish()
   {
-
     // this->isFinish = true;
   }
 
