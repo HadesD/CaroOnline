@@ -16,6 +16,10 @@ namespace app {
 
   void Player::onKeyboardEvent()
   {
+    if (this->isTurn == false)
+    {
+      return;
+    }
     Game::GameBoard gb = pGame->getGameBoard();
 
     switch (pGame->getKeyPushed())
@@ -28,8 +32,8 @@ namespace app {
         {
           if (gb.at(cursor.x).at(cursor.y) == 0)
           {
-            gb[cursor.x][cursor.y] = this->mark;
             this->isTurn = false;
+            gb[cursor.x][cursor.y] = this->mark;
             pGame->setNextPlayer(pGame->getNextPlayer() + 1);
           }
         }

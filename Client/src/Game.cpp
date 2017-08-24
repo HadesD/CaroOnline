@@ -278,9 +278,13 @@ namespace app {
     if (nextPlayer > static_cast<int>(m_listPlayer.size()))
     {
       this->m_nextPlayer = 1;
-      return;
     }
-    this->m_nextPlayer = nextPlayer;
+    else
+    {
+      this->m_nextPlayer = nextPlayer;
+    }
+
+    m_listPlayer.at(m_nextPlayer - 1)->setIsTurn(true);
   }
 
   int Game::getNextPlayer() const
