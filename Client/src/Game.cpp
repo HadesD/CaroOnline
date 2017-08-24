@@ -56,13 +56,22 @@ namespace app {
 
   void Game::init()
   {
-    std::shared_ptr<Player> p(new Player());
-    p->setId(1);
-    p->setMark(1);
-    p->setIsTurn(true);
-    this->addPlayer(p);
+    std::shared_ptr<Player> p1(new Player());
+    p1->setId(1);
+    p1->setMark(1);
+    p1->setIsTurn(true);
+    this->addPlayer(p1);
+
     std::shared_ptr<Player> p2(new Player());
     this->addPlayer(p2);
+    p2->setId(222);
+    p2->setMark(2);
+
+    std::shared_ptr<Player> p3(new Player());
+    this->addPlayer(p3);
+    p3->setId(32);
+    p3->setMark(3);
+
     // std::cout << p << std::endl;
     // std::string k; std::cin >> k;
   }
@@ -80,12 +89,6 @@ namespace app {
       this->drawGameBoard();
 
       std::cout << "Players: " << m_listPlayer.size() << std::endl;
-      std::cout
-        << "Windows Size: "
-        << wm.getWidth()
-        << "x"
-        << wm.getWidth()
-        << std::endl;
 
       this->update();
 
@@ -110,11 +113,14 @@ namespace app {
   {
     m_keyPushed = (new ::Kbhit())->getch();
 
+    int i = 0;
     for (auto &p : m_listPlayer)
     {
-      if (p->getId() == 1)
+      i++;
+      if (p->getIsTurn() == true)
       {
         p->onKeyboardEvent();
+        std::cout << "Turn: " << i << std::endl;
       }
     }
   }
@@ -185,6 +191,13 @@ namespace app {
               curr = "o";
             }
             break;
+          case 3:
+            {
+              color = "\e[38;5;50m";
+              curr = "z";
+            }
+            break;
+
         }
         if (m_cursor == Game::Cursor(x, y))
         {
@@ -233,7 +246,19 @@ namespace app {
 
   void Game::addPlayer(std::shared_ptr<Player> player)
   {
+    for (auto &p : m_listPlayer)
+    {
+      if ( (player == p) || (player->getId() == p->getId()))
+      {
+        return;
+      }
+    }
     m_listPlayer.emplace_back(player);
     player->setGame(this->shared_from_this());
+  }
+
+  Game::ListPlayer Game::getListPlayer() const
+  {
+    return m_listPlayer;
   }
 }

@@ -29,6 +29,22 @@ namespace app {
           if (gb.at(cursor.x).at(cursor.y) == 0)
           {
             gb[cursor.x][cursor.y] = this->mark;
+            this->isTurn = false;
+            Game::ListPlayer lp = pGame->getListPlayer();
+            if (lp.back() == this->shared_from_this())
+            {
+              lp.front()->setIsTurn(true);
+            }
+            else
+            {
+              for (std::size_t i = 0; i < lp.size(); i++)
+              {
+                if (lp.at(i) == this->shared_from_this())
+                {
+                  lp.at(i + 1)->setIsTurn(true);
+                }
+              }
+            }
           }
         }
         break;
@@ -69,7 +85,8 @@ namespace app {
         }
         break;
     }
-    if (this->isTurn)
+
+    if (this->isTurn == true)
     {
       pGame->setCursor(cursor);
     }

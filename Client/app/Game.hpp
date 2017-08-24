@@ -19,6 +19,7 @@ namespace app {
         int y;
       };
       typedef std::vector< std::vector< int > > GameBoard;
+      typedef std::vector< std::shared_ptr< Player > > ListPlayer;
 
     public:
       Game();
@@ -42,12 +43,13 @@ namespace app {
       void setKeyPushed(const int &key);
       GameBoard getGameBoard() const;
       void setGameBoard(const Game::GameBoard &gb);
+      ListPlayer getListPlayer() const;
 
     protected:
       GameBoard m_gameBoard;
       Cursor m_cursor;
       int m_keyPushed;
-      std::vector< std::shared_ptr< Player > > m_listPlayer;
+      ListPlayer m_listPlayer;
       bool isFinish;
   };
 
