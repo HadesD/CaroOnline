@@ -61,6 +61,7 @@ namespace app {
     p1->setMark(1);
     p1->setIsTurn(true);
     this->addPlayer(p1);
+    m_nextPlayer = 1;
 
     std::shared_ptr<Player> p2(new Player());
     this->addPlayer(p2);
@@ -109,26 +110,19 @@ namespace app {
     this->checkFinish();
 
     this->waitKeyboardEvent();
+
+    this->m_cursor = m_listPlayer.at(m_nextPlayer - 1)->getCursor();
   }
 
   void Game::waitKeyboardEvent()
   {
     m_keyPushed = (new ::Kbhit())->getch();
 
-    int i = 0;
-    for (auto &p : m_listPlayer)
-    {
-      i++;
-      if (p->getIsTurn() == true)
-      {
-        p->onKeyboardEvent();
-        if (!(this->m_cursor == p->getCursor()))
-        {
-          this->m_cursor = p->getCursor();
-        }
-        std::cout << "Turn: " << i << std::endl;
-      }
-    }
+    std::weak_ptr<Player> p = m_listPlayer.at(m_nextPlayer - 1);
+
+    p.lock()->onKeyboardEvent();
+
+    std::cout << "Turn: " << m_nextPlayer << std::endl;
   }
 
   void Game::checkFinish()
@@ -277,5 +271,20 @@ namespace app {
   Game::ListPlayer Game::getListPlayer() const
   {
     return m_listPlayer;
+  }
+
+  void Game::setNextPlayer(const int &nextPlayer)
+  {
+    if (nextPlayer > static_cast<int>(m_listPlayer.size()))
+    {
+      this->m_nextPlayer = 1;
+      return;
+    }
+    this->m_nextPlayer = nextPlayer;
+  }
+
+  int Game::getNextPlayer() const
+  {
+    return m_nextPlayer;
   }
 }
