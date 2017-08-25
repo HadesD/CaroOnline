@@ -22,8 +22,7 @@ namespace app {
       return;
     }
 
-    Game::GameBoard gb = pGame->getGameBoard();
-
+    
     switch (pGame->getKeyPushed())
     {
       case 10:
@@ -32,12 +31,16 @@ namespace app {
       case 'e':
       case 'm':
         {
+          Game::GameBoard gb = pGame->getGameBoard();
+
           if (gb.at(cursor.x).at(cursor.y) == 0)
           {
             this->isTurn = false;
             gb[cursor.x][cursor.y] = this->mark;
             pGame->setNextPlayer(pGame->getNextPlayer() + 1);
           }
+          
+          pGame->setGameBoard(gb);
         }
         break;
       case 'k':
@@ -77,8 +80,6 @@ namespace app {
         }
         break;
     }
-
-    pGame->setGameBoard(gb);
 
     if (this->isTurn == false)
     {
