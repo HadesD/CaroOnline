@@ -1,6 +1,7 @@
 #include "app/Player.hpp"
 
 namespace app {
+
   Player::Player()
   {
   }
@@ -20,6 +21,7 @@ namespace app {
     {
       return;
     }
+
     Game::GameBoard gb = pGame->getGameBoard();
 
     switch (pGame->getKeyPushed())
@@ -43,7 +45,7 @@ namespace app {
         {
           if (cursor.x > 0)
           {
-            cursor.x -= 1;
+            cursor.x--;
           }
         }
         break;
@@ -52,7 +54,7 @@ namespace app {
         {
           if (cursor.x < (static_cast<int>(gb.size()) - 1))
           {
-            cursor.x += 1;
+            cursor.x++;
           }
         }
         break;
@@ -61,7 +63,7 @@ namespace app {
         {
           if (cursor.y > 0)
           {
-            cursor.y -= 1;
+            cursor.y--;
           }
         }
         break;
@@ -70,13 +72,18 @@ namespace app {
         {
           if (cursor.y < (static_cast<int>(gb.at(cursor.x).size()) - 1))
           {
-            cursor.y += 1;
+            cursor.y++;
           }
         }
         break;
     }
 
     pGame->setGameBoard(gb);
+
+    if (this->isTurn == false)
+    {
+      pGame->checkFinish();
+    }
   }
 
   void Player::setId(const int &id)

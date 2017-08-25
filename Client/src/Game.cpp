@@ -102,18 +102,20 @@ namespace app {
 
       m_keyPushed = 0;
 
-      // std::this_thread::sleep_for(std::chrono::milliseconds(80));
+    }
 
+    if (this->isFinish == true)
+    {
+      std::cout << "Winner: "<< m_nextPlayer << std::endl;
     }
   }
 
   void Game::update()
   {
-    this->checkFinish();
-
     this->waitKeyboardEvent();
 
     this->m_cursor = m_listPlayer.at(m_nextPlayer - 1)->getCursor();
+
   }
 
   void Game::waitKeyboardEvent()
@@ -127,7 +129,44 @@ namespace app {
 
   void Game::checkFinish()
   {
-    // this->isFinish = true;
+    int maxCount = 5;
+    int count;
+
+    int playerNumToCheck = m_nextPlayer - 1;
+    if (m_nextPlayer == 1)
+    {
+      playerNumToCheck = m_listPlayer.size() - 1;
+    }
+
+    std::weak_ptr<Player> playerToCheck = m_listPlayer.at(playerNumToCheck);
+
+    // Check Hoz line
+    for (std::size_t x = 0; x < m_gameBoard.size(); x++)
+    {
+      count = 0;
+      for (std::size_t y = 0; y < m_gameBoard.at(x).size() - 1; y++)
+      {
+        if (
+          (m_gameBoard.at(x).at(y) == playerToCheck.lock()->getMark()) &&
+          (m_gameBoard.at(x).at(y + 1) == playerToCheck.lock()->getMark())
+          )
+        {
+          count++;
+        }
+        else
+        {
+          count = 0;
+        }
+
+        if (count >= maxCount)
+        {
+          this->isFinish = true;
+          break;
+        }
+
+      }
+    }
+
   }
 
   // #undef app::config::gameBoardOneObjSize
