@@ -19,18 +19,26 @@ namespace app {
 
   int WindowManager::getHeight() const
   {
+    int h = 0;
+#ifdef __linux
     winsize consoleSize;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &consoleSize);
+    h = consoleSize.ws_row;
+#endif
 
-    return consoleSize.ws_row;
+    return h;
   }
 
   int WindowManager::getWidth() const
   {
+    int w = 0;
+#ifdef __linux
     winsize consoleSize;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &consoleSize);
+    w = consoleSize.ws_col;
+#endif
 
-    return consoleSize.ws_col;
+    return w;
   }
 
 }

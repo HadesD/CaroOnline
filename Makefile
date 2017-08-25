@@ -1,3 +1,5 @@
+.PHONY: all run client
+
 default: client
 
 client:
