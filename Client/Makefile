@@ -13,7 +13,9 @@ build:
 		src/Game.cpp \
 		src/Kbhit.cpp \
 		src/Player.cpp \
-		src/WindowManager.cpp
+		src/WindowManager.cpp \
+		../Common/Config.cpp \
+		src/Config.cpp
 
 run:
 	cd bin && ./caro

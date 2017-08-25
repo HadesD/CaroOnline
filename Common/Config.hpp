@@ -1,9 +1,12 @@
-#ifndef APP_CONFIG_HPP
-#define APP_CONFIG_HPP
+#ifndef COMMON_CONFIG_HPP
+#define COMMON_CONFIG_HPP
+#include <cstddef>
 
-#define GAMEBOARD_COLS 20
-#define GAMEBOARD_ROWS 20
+namespace common { namespace config {
 
-#define GAMEBOARD_ONEOBJ_SIZE 1
+  extern const std::size_t gameBoardRows;
+  extern const std::size_t gameBoardCols;
+
+} }
 
 #endif

@@ -5,12 +5,13 @@
 // #include <chrono>
 // #include <thread>
 
+#include "../Common/Config.hpp"
+
 #include "app/Game.hpp"
 #include "app/Player.hpp"
 #include "app/Kbhit.h"
 #include "app/WindowManager.h"
-
-#include "../Common/Config.hpp"
+#include "app/Config.hpp"
 
 namespace app {
 
@@ -43,8 +44,8 @@ namespace app {
   Game::Game()
   {
     m_gameBoard.assign(
-      GAMEBOARD_ROWS,
-      std::vector< int >(GAMEBOARD_COLS, 0)
+      common::config::gameBoardRows,
+      std::vector< int >(common::config::gameBoardCols, 0)
       );
 
     isFinish = false;
@@ -90,6 +91,7 @@ namespace app {
       this->drawGameBoard();
 
       std::cout << "Players: " << m_listPlayer.size() << std::endl;
+      std::cout << "Turn of: " << m_nextPlayer << std::endl;
 
       this->update();
 
@@ -121,8 +123,6 @@ namespace app {
     std::weak_ptr<Player> p = m_listPlayer.at(m_nextPlayer - 1);
 
     p.lock()->onKeyboardEvent();
-
-    std::cout << "Turn: " << m_nextPlayer << std::endl;
   }
 
   void Game::checkFinish()
@@ -130,15 +130,15 @@ namespace app {
     // this->isFinish = true;
   }
 
-  // #undef GAMEBOARD_ONEOBJ_SIZE
-  // #define GAMEBOARD_ONEOBJ_SIZE 5
+  // #undef app::config::gameBoardOneObjSize
+  // #define app::config::gameBoardOneObjSize 5
 
   void Game::drawGameBoard()
   {
-    assert((GAMEBOARD_ONEOBJ_SIZE % 2) != 0);
+    assert((app::config::gameBoardOneObjSize % 2) != 0);
     // Barrier
     auto drawBarrier = [](const int &len){
-      for (size_t i = 0; i < GAMEBOARD_COLS; i++)
+      for (std::size_t i = 0; i < common::config::gameBoardCols; i++)
       {
         std::cout << '+';
         std::cout << std::string(len, '-');
@@ -150,14 +150,14 @@ namespace app {
     // Body
     auto drawLine = [](const std::string &s){
       std::cout << '|';
-      std::cout << std::string(GAMEBOARD_ONEOBJ_SIZE / 2, ' ');
+      std::cout << std::string(app::config::gameBoardOneObjSize / 2, ' ');
       std::cout << s;
-      std::cout << std::string(GAMEBOARD_ONEOBJ_SIZE / 2, ' ');
+      std::cout << std::string(app::config::gameBoardOneObjSize / 2, ' ');
     };
 
     for (size_t x = 0; x < m_gameBoard.size(); x++)
     {
-      drawBarrier(GAMEBOARD_ONEOBJ_SIZE);
+      drawBarrier(app::config::gameBoardOneObjSize);
       // for (size_t y = 0; y < m_gameBoard.at(x).size(); y++)
       // {
       //   drawBody(" ");
@@ -215,7 +215,7 @@ namespace app {
       // std::cout << '|';
       // std::cout << std::endl;
     }
-    drawBarrier(GAMEBOARD_ONEOBJ_SIZE);
+    drawBarrier(app::config::gameBoardOneObjSize);
   }
 
   void Game::setKeyPushed(const int &key)
