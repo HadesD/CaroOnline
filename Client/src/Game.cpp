@@ -71,6 +71,9 @@ namespace app {
 
     // std::cout << p << std::endl;
     // std::string k; std::cin >> k;
+
+    // Set default cursor
+    this->m_cursor = m_listPlayer.front()->getCursor();
   }
 
   void Game::run()
@@ -143,11 +146,12 @@ namespace app {
         if (count >= maxCoupleCount)
         {
           this->isFinish = true;
-          break;
+          return;
         }
-
       }
     }
+
+    // Check vert
 
   }
 
