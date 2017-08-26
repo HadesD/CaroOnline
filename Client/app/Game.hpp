@@ -46,7 +46,7 @@ namespace app {
       void setGameBoard(const Game::GameBoard &gb);
       ListPlayer getListPlayer() const;
       void setNextPlayer(const int &nextPlayer);
-      int getNextPlayer() const;
+      int getCurrentPlayer() const;
 
     protected:
       GameBoard m_gameBoard;
@@ -54,7 +54,7 @@ namespace app {
       int m_keyPushed;
       ListPlayer m_listPlayer;
       bool isFinish;
-      int m_nextPlayer;
+      int m_currentPlayer;
   };
 
 }

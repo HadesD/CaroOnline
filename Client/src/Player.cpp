@@ -22,7 +22,8 @@ namespace app {
       return;
     }
 
-    
+    Game::GameBoard gb = pGame->getGameBoard();
+
     switch (pGame->getKeyPushed())
     {
       case 10:
@@ -31,16 +32,11 @@ namespace app {
       case 'e':
       case 'm':
         {
-          Game::GameBoard gb = pGame->getGameBoard();
-
           if (gb.at(cursor.x).at(cursor.y) == 0)
           {
             this->isTurn = false;
             gb[cursor.x][cursor.y] = this->mark;
-            pGame->setNextPlayer(pGame->getNextPlayer() + 1);
           }
-          
-          pGame->setGameBoard(gb);
         }
         break;
       case 'k':
@@ -81,10 +77,15 @@ namespace app {
         break;
     }
 
+    pGame->setGameBoard(gb);
+
     if (this->isTurn == false)
     {
       pGame->checkFinish();
+
+      pGame->setNextPlayer(pGame->getCurrentPlayer() + 1);
     }
+
   }
 
   void Player::setId(const int &id)
@@ -105,6 +106,11 @@ namespace app {
   Game::Cursor Player::getCursor() const
   {
     return this->cursor;
+  }
+
+  void Player::setCursor(const Game::Cursor &c)
+  {
+    this->cursor = c;
   }
 
   int Player::getMark() const

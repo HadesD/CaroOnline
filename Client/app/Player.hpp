@@ -24,6 +24,7 @@ namespace app {
       void setIsTurn(const bool &isTurn);
       bool getIsTurn() const;
       Game::Cursor getCursor() const;
+      void setCursor(const Game::Cursor &c);
 
     public:
       void onKeyboardEvent();

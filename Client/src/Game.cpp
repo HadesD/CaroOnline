@@ -36,11 +36,6 @@ namespace app {
 
   //------ End Cursor
 
-  Game::Cursor Game::getCursor() const
-  {
-    return m_cursor;
-  }
-
   Game::Game()
   {
     m_gameBoard.assign(
@@ -62,7 +57,7 @@ namespace app {
     p1->setMark(1);
     p1->setIsTurn(true);
     this->addPlayer(p1);
-    m_nextPlayer = 1;
+    m_currentPlayer = 0;
 
     std::shared_ptr<Player> p2(new Player());
     this->addPlayer(p2);
@@ -70,7 +65,7 @@ namespace app {
     p2->setMark(2);
 
     std::shared_ptr<Player> p3(new Player());
-    this->addPlayer(p3);
+    // this->addPlayer(p3);
     p3->setId(32);
     p3->setMark(3);
 
@@ -91,7 +86,7 @@ namespace app {
       this->drawGameBoard();
 
       std::cout << "Players: " << m_listPlayer.size() << std::endl;
-      std::cout << "Turn of: " << m_nextPlayer << std::endl;
+      std::cout << "Turn of: " << m_currentPlayer << std::endl;
 
       this->update();
 
@@ -101,12 +96,6 @@ namespace app {
       }
 
       m_keyPushed = 0;
-
-    }
-
-    if (this->isFinish == true)
-    {
-      std::cout << "Winner: "<< m_nextPlayer << std::endl;
     }
   }
 
@@ -114,31 +103,24 @@ namespace app {
   {
     this->waitKeyboardEvent();
 
-    this->m_cursor = m_listPlayer.at(m_nextPlayer - 1)->getCursor();
-
+    this->m_cursor = m_listPlayer.at(m_currentPlayer)->getCursor();
   }
 
   void Game::waitKeyboardEvent()
   {
     m_keyPushed = (new ::Kbhit())->getch();
 
-    std::weak_ptr<Player> p = m_listPlayer.at(m_nextPlayer - 1);
+    std::weak_ptr<Player> p = m_listPlayer.at(m_currentPlayer);
 
     p.lock()->onKeyboardEvent();
   }
 
   void Game::checkFinish()
   {
-    int maxCount = 5;
+    int maxCoupleCount = 4;
     int count;
 
-    int playerNumToCheck = m_nextPlayer - 1;
-    if (m_nextPlayer == 1)
-    {
-      playerNumToCheck = m_listPlayer.size() - 1;
-    }
-
-    std::weak_ptr<Player> playerToCheck = m_listPlayer.at(playerNumToCheck);
+    std::weak_ptr<Player> playerToCheck = m_listPlayer.at(m_currentPlayer);
 
     // Check Hoz line
     for (std::size_t x = 0; x < m_gameBoard.size(); x++)
@@ -158,7 +140,7 @@ namespace app {
           count = 0;
         }
 
-        if (count >= maxCount)
+        if (count >= maxCoupleCount)
         {
           this->isFinish = true;
           break;
@@ -225,7 +207,7 @@ namespace app {
             break;
           case 2:
             {
-              color = "\e[38;5;22m";
+              color = "\e[38;5;37m";
               curr = "o";
             }
             break;
@@ -267,6 +249,11 @@ namespace app {
     return m_keyPushed;
   }
 
+  Game::Cursor Game::getCursor() const
+  {
+    return m_cursor;
+  }
+
   void Game::setCursor(const Game::Cursor &c)
   {
     m_cursor = c;
@@ -293,6 +280,10 @@ namespace app {
     }
     m_listPlayer.emplace_back(player);
     player->setGame(this->shared_from_this());
+    player->setCursor(
+      Cursor(m_gameBoard.size()/2,
+             m_gameBoard.at(m_gameBoard.size()/2).size()/2)
+      );
   }
 
   void Game::removePlayer(const std::shared_ptr<Player> &player)
@@ -314,20 +305,20 @@ namespace app {
 
   void Game::setNextPlayer(const int &nextPlayer)
   {
-    if (nextPlayer > static_cast<int>(m_listPlayer.size()))
+    if (nextPlayer >= static_cast<int>(m_listPlayer.size()))
     {
-      this->m_nextPlayer = 1;
+      this->m_currentPlayer = 0;
     }
     else
     {
-      this->m_nextPlayer = nextPlayer;
+      this->m_currentPlayer = nextPlayer;
     }
 
-    m_listPlayer.at(m_nextPlayer - 1)->setIsTurn(true);
+    m_listPlayer.at(m_currentPlayer)->setIsTurn(true);
   }
 
-  int Game::getNextPlayer() const
+  int Game::getCurrentPlayer() const
   {
-    return m_nextPlayer;
+    return m_currentPlayer;
   }
 }
