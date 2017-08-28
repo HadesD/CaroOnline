@@ -222,10 +222,30 @@ namespace app {
     for (std::size_t x = 0; x < m_gameBoard.size() -
          common::config::maxCoupleCount; x++)
     {
-      for (std::size_t y = 0; y < m_gameBoard.at(x).size() -
+      count = 0;
+      for (std::size_t y = 0; y < common::config::gameBoardCols -
            common::config::maxCoupleCount; y++)
       {
+        for (std::size_t xy = y; xy < y + common::config::maxCoupleCount; xy++)
+        {
+          if (
+            (m_gameBoard.at(x).at(xy) == playerToCheck.lock()->getMark()) &&
+            (m_gameBoard.at(xy+1).at(y+1) == playerToCheck.lock()->getMark())
+            )
+          {
+            count++;
+          }
+          else
+          {
+            count = 0;
+          }
 
+          if (count >= common::config::maxCoupleCount)
+          {
+            this->isFinish = true;
+            return;
+          }
+        }
       }
     }
   }
