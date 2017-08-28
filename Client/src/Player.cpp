@@ -39,6 +39,7 @@ namespace app {
           }
         }
         break;
+      case 65:
       case 'k':
       case 'w':
         {
@@ -48,6 +49,7 @@ namespace app {
           }
         }
         break;
+      case 66:
       case 'j':
       case 's':
         {
@@ -57,6 +59,7 @@ namespace app {
           }
         }
         break;
+      case 68:
       case 'h':
       case 'a':
         {
@@ -66,6 +69,7 @@ namespace app {
           }
         }
         break;
+      case 67:
       case 'd':
       case 'l':
         {
