@@ -2,6 +2,7 @@
 #include <cassert>
 #include <memory>
 #include <cmath>
+#include <algorithm>
 // #include <chrono>
 // #include <thread>
 
@@ -120,6 +121,22 @@ namespace app {
 
   void Game::checkFinish()
   {
+    int x0, y0, xMax, yMax;
+
+    std::weak_ptr<Player> playerToCheck = m_listPlayer.at(m_currentPlayer);
+
+    x0 = std::max(playerToCheck.lock()->getCursor().x -
+                  common::config::maxCoupleCount, 0);
+    y0 = std::max(playerToCheck.lock()->getCursor().y -
+                  common::config::maxCoupleCount, 0);
+
+    xMax = std::min(playerToCheck.lock()->getCursor().x +
+                  common::config::maxCoupleCount, static_cast<int>(m_gameBoard.size()));
+    yMax = std::min(playerToCheck.lock()->getCursor().y +
+                  common::config::maxCoupleCount, static_cast<int>(m_gameBoard.at(xMax).size()));
+
+    std::cout << x0 << " , " << y0 << ":" << xMax << " , " << yMax << std::endl;
+
     // Game board likes:
     // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
     // | | | | | | | | | | | | | | | | | | | | |
@@ -164,13 +181,12 @@ namespace app {
     // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
     int count;
 
-    std::weak_ptr<Player> playerToCheck = m_listPlayer.at(m_currentPlayer);
 
     // Check Hoz line
-    for (std::size_t x = 0; x < m_gameBoard.size(); x++)
+    for (int x = x0; x < xMax; x++)
     {
       count = 0;
-      for (std::size_t y = 0; y < m_gameBoard.at(x).size() - 1; y++)
+      for (int y = y0; y < yMax - 1; y++)
       {
         if (
           (m_gameBoard.at(x).at(y) == playerToCheck.lock()->getMark()) &&
@@ -193,10 +209,10 @@ namespace app {
     }
 
     // Check vert
-    for (std::size_t y = 0; y < common::config::gameBoardCols; y++)
+    for (int y = y0; y < yMax; y++)
     {
       count = 0;
-      for (std::size_t x = 0; x < m_gameBoard.size() - 1; x++)
+      for (int x = x0; x < xMax - 1; x++)
       {
         if (
           (m_gameBoard.at(x).at(y) == playerToCheck.lock()->getMark()) &&
@@ -222,22 +238,22 @@ namespace app {
     for (std::size_t x = 0; x < m_gameBoard.size() -
          common::config::maxCoupleCount; x++)
     {
-      count = 0;
       for (std::size_t y = 0; y < common::config::gameBoardCols -
            common::config::maxCoupleCount; y++)
       {
-        for (std::size_t xy = y; xy < y + common::config::maxCoupleCount; xy++)
+        count = 0;
+        for (std::size_t x0 = x, y0 = y; x0 < x + common::config::maxCoupleCount; x0++, y0++)
         {
           if (
-            (m_gameBoard.at(x).at(xy) == playerToCheck.lock()->getMark()) &&
-            (m_gameBoard.at(xy+1).at(y+1) == playerToCheck.lock()->getMark())
+            (m_gameBoard.at(x0).at(y0) == playerToCheck.lock()->getMark()) &&
+            (m_gameBoard.at(x0+1).at(y0+1) == playerToCheck.lock()->getMark())
             )
           {
             count++;
           }
           else
           {
-            count = 0;
+            break;
           }
 
           if (count >= common::config::maxCoupleCount)
