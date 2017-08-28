@@ -120,7 +120,6 @@ namespace app {
 
   void Game::checkFinish()
   {
-    int maxCoupleCount = 4;
     int count;
 
     std::weak_ptr<Player> playerToCheck = m_listPlayer.at(m_currentPlayer);
@@ -143,7 +142,7 @@ namespace app {
           count = 0;
         }
 
-        if (count >= maxCoupleCount)
+        if (count >= common::config::maxCoupleCount)
         {
           this->isFinish = true;
           return;
@@ -152,7 +151,30 @@ namespace app {
     }
 
     // Check vert
+    for (std::size_t y = 0; y < common::config::gameBoardCols; y++)
+    {
+      count = 0;
+      for (std::size_t x = 0; x < m_gameBoard.size() - 1; x++)
+      {
+        if (
+          (m_gameBoard.at(x).at(y) == playerToCheck.lock()->getMark()) &&
+          (m_gameBoard.at(x + 1).at(y) == playerToCheck.lock()->getMark())
+          )
+        {
+          count++;
+        }
+        else
+        {
+          count = 0;
+        }
 
+        if (count >= common::config::maxCoupleCount)
+        {
+          this->isFinish = true;
+          return;
+        }
+      }
+    }
   }
 
   // #undef app::config::gameBoardOneObjSize
