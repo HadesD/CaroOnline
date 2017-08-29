@@ -250,18 +250,17 @@ namespace app {
     }
 
     // Check diagonal L->R
-    for (std::size_t x = 0; x < m_gameBoard.size() -
-         common::config::maxCoupleCount; x++)
+    for (int x = x0; x < xMaxSize - common::config::maxCoupleCount; x++)
     {
-      for (std::size_t y = 0; y < common::config::gameBoardCols -
-           common::config::maxCoupleCount; y++)
+      for (int y = y0; y < yMaxSize - common::config::maxCoupleCount; y++)
       {
         count = 0;
-        for (std::size_t x0 = x, y0 = y; x0 < x + common::config::maxCoupleCount; x0++, y0++)
+        for (int xStart = x, yStart = y;
+             xStart < x + common::config::maxCoupleCount; xStart++, yStart++)
         {
           if (
-            (m_gameBoard.at(x0).at(y0) == playerToCheck.lock()->getMark()) &&
-            (m_gameBoard.at(x0+1).at(y0+1) == playerToCheck.lock()->getMark())
+            (m_gameBoard.at(xStart).at(yStart) == playerToCheck.lock()->getMark()) &&
+            (m_gameBoard.at(xStart + 1).at(yStart + 1) == playerToCheck.lock()->getMark())
             )
           {
             count++;
