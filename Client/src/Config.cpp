@@ -1,5 +1,5 @@
 namespace app { namespace config {
 
-  extern const int gameBoardOneObjSize = 1;
+  extern const int gameBoardOneObjSize = 3;
 
 } }
