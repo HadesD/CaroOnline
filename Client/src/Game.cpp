@@ -140,19 +140,20 @@ namespace app {
 
   void Game::checkFinish()
   {
-    int x0, y0, xMaxSize, yMaxSize;
+    int xP, yP, x0, y0, xMaxSize, yMaxSize;
 
     std::weak_ptr<Player> playerToCheck = m_listPlayer.at(m_currentPlayer);
 
-    x0 = std::max(playerToCheck.lock()->getCursor().x -
-                  common::config::maxCoupleCount, 0);
-    y0 = std::max(playerToCheck.lock()->getCursor().y -
-                  common::config::maxCoupleCount, 0);
+    xP = playerToCheck.lock()->getCursor().x;
+    yP = playerToCheck.lock()->getCursor().y;
 
-    xMaxSize = std::min(playerToCheck.lock()->getCursor().x +
-                    common::config::maxCoupleCount + 1, static_cast<int>(m_gameBoard.size()));
-    yMaxSize = std::min(playerToCheck.lock()->getCursor().y +
-                    common::config::maxCoupleCount + 1, static_cast<int>(m_gameBoard.at(xMaxSize-1).size()));
+    x0 = std::max(xP - common::config::maxCoupleCount, 0);
+    y0 = std::max(yP - common::config::maxCoupleCount, 0);
+
+    xMaxSize = std::min(xP + common::config::maxCoupleCount + 1,
+                        static_cast<int>(m_gameBoard.size()));
+    yMaxSize = std::min(yP + common::config::maxCoupleCount + 1,
+                        static_cast<int>(m_gameBoard.at(xMaxSize-1).size()));
 
     // Game board likes:
     // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
@@ -196,56 +197,49 @@ namespace app {
     // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
     int count;
 
-
     // Check Hoz line
-    for (int x = x0; x < xMaxSize; x++)
+    count = 0;
+    for (int y = y0; y < yMaxSize - 1; y++)
     {
-      count = 0;
-      for (int y = y0; y < yMaxSize - 1; y++)
+      if (
+        (m_gameBoard.at(xP).at(y) == playerToCheck.lock()->getMark()) &&
+        (m_gameBoard.at(xP).at(y + 1) == playerToCheck.lock()->getMark())
+        )
       {
-        if (
-          (m_gameBoard.at(x).at(y) == playerToCheck.lock()->getMark()) &&
-          (m_gameBoard.at(x).at(y + 1) == playerToCheck.lock()->getMark())
-          )
-        {
-          count++;
-        }
-        else
-        {
-          count = 0;
-        }
+        count++;
+      }
+      else
+      {
+        count = 0;
+      }
 
-        if (count >= common::config::maxCoupleCount)
-        {
-          this->isFinish = true;
-          return;
-        }
+      if (count >= common::config::maxCoupleCount)
+      {
+        this->isFinish = true;
+        return;
       }
     }
 
     // Check vert
-    for (int y = y0; y < yMaxSize; y++)
+    count = 0;
+    for (int x = x0; x < xMaxSize - 1; x++)
     {
-      count = 0;
-      for (int x = x0; x < xMaxSize - 1; x++)
+      if (
+        (m_gameBoard.at(x).at(yP) == playerToCheck.lock()->getMark()) &&
+        (m_gameBoard.at(x + 1).at(yP) == playerToCheck.lock()->getMark())
+        )
       {
-        if (
-          (m_gameBoard.at(x).at(y) == playerToCheck.lock()->getMark()) &&
-          (m_gameBoard.at(x + 1).at(y) == playerToCheck.lock()->getMark())
-          )
-        {
-          count++;
-        }
-        else
-        {
-          count = 0;
-        }
+        count++;
+      }
+      else
+      {
+        count = 0;
+      }
 
-        if (count >= common::config::maxCoupleCount)
-        {
-          this->isFinish = true;
-          return;
-        }
+      if (count >= common::config::maxCoupleCount)
+      {
+        this->isFinish = true;
+        return;
       }
     }
 
@@ -278,6 +272,37 @@ namespace app {
         }
       }
     }
+
+    // Check diagonal R->L
+    for (int x = x0; x < xMaxSize - common::config::maxCoupleCount; x++)
+    {
+      for (int y = y0; y < yMaxSize - common::config::maxCoupleCount; y++)
+      {
+        count = 0;
+        for (int xStart = x, yStart = y;
+             xStart < x + common::config::maxCoupleCount; xStart++, yStart++)
+        {
+          if (
+            (m_gameBoard.at(xStart).at(yStart) == playerToCheck.lock()->getMark()) &&
+            (m_gameBoard.at(xStart + 1).at(yStart + 1) == playerToCheck.lock()->getMark())
+            )
+          {
+            count++;
+          }
+          else
+          {
+            break;
+          }
+
+          if (count >= common::config::maxCoupleCount)
+          {
+            this->isFinish = true;
+            return;
+          }
+        }
+      }
+    }
+
   }
 
   // #undef app::config::gameBoardOneObjSize
