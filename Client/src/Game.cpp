@@ -92,21 +92,20 @@ namespace app {
       std::cout << "Players: " << m_listPlayer.size() << std::endl;
       std::cout << "Turn of: " << m_currentPlayer << std::endl;
 
-      int x0, y0, xMaxSize, yMaxSize;
+      int xP, yP, x0, y0, xMaxSize, yMaxSize;
+
       std::weak_ptr<Player> playerToCheck = m_listPlayer.at(m_currentPlayer);
 
-      x0 = std::max(playerToCheck.lock()->getCursor().x -
-                    common::config::maxCoupleCount, 0);
-      y0 = std::max(playerToCheck.lock()->getCursor().y -
-                    common::config::maxCoupleCount, 0);
+      xP = playerToCheck.lock()->getCursor().x;
+      yP = playerToCheck.lock()->getCursor().y;
 
-      xMaxSize = std::min(playerToCheck.lock()->getCursor().x +
-                      common::config::maxCoupleCount + 1, static_cast<int>(m_gameBoard.size()));
-      yMaxSize = std::min(playerToCheck.lock()->getCursor().y +
-                      common::config::maxCoupleCount + 1, static_cast<int>(m_gameBoard.at(xMaxSize-1).size()));
+      x0 = std::max(xP - common::config::maxCoupleCount, 0);
+      y0 = std::max(yP - common::config::maxCoupleCount, 0);
 
-      std::cout << "x, y: " << playerToCheck.lock()->getCursor().x << ", " <<
-        playerToCheck.lock()->getCursor().y << std::endl;
+      xMaxSize = std::min(xP + common::config::maxCoupleCount + 1,
+                          static_cast<int>(m_gameBoard.size()));
+      yMaxSize = std::min(yP + common::config::maxCoupleCount + 1,
+                          static_cast<int>(m_gameBoard.at(xMaxSize-1).size()));
 
       std::cout << "x0: " << x0 << " ,y0: " << y0 << ". xMaxSize:" << xMaxSize << " , yMaxSize: " << yMaxSize << std::endl;
 
@@ -244,65 +243,58 @@ namespace app {
     }
 
     // Check diagonal L->R
-    for (int x = x0; x < xMaxSize - common::config::maxCoupleCount; x++)
+    count = 0;
+    for (int x = x0, y = y0; x < xMaxSize - 1; x++, y++)
     {
-      for (int y = y0; y < yMaxSize - common::config::maxCoupleCount; y++)
+      if (y >= yMaxSize - 1)
+      {
+        break;
+      }
+      if (
+        (m_gameBoard.at(x).at(y) == playerToCheck.lock()->getMark()) &&
+        (m_gameBoard.at(x + 1).at(y + 1) == playerToCheck.lock()->getMark())
+        )
+      {
+        count++;
+      }
+      else
       {
         count = 0;
-        for (int xStart = x, yStart = y;
-             xStart < x + common::config::maxCoupleCount; xStart++, yStart++)
-        {
-          if (
-            (m_gameBoard.at(xStart).at(yStart) == playerToCheck.lock()->getMark()) &&
-            (m_gameBoard.at(xStart + 1).at(yStart + 1) == playerToCheck.lock()->getMark())
-            )
-          {
-            count++;
-          }
-          else
-          {
-            break;
-          }
+      }
 
-          if (count >= common::config::maxCoupleCount)
-          {
-            this->isFinish = true;
-            return;
-          }
-        }
+      if (count >= common::config::maxCoupleCount)
+      {
+        this->isFinish = true;
+        return;
       }
     }
 
     // Check diagonal R->L
-    for (int x = x0; x < xMaxSize - common::config::maxCoupleCount; x++)
+    count = 0;
+    for (int x = x0, y = yMaxSize - 1; x < xMaxSize - 1; x++, y--)
     {
-      for (int y = y0; y < yMaxSize - common::config::maxCoupleCount; y++)
+      if (y <= y0)
+      {
+        break;
+      }
+      if (
+        (m_gameBoard.at(x).at(y) == playerToCheck.lock()->getMark()) &&
+        (m_gameBoard.at(x + 1).at(y - 1) == playerToCheck.lock()->getMark())
+        )
+      {
+        count++;
+      }
+      else
       {
         count = 0;
-        for (int xStart = x, yStart = y;
-             xStart < x + common::config::maxCoupleCount; xStart++, yStart++)
-        {
-          if (
-            (m_gameBoard.at(xStart).at(yStart) == playerToCheck.lock()->getMark()) &&
-            (m_gameBoard.at(xStart + 1).at(yStart + 1) == playerToCheck.lock()->getMark())
-            )
-          {
-            count++;
-          }
-          else
-          {
-            break;
-          }
+      }
 
-          if (count >= common::config::maxCoupleCount)
-          {
-            this->isFinish = true;
-            return;
-          }
-        }
+      if (count >= common::config::maxCoupleCount)
+      {
+        this->isFinish = true;
+        return;
       }
     }
-
   }
 
   // #undef app::config::gameBoardOneObjSize
