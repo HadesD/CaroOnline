@@ -15,7 +15,8 @@ build:
 		src/Player.cpp \
 		src/WindowManager.cpp \
 		../Common/Config.cpp \
-		src/Config.cpp
+		src/Config.cpp \
+		src/Scene.cpp
 
 run:
 	cd bin && ./caro
