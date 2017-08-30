@@ -2,6 +2,7 @@
 #define APP_GAME_HPP
 #include <memory>
 #include <vector>
+#include "Point2D.hpp"
 
 namespace app {
 
@@ -9,14 +10,11 @@ namespace app {
   class Game : public std::enable_shared_from_this<Game>
   {
     public:
-      struct Cursor
+      struct Cursor : public Point2D
       {
         Cursor();
         Cursor(int x, int y);
         ~Cursor();
-        bool operator==(const Cursor &c);
-        int x;
-        int y;
       };
       typedef std::vector< std::vector< int > > GameBoard;
       typedef std::vector< std::shared_ptr< Player > > ListPlayer;

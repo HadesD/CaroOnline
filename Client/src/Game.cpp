@@ -18,21 +18,16 @@ namespace app {
 
   //------ Cursor
 
-  Game::Cursor::Cursor()
+  Game::Cursor::Cursor() : Point2D()
+  {
+  }
+
+  Game::Cursor::Cursor(int x, int y) : Point2D(x, y)
   {
   }
 
   Game::Cursor::~Cursor()
   {
-  }
-
-  Game::Cursor::Cursor(int x, int y) : x(x), y(y)
-  {
-  }
-
-  bool Game::Cursor::operator==(const Game::Cursor &c)
-  {
-    return (x == c.x) && (y == c.y);
   }
 
   //------ End Cursor

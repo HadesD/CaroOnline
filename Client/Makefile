@@ -16,7 +16,8 @@ build:
 		src/WindowManager.cpp \
 		../Common/Config.cpp \
 		src/Config.cpp \
-		src/Scene.cpp
+		src/Scene.cpp \
+		src/Point2D.cpp
 
 run:
 	cd bin && ./caro
