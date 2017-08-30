@@ -2,20 +2,15 @@
 #define APP_GAME_HPP
 #include <memory>
 #include <vector>
-#include "Point2D.hpp"
+#include "app/Point2D.hpp"
 
 namespace app {
 
+  struct Point2D;
   class Player;
   class Game : public std::enable_shared_from_this<Game>
   {
     public:
-      struct Cursor : public Point2D
-      {
-        Cursor();
-        Cursor(int x, int y);
-        ~Cursor();
-      };
       typedef std::vector< std::vector< int > > GameBoard;
       typedef std::vector< std::shared_ptr< Player > > ListPlayer;
 
@@ -36,8 +31,8 @@ namespace app {
       void removePlayer(const std::shared_ptr<Player> &player);
 
     public:
-      Cursor getCursor() const;
-      void setCursor(const Cursor &c);
+      Point2D getCursor() const;
+      void setCursor(const Point2D &c);
       int getKeyPushed() const;
       void setKeyPushed(const int &key);
       GameBoard getGameBoard() const;
@@ -48,7 +43,7 @@ namespace app {
 
     protected:
       GameBoard m_gameBoard;
-      Cursor m_cursor;
+      Point2D m_cursor;
       int m_keyPushed;
       ListPlayer m_listPlayer;
       bool isFinish;

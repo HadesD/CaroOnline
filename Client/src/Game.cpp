@@ -16,22 +16,6 @@
 
 namespace app {
 
-  //------ Cursor
-
-  Game::Cursor::Cursor() : Point2D()
-  {
-  }
-
-  Game::Cursor::Cursor(int x, int y) : Point2D(x, y)
-  {
-  }
-
-  Game::Cursor::~Cursor()
-  {
-  }
-
-  //------ End Cursor
-
   Game::Game()
   {
     m_gameBoard.assign(
@@ -360,7 +344,7 @@ namespace app {
             break;
 
         }
-        if (m_cursor == Game::Cursor(x, y))
+        if (m_cursor == Point2D(x, y))
         {
           color = "\e[48;5;255m";
         }
@@ -390,12 +374,12 @@ namespace app {
     return m_keyPushed;
   }
 
-  Game::Cursor Game::getCursor() const
+  Point2D Game::getCursor() const
   {
     return m_cursor;
   }
 
-  void Game::setCursor(const Game::Cursor &c)
+  void Game::setCursor(const Point2D &c)
   {
     m_cursor = c;
   }
@@ -422,7 +406,7 @@ namespace app {
     m_listPlayer.emplace_back(player);
     player->setGame(this->shared_from_this());
     player->setCursor(
-      Cursor(m_gameBoard.size()/2,
+      Point2D(m_gameBoard.size()/2,
              m_gameBoard.at(m_gameBoard.size()/2).size()/2)
       );
   }

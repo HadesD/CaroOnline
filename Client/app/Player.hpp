@@ -23,8 +23,8 @@ namespace app {
       void setMark(const int &mark);
       void setIsTurn(const bool &isTurn);
       bool getIsTurn() const;
-      Game::Cursor getCursor() const;
-      void setCursor(const Game::Cursor &c);
+      Point2D getCursor() const;
+      void setCursor(const Point2D &c);
 
     public:
       void onKeyboardEvent();
@@ -36,7 +36,7 @@ namespace app {
       int mark;
 
     protected:
-      Game::Cursor m_cursor;
+      Point2D m_cursor;
       std::shared_ptr<Game> pGame;
 
   };

@@ -107,12 +107,12 @@ namespace app {
     this->mark = mark;
   }
 
-  Game::Cursor Player::getCursor() const
+  Point2D Player::getCursor() const
   {
     return this->m_cursor;
   }
 
-  void Player::setCursor(const Game::Cursor &c)
+  void Player::setCursor(const Point2D &c)
   {
     this->m_cursor = c;
   }
