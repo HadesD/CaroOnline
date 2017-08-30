@@ -9,6 +9,11 @@ namespace app {
       Scene();
       ~Scene();
 
+    public:
+      virtual void update() = 0;
+      virtual void redraw() = 0;
+      // virtual void load() = 0;
+
   };
 
 }

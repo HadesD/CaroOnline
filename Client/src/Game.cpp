@@ -446,4 +446,5 @@ namespace app {
   {
     return m_currentPlayer;
   }
+
 }
