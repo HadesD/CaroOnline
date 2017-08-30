@@ -108,7 +108,7 @@ namespace app {
                           static_cast<int>(m_gameBoard.at(xMaxSize-1).size()));
 
       std::cout << "x0: " << x0 << " ,y0: " << y0 << ". xMaxSize:" << xMaxSize << " , yMaxSize: " << yMaxSize << std::endl;
-
+      std::cout << "xPlayer: " << xP << ", yPlayer: " << yP << std::endl;
 
       this->update();
 

@@ -36,7 +36,7 @@ namespace app {
       int mark;
 
     protected:
-      Game::Cursor cursor;
+      Game::Cursor m_cursor;
       std::shared_ptr<Game> pGame;
 
   };

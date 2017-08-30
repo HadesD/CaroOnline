@@ -32,10 +32,10 @@ namespace app {
       case 'e':
       case 'm':
         {
-          if (gb.at(cursor.x).at(cursor.y) == 0)
+          if (gb.at(m_cursor.x).at(m_cursor.y) == 0)
           {
             this->isTurn = false;
-            gb[cursor.x][cursor.y] = this->mark;
+            gb[m_cursor.x][m_cursor.y] = this->mark;
           }
         }
         break;
@@ -43,9 +43,9 @@ namespace app {
       case 'k':
       case 'w':
         {
-          if (cursor.x > 0)
+          if (m_cursor.x > 0)
           {
-            cursor.x--;
+            m_cursor.x--;
           }
         }
         break;
@@ -53,9 +53,9 @@ namespace app {
       case 'j':
       case 's':
         {
-          if (cursor.x < (static_cast<int>(gb.size()) - 1))
+          if (m_cursor.x < (static_cast<int>(gb.size()) - 1))
           {
-            cursor.x++;
+            m_cursor.x++;
           }
         }
         break;
@@ -63,9 +63,9 @@ namespace app {
       case 'h':
       case 'a':
         {
-          if (cursor.y > 0)
+          if (m_cursor.y > 0)
           {
-            cursor.y--;
+            m_cursor.y--;
           }
         }
         break;
@@ -73,9 +73,9 @@ namespace app {
       case 'd':
       case 'l':
         {
-          if (cursor.y < (static_cast<int>(gb.at(cursor.x).size()) - 1))
+          if (m_cursor.y < (static_cast<int>(gb.at(m_cursor.x).size()) - 1))
           {
-            cursor.y++;
+            m_cursor.y++;
           }
         }
         break;
@@ -109,12 +109,12 @@ namespace app {
 
   Game::Cursor Player::getCursor() const
   {
-    return this->cursor;
+    return this->m_cursor;
   }
 
   void Player::setCursor(const Game::Cursor &c)
   {
-    this->cursor = c;
+    this->m_cursor = c;
   }
 
   int Player::getMark() const
