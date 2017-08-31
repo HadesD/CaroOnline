@@ -9,10 +9,8 @@
 
 namespace app { namespace scenes {
 
-  PlayScene::PlayScene(std::shared_ptr<app::Game> game)
+  PlayScene::PlayScene(std::shared_ptr<app::Game> game) : app::Scene(game)
   {
-    m_pGame = game;
-
     m_gameBoard.assign(
       common::config::gameBoardRows,
       std::vector< int >(common::config::gameBoardCols, 0)
@@ -56,8 +54,7 @@ namespace app { namespace scenes {
 
     std::weak_ptr<Player> p = m_listPlayer.at(m_currentPlayer);
 
-    p.lock()->onKeyboardEvent();
-
+    p.lock()->waitKeyboardEvent();
   }
 
   void PlayScene::drawGameBoard()
@@ -336,7 +333,7 @@ namespace app { namespace scenes {
       }
     }
     m_listPlayer.emplace_back(player);
-    player->setGame(this->shared_from_this());
+    player->setScene(this->shared_from_this());
     player->setCursor(
       Point2D(m_gameBoard.size()/2,
               m_gameBoard.at(m_gameBoard.size()/2).size()/2)

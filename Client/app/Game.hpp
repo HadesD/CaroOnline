@@ -19,13 +19,9 @@ namespace app {
       void render();
       void update();
       void waitKeyboardEvent();
-
-    public:
-      int getKeyPushed() const;
-      void setKeyPushed(const int &key);
+      void quit();
 
     protected:
-      int m_keyPushed;
       bool m_isRunning;
       std::shared_ptr<Scene> m_pScene;
 

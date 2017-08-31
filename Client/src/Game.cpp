@@ -10,7 +10,6 @@
 
 #include "app/Game.hpp"
 #include "app/Player.hpp"
-#include "app/Kbhit.h"
 #include "app/WindowManager.h"
 #include "app/Config.hpp"
 
@@ -49,39 +48,13 @@ namespace app {
       this->render();
 
       this->update();
-
-      if (m_keyPushed == 'q')
-      {
-        break;
-      }
-
-      m_keyPushed = 0;
     }
   }
 
   void Game::update()
   {
-    this->waitKeyboardEvent();
 
     m_pScene->update();
-  }
-
-  void Game::waitKeyboardEvent()
-  {
-    m_keyPushed = (new ::Kbhit())->getch();
-  }
-
-  // #undef app::config::gameBoardOneObjSize
-  // #define app::config::gameBoardOneObjSize 5
-
-  void Game::setKeyPushed(const int &key)
-  {
-    m_keyPushed = key;
-  }
-
-  int Game::getKeyPushed() const
-  {
-    return m_keyPushed;
   }
 
 }

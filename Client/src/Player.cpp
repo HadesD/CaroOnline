@@ -1,5 +1,7 @@
 #include "app/Player.hpp"
 
+#include "app/Kbhit.h"
+
 namespace app {
 
   Player::Player()
@@ -24,8 +26,13 @@ namespace app {
 
     scenes::PlayScene::GameBoard gb = m_pScene->getGameBoard();
 
-    switch (m_pScene->getKeyPushed())
+    switch (m_keyPushed)
     {
+      case 'q':
+        {
+          m_pScene->quit();
+        }
+        break;
       case 10:
       case 32:
       case 'o':
@@ -90,6 +97,7 @@ namespace app {
       m_pScene->setNextPlayer(m_pScene->getCurrentPlayer() + 1);
     }
 
+    m_keyPushed = 0;
   }
 
   void Player::setId(const int &id)
@@ -130,6 +138,23 @@ namespace app {
   bool Player::getIsTurn() const
   {
     return this->isTurn;
+  }
+
+  void Player::waitKeyboardEvent()
+  {
+    m_keyPushed = (new ::Kbhit())->getch();
+
+    this->onKeyboardEvent();
+  }
+
+  void Player::setKeyPushed(const int &key)
+  {
+    m_keyPushed = key;
+  }
+
+  int Player::getKeyPushed() const
+  {
+    return m_keyPushed;
   }
 
 }

@@ -29,6 +29,7 @@ namespace app { namespace scenes {
     public:
       void drawGameBoard();
       void checkFinish();
+      void quit();
 
     public:
       void addPlayer(const std::shared_ptr<Player> &player);
@@ -48,7 +49,6 @@ namespace app { namespace scenes {
       ListPlayer m_listPlayer;
       int m_currentPlayer;
       Point2D m_cursor;
-      std::shared_ptr<Game> m_pGame;
       bool isFinish;
 
   };
