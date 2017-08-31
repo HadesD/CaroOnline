@@ -1,13 +1,14 @@
 #ifndef APP_SCENE_HPP
 #define APP_SCENE_HPP
+#include <memory>
 
 namespace app {
 
-  class Scene
+  class Scene : public std::enable_shared_from_this<Scene>
   {
     public:
-      Scene();
-      ~Scene();
+      // Scene();
+      // ~Scene();
 
     public:
       virtual void update() = 0;

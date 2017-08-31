@@ -3,7 +3,7 @@
 #include <iostream>
 #include <memory>
 
-#include "app/Game.hpp"
+#include "app/scenes/PlayScene.hpp"
 
 namespace app {
 
@@ -18,7 +18,7 @@ namespace app {
       int getId() const;
       void setName(const std::string &name);
       std::string getName() const;
-      void setGame(std::shared_ptr<Game> game);
+      void setScene(std::shared_ptr<scenes::PlayScene> scene);
       int getMark() const;
       void setMark(const int &mark);
       void setIsTurn(const bool &isTurn);
@@ -37,7 +37,7 @@ namespace app {
 
     protected:
       Point2D m_cursor;
-      std::shared_ptr<Game> pGame;
+      std::shared_ptr<scenes::PlayScene> m_pScene;
 
   };
 

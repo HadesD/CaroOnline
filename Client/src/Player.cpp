@@ -10,9 +10,9 @@ namespace app {
   {
   }
 
-  void Player::setGame(std::shared_ptr<Game> game)
+  void Player::setScene(std::shared_ptr<scenes::PlayScene> scene)
   {
-    pGame = game;
+    m_pScene = scene;
   }
 
   void Player::onKeyboardEvent()
@@ -22,9 +22,9 @@ namespace app {
       return;
     }
 
-    Game::GameBoard gb = pGame->getGameBoard();
+    scenes::PlayScene::GameBoard gb = m_pScene->getGameBoard();
 
-    switch (pGame->getKeyPushed())
+    switch (m_pScene->getKeyPushed())
     {
       case 10:
       case 32:
@@ -81,13 +81,13 @@ namespace app {
         break;
     }
 
-    pGame->setGameBoard(gb);
+    m_pScene->setGameBoard(gb);
 
     if (this->isTurn == false)
     {
-      pGame->checkFinish();
+      m_pScene->checkFinish();
 
-      pGame->setNextPlayer(pGame->getCurrentPlayer() + 1);
+      m_pScene->setNextPlayer(m_pScene->getCurrentPlayer() + 1);
     }
 
   }
