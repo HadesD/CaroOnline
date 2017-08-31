@@ -57,4 +57,8 @@ namespace app {
     m_pScene->update();
   }
 
+  void Game::quit()
+  {
+    m_isRunning = false;
+  }
 }

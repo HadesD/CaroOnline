@@ -12,7 +12,7 @@ namespace app {
 
 namespace app { namespace scenes {
 
-  class PlayScene : public app::Scene
+  class PlayScene : public app::Scene, std::enable_shared_from_this<PlayScene>
   {
     public:
       typedef std::vector< std::vector< int > > GameBoard;
