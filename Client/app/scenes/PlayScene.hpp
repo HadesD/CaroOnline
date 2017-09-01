@@ -23,7 +23,7 @@ namespace app { namespace scenes {
       ~PlayScene();
 
     public:
-      void update();
+      void update(float dt);
       void draw();
 
     public:

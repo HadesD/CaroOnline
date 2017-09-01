@@ -35,7 +35,31 @@ namespace app {
 
   void Game::render()
   {
-    m_pScene->draw();
+    if (m_pScene == nullptr)
+    {
+      this->quit();
+    }
+    else
+    {
+      m_pScene->draw();
+    }
+  }
+
+  void Game::update(float dt)
+  {
+    if (m_pScene == nullptr)
+    {
+      this->quit();
+    }
+    else
+    {
+      m_pScene->update(dt);
+    }
+  }
+
+  void Game::quit()
+  {
+    m_isRunning = false;
   }
 
   void Game::run()
@@ -51,25 +75,17 @@ namespace app {
     {
       system("clear");
 
-      this->render();
-
       std::chrono::duration<float> dt = std::chrono::system_clock::now() -
         now_time;
+
       this->update(static_cast<float>(dt.count()));
 
+      this->render();
+
       now_time = std::chrono::system_clock::now();
-   }
 
-
+      std::cout << dt.count() << std::endl;
+    }
   }
 
-  void Game::update(float dt)
-  {
-    m_pScene->update();
-  }
-
-  void Game::quit()
-  {
-    m_isRunning = false;
-  }
 }
