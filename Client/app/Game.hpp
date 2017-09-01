@@ -17,7 +17,14 @@ namespace app {
       void init();
       void run();
       void render();
-      void update();
+
+      /**
+       * Update game
+       * @return void
+       * @param float dt : Delta time
+       *
+       */
+      void update(float dt);
       void waitKeyboardEvent();
       void quit();
 

@@ -3,6 +3,8 @@
 #include <memory>
 #include <cmath>
 #include <algorithm>
+#include <chrono> // update function : float dt
+#include <ctime>
 // #include <chrono>
 // #include <thread>
 
@@ -20,6 +22,8 @@ namespace app {
   Game::Game()
   {
     m_isRunning = true;
+
+    m_pScene = std::make_shared<scenes::PlayScene>(this->shared_from_this());
   }
 
   Game::~Game()
@@ -39,7 +43,10 @@ namespace app {
   {
     this->init();
 
-    WindowManager wm;
+    // WindowManager wm;
+
+    std::chrono::time_point<std::chrono::system_clock> now_time =
+      std::chrono::system_clock::now();
 
     while (this->m_isRunning == false)
     {
@@ -47,13 +54,18 @@ namespace app {
 
       this->render();
 
-      this->update();
-    }
+      std::chrono::duration<float> dt = std::chrono::system_clock::now() -
+        now_time;
+      this->update(static_cast<float>(dt.count()));
+
+      now_time = std::chrono::system_clock::now();
+   }
+
+
   }
 
-  void Game::update()
+  void Game::update(float dt)
   {
-
     m_pScene->update();
   }
 
