@@ -22,8 +22,6 @@ namespace app {
   Game::Game()
   {
     m_isRunning = true;
-
-    m_pScene = std::make_shared<scenes::PlayScene>(this->shared_from_this());
   }
 
   Game::~Game()
@@ -32,6 +30,7 @@ namespace app {
 
   void Game::init()
   {
+    m_pScene = std::make_shared<scenes::PlayScene>(this->shared_from_this());
   }
 
   void Game::render()
@@ -48,7 +47,7 @@ namespace app {
     std::chrono::time_point<std::chrono::system_clock> now_time =
       std::chrono::system_clock::now();
 
-    while (this->m_isRunning == false)
+    while (this->m_isRunning == true)
     {
       system("clear");
 
