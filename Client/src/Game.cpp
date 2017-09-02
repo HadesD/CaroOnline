@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <chrono> // update function : float dt
 #include <ctime>
+#include <thread>
 // #include <chrono>
 // #include <thread>
 
@@ -85,6 +86,8 @@ namespace app {
       now_time = std::chrono::system_clock::now();
 
       std::cout << dt.count() << std::endl;
+
+      std::this_thread::sleep_for(std::chrono::milliseconds(80));
     }
   }
 

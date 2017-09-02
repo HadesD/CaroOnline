@@ -24,28 +24,6 @@ namespace app { namespace scenes {
   void PlayScene::draw()
   {
     this->drawGameBoard();
-
-    std::cout << "Players: " << m_listPlayer.size() << std::endl;
-    std::cout << "Turn of: " << m_currentPlayer << std::endl;
-
-    int xP, yP, x0, y0, xMaxSize, yMaxSize;
-
-    std::weak_ptr<Player> playerToCheck = m_listPlayer.at(m_currentPlayer);
-
-    xP = playerToCheck.lock()->getCursor().x;
-    yP = playerToCheck.lock()->getCursor().y;
-
-    x0 = std::max(xP - common::config::maxCoupleCount, 0);
-    y0 = std::max(yP - common::config::maxCoupleCount, 0);
-
-    xMaxSize = std::min(xP + common::config::maxCoupleCount + 1,
-                        static_cast<int>(m_gameBoard.size()));
-    yMaxSize = std::min(yP + common::config::maxCoupleCount + 1,
-                        static_cast<int>(m_gameBoard.at(xMaxSize-1).size()));
-
-    std::cout << "x0: " << x0 << " ,y0: " << y0 << ". xMaxSize:" << xMaxSize << " , yMaxSize: " << yMaxSize << std::endl;
-    std::cout << "xPlayer: " << xP << ", yPlayer: " << yP << std::endl;
-
   }
 
   void PlayScene::quit()
@@ -55,11 +33,14 @@ namespace app { namespace scenes {
 
   void PlayScene::update(float /* dt */)
   {
-    this->m_cursor = m_listPlayer.at(m_currentPlayer)->getCursor();
+    if (m_listPlayer.size() > 0)
+    {
+      this->m_cursor = m_listPlayer.at(m_currentPlayer)->getCursor();
 
-    std::weak_ptr<Player> p = m_listPlayer.at(m_currentPlayer);
+      std::weak_ptr<Player> p = m_listPlayer.at(m_currentPlayer);
 
-    p.lock()->waitKeyboardEvent();
+      p.lock()->waitKeyboardEvent();
+    }
   }
 
   void PlayScene::drawGameBoard()
@@ -338,7 +319,7 @@ namespace app { namespace scenes {
       }
     }
     m_listPlayer.emplace_back(player);
-    player->setScene(this->shared_from_this());
+    // player->setScene(this->shared_from_this());
     player->setCursor(
       Point2D(m_gameBoard.size()/2,
               m_gameBoard.at(m_gameBoard.size()/2).size()/2)
