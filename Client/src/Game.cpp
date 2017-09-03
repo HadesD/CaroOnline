@@ -71,6 +71,8 @@ namespace app {
 
     // WindowManager wm;
 
+    int fixed_fps = 10;
+
     std::chrono::time_point<std::chrono::system_clock> now_time =
       std::chrono::system_clock::now();
 
@@ -87,9 +89,14 @@ namespace app {
 
       now_time = std::chrono::system_clock::now();
 
-      std::cout << dt.count() << std::endl;
+      long wait = 1000 / fixed_fps - dt.count() * 1000;
 
-      std::this_thread::sleep_for(std::chrono::milliseconds(80));
+      std::cout << "FPS: " << (1000 / (wait == 0 ? (1000/fixed_fps) : wait)) << std::endl;
+
+      if (wait > 0)
+      {
+        std::this_thread::sleep_for(static_cast<std::chrono::milliseconds>(wait));
+      }
     }
   }
 

@@ -1,7 +1,5 @@
 #include "app/Player.hpp"
 
-#include "app/Kbhit.h"
-
 namespace app {
 
   Player::Player()
@@ -23,81 +21,86 @@ namespace app {
     {
       return;
     }
+    std::cout << "fFFf" << std::endl;
 
-    scenes::PlayScene::GameBoard gb = m_pScene->getGameBoard();
-
-    switch (m_keyPushed)
+    if (int keyPushed = m_kbhit.getch())
     {
-      case 'q':
-        {
-          m_pScene->quit();
-        }
-        break;
-      case 10:
-      case 32:
-      case 'o':
-      case 'e':
-      case 'm':
-        {
-          if (gb.at(m_cursor.x).at(m_cursor.y) == 0)
+      // int keyPushed = m_kbhit.getch();
+
+      app::scenes::PlayScene::GameBoard gb = m_pScene->getGameBoard();
+
+      switch (keyPushed)
+      {
+        case 'q':
           {
-            this->isTurn = false;
-            gb[m_cursor.x][m_cursor.y] = this->mark;
+            m_pScene->quit();
           }
-        }
-        break;
-      case 65:
-      case 'k':
-      case 'w':
-        {
-          if (m_cursor.x > 0)
+          break;
+        case 10:
+        case 32:
+        case 'o':
+        case 'e':
+        case 'm':
           {
-            m_cursor.x--;
+            if (gb.at(m_cursor.x).at(m_cursor.y) == 0)
+            {
+              this->isTurn = false;
+              gb[m_cursor.x][m_cursor.y] = this->mark;
+            }
           }
-        }
-        break;
-      case 66:
-      case 'j':
-      case 's':
-        {
-          if (m_cursor.x < (static_cast<int>(gb.size()) - 1))
+          break;
+        case 65:
+        case 'k':
+        case 'w':
           {
-            m_cursor.x++;
+            if (m_cursor.x > 0)
+            {
+              m_cursor.x--;
+            }
           }
-        }
-        break;
-      case 68:
-      case 'h':
-      case 'a':
-        {
-          if (m_cursor.y > 0)
+          break;
+        case 66:
+        case 'j':
+        case 's':
           {
-            m_cursor.y--;
+            if (m_cursor.x < (static_cast<int>(gb.size()) - 1))
+            {
+              m_cursor.x++;
+            }
           }
-        }
-        break;
-      case 67:
-      case 'd':
-      case 'l':
-        {
-          if (m_cursor.y < (static_cast<int>(gb.at(m_cursor.x).size()) - 1))
+          break;
+        case 68:
+        case 'h':
+        case 'a':
           {
-            m_cursor.y++;
+            if (m_cursor.y > 0)
+            {
+              m_cursor.y--;
+            }
           }
-        }
-        break;
+          break;
+        case 67:
+        case 'd':
+        case 'l':
+          {
+            if (m_cursor.y < (static_cast<int>(gb.at(m_cursor.x).size()) - 1))
+            {
+              m_cursor.y++;
+            }
+          }
+          break;
+      }
+
+      m_pScene->setGameBoard(gb);
+
+      if (this->isTurn == false)
+      {
+        m_pScene->checkFinish();
+
+        m_pScene->setNextPlayer(m_pScene->getCurrentPlayer() + 1);
+      }
+      std::cout << keyPushed << std::endl;
     }
-
-    m_pScene->setGameBoard(gb);
-
-    if (this->isTurn == false)
-    {
-      m_pScene->checkFinish();
-
-      m_pScene->setNextPlayer(m_pScene->getCurrentPlayer() + 1);
-    }
-
-    m_keyPushed = 0;
   }
 
   void Player::setId(const int &id)
@@ -142,19 +145,20 @@ namespace app {
 
   void Player::waitKeyboardEvent()
   {
-    m_keyPushed = (new ::Kbhit())->getch();
+    // m_keyPushed = (new ::Kbhit())->getch();
 
     this->onKeyboardEvent();
   }
 
   void Player::setKeyPushed(const int &key)
   {
-    m_keyPushed = key;
+    // m_keyPushed = key;
   }
 
   int Player::getKeyPushed() const
   {
-    return m_keyPushed;
+    return 0;
+    // return m_keyPushed;
   }
 
 }

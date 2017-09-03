@@ -5,6 +5,8 @@
 
 #include "app/scenes/PlayScene.hpp"
 
+#include "app/Kbhit.h"
+
 namespace app {
 
   class Player : public std::enable_shared_from_this<Player>
@@ -41,7 +43,7 @@ namespace app {
     protected:
       Point2D m_cursor;
       std::shared_ptr<scenes::PlayScene> m_pScene;
-      int m_keyPushed;
+      ::Kbhit m_kbhit;
 
   };
 
