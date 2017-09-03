@@ -21,6 +21,13 @@ namespace app { namespace scenes {
   {
   }
 
+  void PlayScene::init()
+  {
+    std::shared_ptr<app::Player> me(new app::Player());
+    me->setIsTurn(true);
+    this->addPlayer(me);
+  }
+
   void PlayScene::draw()
   {
     this->drawGameBoard();

@@ -32,6 +32,8 @@ namespace app {
   void Game::init()
   {
     m_pScene = std::make_shared<scenes::PlayScene>(this->shared_from_this());
+
+    m_pScene->init();
   }
 
   void Game::render()
