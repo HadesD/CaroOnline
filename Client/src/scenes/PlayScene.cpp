@@ -52,7 +52,7 @@ namespace app { namespace scenes {
 
   void PlayScene::drawGameBoard()
   {
-    assert((app::config::gameBoardOneObjSize % 2) != 0);
+    assert((m_gameBoardOneObjSize % 2) != 0);
     // Barrier
     auto drawBarrier = [](const int &len){
       for (std::size_t i = 0; i < common::config::gameBoardCols; i++)
@@ -65,16 +65,16 @@ namespace app { namespace scenes {
     };
 
     // Body
-    auto drawLine = [](const std::string &s){
+    auto drawLine = [=](const std::string &s){
       std::cout << '|';
-      std::cout << std::string(app::config::gameBoardOneObjSize / 2, ' ');
+      std::cout << std::string(m_gameBoardOneObjSize / 2, ' ');
       std::cout << s;
-      std::cout << std::string(app::config::gameBoardOneObjSize / 2, ' ');
+      std::cout << std::string(m_gameBoardOneObjSize / 2, ' ');
     };
 
     for (size_t x = 0; x < m_gameBoard.size(); x++)
     {
-      drawBarrier(app::config::gameBoardOneObjSize);
+      drawBarrier(m_gameBoardOneObjSize);
       // for (size_t y = 0; y < m_gameBoard.at(x).size(); y++)
       // {
       //   drawBody(" ");
@@ -132,7 +132,7 @@ namespace app { namespace scenes {
       // std::cout << '|';
       // std::cout << std::endl;
     }
-    drawBarrier(app::config::gameBoardOneObjSize);
+    drawBarrier(m_gameBoardOneObjSize);
   }
 
 
@@ -213,7 +213,7 @@ namespace app { namespace scenes {
 
       if (count >= common::config::maxCoupleCount)
       {
-        this->isFinish = true;
+        this->m_isFinish = true;
         return;
       }
     }
@@ -236,7 +236,7 @@ namespace app { namespace scenes {
 
       if (count >= common::config::maxCoupleCount)
       {
-        this->isFinish = true;
+        this->m_isFinish = true;
         return;
       }
     }
@@ -263,7 +263,7 @@ namespace app { namespace scenes {
 
       if (count >= common::config::maxCoupleCount)
       {
-        this->isFinish = true;
+        this->m_isFinish = true;
         return;
       }
     }
@@ -290,7 +290,7 @@ namespace app { namespace scenes {
 
       if (count >= common::config::maxCoupleCount)
       {
-        this->isFinish = true;
+        this->m_isFinish = true;
         return;
       }
     }

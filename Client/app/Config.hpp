@@ -3,8 +3,6 @@
 
 namespace app { namespace config {
 
-  extern const int gameBoardOneObjSize;
-
 } }
 
 #endif

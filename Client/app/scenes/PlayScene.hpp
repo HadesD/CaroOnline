@@ -50,7 +50,8 @@ namespace app { namespace scenes {
       ListPlayer m_listPlayer;
       int m_currentPlayer;
       Point2D m_cursor;
-      bool isFinish;
+      bool m_isFinish;
+      std::size_t m_gameBoardOneObjSize;
 
   };
 
