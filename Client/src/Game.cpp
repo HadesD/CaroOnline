@@ -71,7 +71,7 @@ namespace app {
 
     // WindowManager wm;
 
-    int fixed_fps = 10;
+    int fixed_fps = 15;
 
     std::chrono::time_point<std::chrono::system_clock> now_time =
       std::chrono::system_clock::now();

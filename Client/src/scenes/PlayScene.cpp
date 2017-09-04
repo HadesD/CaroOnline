@@ -16,7 +16,7 @@ namespace app { namespace scenes {
       std::vector< int >(common::config::gameBoardCols, 0)
       );
 
-    m_gameBoardOneObjSize = 1;
+    m_gameBoardOneObjSize = 3;
   }
 
   PlayScene::~PlayScene()

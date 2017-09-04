@@ -1,6 +1,5 @@
 #ifndef APP_SCENES_PLAY_SCENE_HPP
 #define APP_SCENES_PLAY_SCENE_HPP
-#include <vector>
 
 #include "app/Game.hpp"
 #include "app/Scene.hpp"
@@ -12,7 +11,8 @@ namespace app {
 
 namespace app { namespace scenes {
 
-  class PlayScene : public app::Scene, std::enable_shared_from_this<PlayScene>
+  class PlayScene : public app::Scene
+                    , public std::enable_shared_from_this<PlayScene>
   {
     public:
       typedef std::vector< std::vector< int > > GameBoard;
@@ -51,6 +51,8 @@ namespace app { namespace scenes {
       int m_currentPlayer;
       Point2D m_cursor;
       bool m_isFinish;
+
+    private:
       std::size_t m_gameBoardOneObjSize;
 
   };
