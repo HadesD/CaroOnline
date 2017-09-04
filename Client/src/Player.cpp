@@ -1,4 +1,5 @@
 #include "app/Player.hpp"
+#include <ctime>
 
 namespace app {
 
@@ -10,22 +11,22 @@ namespace app {
   {
   }
 
-  void Player::setScene(std::shared_ptr<scenes::PlayScene> scene)
-  {
-    m_pScene = scene;
-  }
-
   void Player::onKeyboardEvent()
   {
     if (this->isTurn == false)
     {
       return;
     }
-    std::cout << "fFFf" << std::endl;
 
-    if (int keyPushed = m_kbhit.getch())
+    if (m_pScene == nullptr)
     {
-      // int keyPushed = m_kbhit.getch();
+      std::cout << "Err " << std::endl;
+      return;
+    }
+
+    if (m_kbhit.kbhit())
+    {
+      int keyPushed = m_kbhit.getch();
 
       app::scenes::PlayScene::GameBoard gb = m_pScene->getGameBoard();
 
@@ -101,6 +102,8 @@ namespace app {
       }
       std::cout << keyPushed << std::endl;
     }
+    std::srand(std::time(0));
+    std::cout << "Random: " << std::rand() << std::endl;
   }
 
   void Player::setId(const int &id)
@@ -159,6 +162,11 @@ namespace app {
   {
     return 0;
     // return m_keyPushed;
+  }
+
+  void Player::setScene(std::shared_ptr<scenes::PlayScene> scene)
+  {
+    m_pScene = scene;
   }
 
 }
