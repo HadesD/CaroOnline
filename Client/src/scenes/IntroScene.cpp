@@ -14,7 +14,7 @@ namespace app { namespace scenes {
 
   void IntroScene::init()
   {
-    // m_selection.push_back({"", &this->goToPlay});
+    // m_selection.push_back({"", [](){}});
     // m_selection.push_back({"", ""});
   }
 
