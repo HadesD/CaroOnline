@@ -21,6 +21,7 @@ namespace app {
       void setName(const std::string &name);
       std::string getName() const;
       void setScene(std::shared_ptr<scenes::PlayScene> scene);
+      void setScene(scenes::PlayScene *scene);
       int getMark() const;
       void setMark(const int &mark);
       void setIsTurn(const bool &isTurn);
@@ -42,7 +43,8 @@ namespace app {
 
     protected:
       Point2D m_cursor;
-      std::shared_ptr<scenes::PlayScene> m_pScene;
+      // std::shared_ptr<scenes::PlayScene> m_pScene;
+      scenes::PlayScene *m_pScene;
       ::Kbhit m_kbhit;
 
   };

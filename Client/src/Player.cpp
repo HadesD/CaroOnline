@@ -9,6 +9,7 @@ namespace app {
 
   Player::~Player()
   {
+    // delete m_pScene;
   }
 
   void Player::onKeyboardEvent()
@@ -165,6 +166,11 @@ namespace app {
   }
 
   void Player::setScene(std::shared_ptr<scenes::PlayScene> scene)
+  {
+    // m_pScene = scene;
+  }
+
+  void Player::setScene(scenes::PlayScene *scene)
   {
     m_pScene = scene;
   }

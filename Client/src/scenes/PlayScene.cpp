@@ -15,6 +15,8 @@ namespace app { namespace scenes {
       common::config::gameBoardRows,
       std::vector< int >(common::config::gameBoardCols, 0)
       );
+
+    m_gameBoardOneObjSize = 1;
   }
 
   PlayScene::~PlayScene()
@@ -326,7 +328,8 @@ namespace app { namespace scenes {
       }
     }
     m_listPlayer.emplace_back(player);
-    player->setScene(this->shared_from_this());
+    // player->setScene(this->shared_from_this());
+    player->setScene(this);
     player->setCursor(
       Point2D(m_gameBoard.size()/2,
               m_gameBoard.at(m_gameBoard.size()/2).size()/2)
