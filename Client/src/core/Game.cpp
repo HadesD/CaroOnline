@@ -11,7 +11,7 @@
 
 #include "../Common/Config.hpp"
 
-#include "app/Game.hpp"
+#include "app/core/Game.hpp"
 #include "app/WindowManager.h"
 #include "app/Config.hpp"
 
@@ -19,7 +19,7 @@
 // #include "app/scenes/PlayScene.hpp"
 #include "app/scenes/IntroScene.hpp"
 
-namespace app {
+namespace app { namespace core {
 
   Game::Game()
   {
@@ -102,4 +102,4 @@ namespace app {
     }
   }
 
-}
+} }

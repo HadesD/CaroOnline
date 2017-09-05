@@ -1,15 +1,16 @@
 #include <iostream>
 #include <cassert>
+
 #include "app/scenes/PlayScene.hpp"
 
-#include "app/Game.hpp"
+#include "app/core/Game.hpp"
 #include "app/Config.hpp"
 #include "app/Player.hpp"
 #include "../Common/Config.hpp"
 
 namespace app { namespace scenes {
 
-  PlayScene::PlayScene(std::shared_ptr<app::Game> game) : app::Scene(game)
+  PlayScene::PlayScene(std::shared_ptr<app::core::Game> game) : app::Scene(game)
   {
     m_gameBoard.assign(
       common::config::gameBoardRows,

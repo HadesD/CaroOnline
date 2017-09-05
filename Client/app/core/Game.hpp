@@ -6,8 +6,10 @@
 #include "app/Point2D.hpp"
 
 namespace app {
-
   class Scene;
+}
+
+namespace app { namespace core {
 
   class Game : public std::enable_shared_from_this<Game>
   {
@@ -32,10 +34,10 @@ namespace app {
 
     protected:
       bool m_isRunning;
-      std::shared_ptr<Scene> m_pScene;
+      std::shared_ptr<app::Scene> m_pScene;
 
   };
 
-}
+} }
 
 #endif

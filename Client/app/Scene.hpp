@@ -4,12 +4,14 @@
 
 namespace app {
 
-  class Game;
+  namespace core {
+    class Game;
+  }
 
   class Scene
   {
     public:
-      Scene(std::shared_ptr<Game> game);
+      Scene(std::shared_ptr<core::Game> game);
       ~Scene();
 
     public:
@@ -19,7 +21,7 @@ namespace app {
       // virtual void load() = 0;
 
     protected:
-      std::shared_ptr<Game> m_pGame;
+      std::shared_ptr<core::Game> m_pGame;
 
   };
 

@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "app/Game.hpp"
+#include "app/core/Game.hpp"
 
 // void myStartupFun (void) __attribute__ ((constructor));
 // void myCleanupFun (void) __attribute__ ((destructor));
@@ -15,7 +15,7 @@
 
 int main(int /* argc */, char * /* argv */[])
 {
-  std::shared_ptr<app::Game>(new app::Game)->run();
+  std::shared_ptr<app::core::Game>(new app::core::Game)->run();
 
   return 0;
 }

@@ -2,11 +2,11 @@
 
 #include "app/scenes/IntroScene.hpp"
 
-#include "app/Game.hpp"
+#include "app/core/Game.hpp"
 
 namespace app { namespace scenes {
 
-  IntroScene::IntroScene(std::shared_ptr<app::Game> game) : app::Scene(game)
+  IntroScene::IntroScene(std::shared_ptr<app::core::Game> game) : app::Scene(game)
   {
   }
 
