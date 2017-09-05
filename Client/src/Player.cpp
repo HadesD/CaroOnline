@@ -146,30 +146,17 @@ namespace app {
 
   void Player::waitKeyboardEvent()
   {
-    // m_keyPushed = (new ::Kbhit())->getch();
-
     this->onKeyboardEvent();
-  }
-
-  void Player::setKeyPushed(const int &key)
-  {
-    // m_keyPushed = key;
-  }
-
-  int Player::getKeyPushed() const
-  {
-    return 0;
-    // return m_keyPushed;
   }
 
   void Player::setScene(std::shared_ptr<scenes::PlayScene> scene)
   {
-    // m_pScene = scene;
+    m_pScene = scene;
   }
 
   void Player::setScene(scenes::PlayScene *scene)
   {
-    m_pScene = scene;
+    this->setScene(std::shared_ptr<scenes::PlayScene>(scene));
   }
 
 }

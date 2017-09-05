@@ -29,8 +29,6 @@ namespace app {
       bool getIsTurn() const;
       Point2D getCursor() const;
       void setCursor(const Point2D &c);
-      int getKeyPushed() const;
-      void setKeyPushed(const int &key);
 
     public:
       void waitKeyboardEvent();
@@ -45,7 +43,7 @@ namespace app {
     protected:
       Point2D m_cursor;
       // std::shared_ptr<scenes::PlayScene> m_pScene;
-      scenes::PlayScene *m_pScene;
+      std::shared_ptr<scenes::PlayScene> m_pScene;
       ::Kbhit m_kbhit;
 
   };
