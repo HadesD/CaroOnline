@@ -8,8 +8,10 @@
 
 #include "app/input/Kbhit.h"
 
-namespace app {
-  namespace core {
+namespace app
+{
+  namespace core
+  {
     class Game;
   }
 }
@@ -40,11 +42,7 @@ namespace app { namespace scenes {
 
     protected:
       Handle m_selection;
-      // std::vector< std::map< std::string, int > > m_selection;
       app::input::Kbhit m_kbhit;
-
-    private:
-
 
   };
 

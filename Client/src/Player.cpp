@@ -1,5 +1,6 @@
-#include "app/Player.hpp"
 #include <ctime>
+
+#include "app/Player.hpp"
 
 namespace app {
 
@@ -21,8 +22,7 @@ namespace app {
 
     if (m_pScene == nullptr)
     {
-      throw new std::runtime_error("Not found scene");
-      return;
+      throw std::runtime_error("Not found scene");
     }
 
     if (m_kbhit.kbhit())

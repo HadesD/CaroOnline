@@ -5,8 +5,10 @@
 #include "app/Scene.hpp"
 #include "app/Point2D.hpp"
 
-namespace app {
-  namespace core {
+namespace app
+{
+  namespace core
+  {
     class Game;
   }
   class Player;
