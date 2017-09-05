@@ -1,7 +1,12 @@
-// http://linux-sxs.org/programming/kbhit.html
+/**
+ * Copyright http://linux-sxs.org/programming/kbhit.html
+ */
+
 #ifndef KBHIT_h
 #define KBHIT_h
-#include <termios.h>
+#if defined(__linux__)
+#  include <termios.h>
+#endif
 
 namespace app { namespace input {
 

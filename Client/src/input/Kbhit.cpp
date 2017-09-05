@@ -1,4 +1,6 @@
-#include <unistd.h> // read()
+#if defined(__linux__)
+#  include <unistd.h> // read()
+#endif
 
 #include "app/input/Kbhit.h"
 
