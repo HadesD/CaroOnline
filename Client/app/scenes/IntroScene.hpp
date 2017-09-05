@@ -6,7 +6,7 @@
 
 #include "app/Scene.hpp"
 
-#include "app/Kbhit.h"
+#include "app/input/Kbhit.h"
 
 namespace app {
   namespace core {
@@ -41,7 +41,7 @@ namespace app { namespace scenes {
     protected:
       Handle m_selection;
       // std::vector< std::map< std::string, int > > m_selection;
-      ::Kbhit m_kbhit;
+      app::input::Kbhit m_kbhit;
 
     private:
 

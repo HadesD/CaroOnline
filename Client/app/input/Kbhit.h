@@ -3,6 +3,8 @@
 #define KBHIT_h
 #include <termios.h>
 
+namespace app { namespace input {
+
 class Kbhit
 {
 	public:
@@ -15,5 +17,7 @@ class Kbhit
 		struct termios initial_settings, new_settings;
 		int peek_character;
 };
+
+} }
 
 #endif

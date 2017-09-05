@@ -11,7 +11,7 @@ build:
 	$(CXX) -I. -o bin/caro \
 		src/main.cpp \
 		src/core/Game.cpp \
-		src/Kbhit.cpp \
+		src/input/Kbhit.cpp \
 		src/Player.cpp \
 		src/WindowManager.cpp \
 		../Common/Config.cpp \

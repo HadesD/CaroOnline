@@ -5,7 +5,7 @@
 
 #include "app/scenes/PlayScene.hpp"
 
-#include "app/Kbhit.h"
+#include "app/input/Kbhit.h"
 
 namespace app {
 
@@ -44,7 +44,7 @@ namespace app {
       Point2D m_cursor;
       // std::shared_ptr<scenes::PlayScene> m_pScene;
       std::shared_ptr<scenes::PlayScene> m_pScene;
-      ::Kbhit m_kbhit;
+      app::input::Kbhit m_kbhit;
 
   };
 
