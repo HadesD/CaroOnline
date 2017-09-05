@@ -13,6 +13,9 @@ namespace app { namespace scenes {
   class IntroScene : public app::Scene
   {
     public:
+      typedef std::vector< std::map< std::string, void(*)() > > Handle;
+
+    public:
       IntroScene(std::shared_ptr<app::Game> game);
       ~IntroScene();
 
@@ -30,9 +33,12 @@ namespace app { namespace scenes {
       void quit();
 
     protected:
-      std::vector< std::map< std::string, void(*)() > > m_selection;
+      Handle m_selection;
       // std::vector< std::map< std::string, int > > m_selection;
       ::Kbhit m_kbhit;
+
+    private:
+
 
   };
 

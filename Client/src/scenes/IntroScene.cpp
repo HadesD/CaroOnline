@@ -28,6 +28,10 @@ namespace app { namespace scenes {
   void IntroScene::draw()
   {
     // std::cout << "sdkfjlsdfj" << std::endl;
+    for (std::size_t i = 0; i < m_selection.size(); i++)
+    {
+      std::cout << i << std::endl;
+    }
   }
 
   void IntroScene::waitKeyboardEvent()

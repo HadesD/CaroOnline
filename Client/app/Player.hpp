@@ -20,7 +20,7 @@ namespace app {
       int getId() const;
       void setName(const std::string &name);
       std::string getName() const;
-      [[deprecated("Not compatible with smart pointer")]]
+      // [[deprecated("Not compatible with smart pointer")]]
       void setScene(scenes::PlayScene *scene);
       void setScene(std::shared_ptr<scenes::PlayScene> scene);
       int getMark() const;

@@ -12,7 +12,6 @@
 #include "../Common/Config.hpp"
 
 #include "app/Game.hpp"
-#include "app/Player.hpp"
 #include "app/WindowManager.h"
 #include "app/Config.hpp"
 
