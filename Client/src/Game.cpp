@@ -15,6 +15,7 @@
 #include "app/WindowManager.h"
 #include "app/Config.hpp"
 
+#include "app/Scene.hpp"
 // #include "app/scenes/PlayScene.hpp"
 #include "app/scenes/IntroScene.hpp"
 

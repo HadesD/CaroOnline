@@ -2,10 +2,12 @@
 #define APP_GAME_HPP
 #include <memory>
 #include <vector>
+
 #include "app/Point2D.hpp"
-#include "app/Scene.hpp"
 
 namespace app {
+
+  class Scene;
 
   class Game : public std::enable_shared_from_this<Game>
   {

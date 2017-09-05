@@ -6,7 +6,7 @@ namespace app {
 
   class Game;
 
-  class Scene : public std::enable_shared_from_this<Scene>
+  class Scene
   {
     public:
       Scene(std::shared_ptr<Game> game);
