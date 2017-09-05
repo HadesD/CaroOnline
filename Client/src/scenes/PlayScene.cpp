@@ -27,6 +27,7 @@ namespace app { namespace scenes {
   {
     std::shared_ptr<app::Player> me(new app::Player());
     me->setIsTurn(true);
+    me->setMark(m_listPlayer.size()+1);
     this->addPlayer(me);
   }
 

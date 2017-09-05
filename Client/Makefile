@@ -18,7 +18,8 @@ build:
 		src/Config.cpp \
 		src/Scene.cpp \
 		src/Point2D.cpp \
-		src/scenes/PlayScene.cpp
+		src/scenes/PlayScene.cpp \
+		src/scenes/IntroScene.cpp
 
 run:
 	cd bin && ./caro

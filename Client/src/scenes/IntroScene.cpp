@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "app/scenes/IntroScene.hpp"
 
 #include "app/Game.hpp"
@@ -20,14 +22,41 @@ namespace app { namespace scenes {
 
   void IntroScene::update(float /* dt */)
   {
+    this->waitKeyboardEvent();
   }
 
   void IntroScene::draw()
   {
+    // std::cout << "sdkfjlsdfj" << std::endl;
+  }
+
+  void IntroScene::waitKeyboardEvent()
+  {
+    if (m_kbhit.kbhit())
+    {
+      this->onKeyboardEvent();
+    }
+  }
+
+  void IntroScene::onKeyboardEvent()
+  {
+    switch(m_kbhit.getch())
+    {
+      case 'q':
+        {
+          this->quit();
+        }
+        break;
+    }
   }
 
   void IntroScene::goToPlay()
   {
+  }
+
+  void IntroScene::quit()
+  {
+    m_pGame->quit();
   }
 
 } }

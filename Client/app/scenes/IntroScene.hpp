@@ -6,6 +6,7 @@
 #include "app/Game.hpp"
 #include "app/Scene.hpp"
 
+#include "app/Kbhit.h"
 
 namespace app { namespace scenes {
 
@@ -20,12 +21,18 @@ namespace app { namespace scenes {
       void update(float dt);
       void draw();
 
+    public:
+      void waitKeyboardEvent();
+      void onKeyboardEvent();
+
     private:
       void goToPlay();
+      void quit();
 
     protected:
       std::vector< std::map< std::string, void(*)() > > m_selection;
       // std::vector< std::map< std::string, int > > m_selection;
+      ::Kbhit m_kbhit;
 
   };
 

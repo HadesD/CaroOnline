@@ -21,7 +21,7 @@ namespace app {
 
     if (m_pScene == nullptr)
     {
-      std::cout << "Err " << std::endl;
+      throw new std::runtime_error("Not found scene");
       return;
     }
 
@@ -101,10 +101,7 @@ namespace app {
 
         m_pScene->setNextPlayer(m_pScene->getCurrentPlayer() + 1);
       }
-      std::cout << keyPushed << std::endl;
     }
-    std::srand(std::time(0));
-    std::cout << "Random: " << std::rand() << std::endl;
   }
 
   void Player::setId(const int &id)
