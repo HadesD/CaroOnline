@@ -35,28 +35,26 @@ namespace app { namespace core {
     this->setScene(std::make_shared<app::scenes::IntroScene>(this->shared_from_this()));
   }
 
-  void Game::render()
+  void Game::handleEvent()
   {
-    if (m_pScene == nullptr)
-    {
-      this->quit();
-    }
-    else
-    {
-      m_pScene->draw();
-    }
   }
 
   void Game::update(float dt)
   {
     if (m_pScene == nullptr)
     {
-      this->quit();
+      throw std::runtime_error("Scene not found");
     }
-    else
+    m_pScene->update(dt);
+  }
+
+  void Game::render()
+  {
+    if (m_pScene == nullptr)
     {
-      m_pScene->update(dt);
+      throw std::runtime_error("Scene not found");
     }
+    m_pScene->draw();
   }
 
   void Game::quit()
@@ -81,6 +79,8 @@ namespace app { namespace core {
 
       std::chrono::duration<float> dt = std::chrono::system_clock::now() -
         now_time;
+
+      this->handleEvent();
 
       this->update(static_cast<float>(dt.count()));
 

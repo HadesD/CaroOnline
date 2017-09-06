@@ -21,6 +21,7 @@ namespace app { namespace core {
       void init();
       void run();
       void render();
+      void handleEvent();
 
       /**
        * Update game
