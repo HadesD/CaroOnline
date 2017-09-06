@@ -23,12 +23,12 @@ namespace app { namespace scenes {
       typedef std::vector< std::shared_ptr< app::Player > > ListPlayer;
 
     public:
-      PlayScene(std::shared_ptr<app::core::Game> game);
+      PlayScene(const std::shared_ptr<app::core::Game> &game);
       ~PlayScene();
 
     public:
       void init();
-      void update(float dt);
+      void update(const float &dt);
       void draw();
 
     public:

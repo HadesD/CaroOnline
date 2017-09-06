@@ -2,7 +2,7 @@
 #  include <unistd.h> // read()
 #endif
 
-#include "app/input/Kbhit.h"
+#include "app/input/Kbhit.hpp"
 
 namespace app { namespace input {
 

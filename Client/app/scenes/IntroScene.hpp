@@ -24,12 +24,12 @@ namespace app { namespace scenes {
       typedef std::vector< std::map< std::string, void(*)() > > Handle;
 
     public:
-      IntroScene(std::shared_ptr<app::core::Game> game);
+      IntroScene(const std::shared_ptr<app::core::Game> &game);
       ~IntroScene();
 
     public:
       void init();
-      void update(float dt);
+      void update(const float &dt);
       void draw();
 
     public:

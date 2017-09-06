@@ -10,7 +10,7 @@
 
 namespace app { namespace scenes {
 
-  PlayScene::PlayScene(std::shared_ptr<app::core::Game> game) : app::Scene(game)
+  PlayScene::PlayScene(const std::shared_ptr<app::core::Game> &game) : app::Scene(game)
   {
     m_gameBoard.assign(
       common::config::gameBoardRows,
@@ -42,7 +42,7 @@ namespace app { namespace scenes {
     m_pGame->quit();
   }
 
-  void PlayScene::update(float /* dt */)
+  void PlayScene::update(const float &/* dt */)
   {
     if (m_listPlayer.size() > 0)
     {

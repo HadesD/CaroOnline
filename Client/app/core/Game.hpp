@@ -26,11 +26,12 @@ namespace app { namespace core {
        * Update game
        * @return void
        * @param float dt : Delta time
-       *
        */
       void update(float dt);
       void waitKeyboardEvent();
       void quit();
+
+      void setScene(const std::shared_ptr<app::Scene> &scene);
 
     protected:
       bool m_isRunning;

@@ -3,10 +3,11 @@
 #include "app/scenes/IntroScene.hpp"
 
 #include "app/core/Game.hpp"
+#include "app/scenes/PlayScene.hpp"
 
 namespace app { namespace scenes {
 
-  IntroScene::IntroScene(std::shared_ptr<app::core::Game> game) : app::Scene(game)
+  IntroScene::IntroScene(const std::shared_ptr<app::core::Game> &game) : app::Scene(game)
   {
   }
 
@@ -18,9 +19,10 @@ namespace app { namespace scenes {
   {
     // m_selection.push_back({"", [](){}});
     // m_selection.push_back({"", ""});
+
   }
 
-  void IntroScene::update(float /* dt */)
+  void IntroScene::update(const float &/* dt */)
   {
     this->waitKeyboardEvent();
   }
@@ -51,11 +53,18 @@ namespace app { namespace scenes {
           this->quit();
         }
         break;
+      case 'p':
+        {
+          this->goToPlay();
+        }
+        break;
     }
   }
 
   void IntroScene::goToPlay()
   {
+    m_pGame->setScene(std::shared_ptr<app::scenes::PlayScene>(new
+                                                              app::scenes::PlayScene(m_pGame)));
   }
 
   void IntroScene::quit()

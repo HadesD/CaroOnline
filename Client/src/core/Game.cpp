@@ -102,4 +102,10 @@ namespace app { namespace core {
     }
   }
 
+  void Game::setScene(const std::shared_ptr<app::Scene> &scene)
+  {
+    m_pScene = scene;
+    m_pScene->init();
+  }
+
 } }
