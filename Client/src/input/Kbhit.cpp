@@ -1,4 +1,4 @@
-#if defined(__linux__)
+#if defined(__GNUC__)
 #  include <unistd.h> // read()
 #endif
 

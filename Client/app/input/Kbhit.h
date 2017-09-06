@@ -4,7 +4,7 @@
 
 #ifndef KBHIT_h
 #define KBHIT_h
-#if defined(__linux__)
+#if defined(__GNUC__)
 #  include <termios.h>
 #endif
 
