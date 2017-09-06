@@ -3,9 +3,8 @@
 
 namespace app {
 
-  Scene::Scene(const std::shared_ptr<app::core::Game> &game)
+  Scene::Scene(const std::shared_ptr<app::core::Game> &game) : m_pGame(game)
   {
-    m_pGame = game;
   }
 
   Scene::~Scene()

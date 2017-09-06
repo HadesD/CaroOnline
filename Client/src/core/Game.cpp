@@ -32,10 +32,7 @@ namespace app { namespace core {
 
   void Game::init()
   {
-    // m_pScene = std::make_shared<scenes::PlayScene>(this->shared_from_this());
-    m_pScene = std::make_shared<scenes::IntroScene>(this->shared_from_this());
-
-    m_pScene->init();
+    this->setScene(std::make_shared<app::scenes::IntroScene>(this->shared_from_this()));
   }
 
   void Game::render()

@@ -300,6 +300,12 @@ namespace app { namespace scenes {
     }
   }
 
+  PlayScene::GameState PlayScene::checkMoveState(const app::Point2D &p)
+  {
+
+    return PlayScene::GameState::WIN;
+  }
+
   Point2D PlayScene::getCursor() const
   {
     return m_cursor;
