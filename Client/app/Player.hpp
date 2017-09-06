@@ -5,7 +5,7 @@
 
 #include "app/scenes/PlayScene.hpp"
 
-#include "app/input/Kbhit.h"
+#include "app/input/Kbhit.hpp"
 
 namespace app {
 
