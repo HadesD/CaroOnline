@@ -16,8 +16,8 @@
 #include "app/Config.hpp"
 
 #include "app/Scene.hpp"
-// #include "app/scenes/PlayScene.hpp"
-#include "app/scenes/IntroScene.hpp"
+#include "app/scenes/PlayScene.hpp"
+// #include "app/scenes/IntroScene.hpp"
 
 namespace app { namespace core {
 
@@ -32,7 +32,7 @@ namespace app { namespace core {
 
   void Game::init()
   {
-    this->setScene(std::make_shared<app::scenes::IntroScene>(this->shared_from_this()));
+    this->setScene(std::make_shared<app::scenes::PlayScene>(this->shared_from_this()));
   }
 
   void Game::handleEvent()

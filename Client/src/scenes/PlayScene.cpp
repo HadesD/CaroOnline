@@ -26,10 +26,14 @@ namespace app { namespace scenes {
 
   void PlayScene::init()
   {
-    std::shared_ptr<app::Player> me(new app::Player());
-    me->setIsTurn(true);
-    me->setMark(m_listPlayer.size()+1);
-    this->addPlayer(me);
+    std::shared_ptr<app::Player> me1(new app::Player());
+    me1->setIsTurn(true);
+    me1->setMark(m_listPlayer.size()+1);
+    this->addPlayer(me1);
+
+    std::shared_ptr<app::Player> me2(new app::Player());
+    me2->setMark(m_listPlayer.size()+1);
+    this->addPlayer(me2);
   }
 
   void PlayScene::draw()
@@ -58,6 +62,7 @@ namespace app { namespace scenes {
   {
     assert((m_gameBoardOneObjSize % 2) != 0);
     // Barrier
+    std::cout << "Current Player: " << m_currentPlayer << std::endl;
     auto drawBarrier = [](const int &len){
       for (std::size_t i = 0; i < common::config::gameBoardCols; i++)
       {
