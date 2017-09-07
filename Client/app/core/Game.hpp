@@ -18,10 +18,15 @@ namespace app { namespace core {
       ~Game();
 
     public:
-      void init();
       void run();
+      void quit();
+      void setScene(const std::shared_ptr<app::Scene> &scene);
+
+    private:
+      void init();
       void render();
       void handleEvent();
+      void erase();
 
       /**
        * Update game
@@ -30,9 +35,6 @@ namespace app { namespace core {
        */
       void update(float dt);
       void waitKeyboardEvent();
-      void quit();
-
-      void setScene(const std::shared_ptr<app::Scene> &scene);
 
     protected:
       bool m_isRunning;

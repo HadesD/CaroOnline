@@ -57,6 +57,12 @@ namespace app { namespace core {
     m_pScene->draw();
   }
 
+  void Game::erase()
+  {
+    // system("clear");
+    std::cout << "\033c";
+  }
+
   void Game::quit()
   {
     m_isRunning = false;
@@ -75,7 +81,7 @@ namespace app { namespace core {
 
     while (this->m_isRunning == true)
     {
-      system("clear");
+      this->erase();
 
       std::chrono::duration<float> dt = std::chrono::system_clock::now() -
         now_time;
