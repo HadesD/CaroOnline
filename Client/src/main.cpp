@@ -15,7 +15,14 @@
 
 int main(int /* argc */, char * /* argv */[])
 {
-  std::shared_ptr<app::core::Game>(new app::core::Game)->run();
+  try
+  {
+    std::shared_ptr<app::core::Game>(new app::core::Game)->run();
+  }
+  catch(const std::runtime_error &e)
+  {
+    std::cerr << "Error: " << e.what() << std::endl;
+  }
 
   return 0;
 }

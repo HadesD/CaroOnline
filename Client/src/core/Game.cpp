@@ -61,11 +61,13 @@ namespace app { namespace core {
   {
     // system("clear");
     std::cout << "\033c";
+    // std::cout << std::string(100, '\n');
   }
 
   void Game::quit()
   {
     m_isRunning = false;
+
   }
 
   void Game::run()
@@ -103,6 +105,8 @@ namespace app { namespace core {
         std::this_thread::sleep_for(static_cast<std::chrono::milliseconds>(wait));
       }
     }
+
+    std::cout << "Quit Game" << std::endl;
   }
 
   void Game::setScene(const std::shared_ptr<app::Scene> &scene)
