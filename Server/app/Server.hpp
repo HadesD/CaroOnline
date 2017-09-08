@@ -3,12 +3,15 @@
 #include <iostream>
 #include <memory>
 
+#include "../Common/Network.hpp"
+#include "../Common/Config.hpp"
+
 namespace app {
 
   class Server
   {
     public:
-      Server();
+      Server(const asio::io_service &s);
       ~Server();
 
     public:

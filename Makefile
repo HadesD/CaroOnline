@@ -1,6 +1,7 @@
 .PHONY: all run client server
 
 default: server
+# default: client
 
 client:
 	cd Client && make && make run

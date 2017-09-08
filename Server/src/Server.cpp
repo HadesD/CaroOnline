@@ -2,7 +2,7 @@
 
 namespace app {
 
-  Server::Server()
+  Server::Server(const asio::io_service &s)
   {
   }
 
