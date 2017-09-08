@@ -60,8 +60,10 @@ namespace app { namespace scenes {
       this->m_cursor = m_listPlayer.at(m_currentPlayer)->getCursor();
 
       std::weak_ptr<Player> p = m_listPlayer.at(m_currentPlayer);
-
-      p.lock()->waitKeyboardEvent();
+      if (auto pP = p.lock())
+      {
+        p.lock()->waitKeyboardEvent();
+      }
     }
   }
 
@@ -156,10 +158,17 @@ namespace app { namespace scenes {
   {
     int xP, yP, x0, y0, xMaxSize, yMaxSize;
 
-    std::weak_ptr<Player> playerToCheck = m_listPlayer.at(m_currentPlayer);
+    std::weak_ptr<Player> p = m_listPlayer.at(m_currentPlayer);
 
-    xP = playerToCheck.lock()->getCursor().x;
-    yP = playerToCheck.lock()->getCursor().y;
+    if (auto pP = p.lock())
+    {
+      xP = pP->getCursor().x;
+      yP = pP->getCursor().y;
+    }
+    else
+    {
+      throw std::runtime_error("Cant lock player: " + std::to_string(m_currentPlayer));
+    }
 
     x0 = std::max(xP - common::config::maxCoupleCount, 0);
     y0 = std::max(yP - common::config::maxCoupleCount, 0);
@@ -216,8 +225,8 @@ namespace app { namespace scenes {
     for (int y = y0; y < yMaxSize - 1; y++)
     {
       if (
-        (m_gameBoard.at(xP).at(y) == playerToCheck.lock()->getMark()) &&
-        (m_gameBoard.at(xP).at(y + 1) == playerToCheck.lock()->getMark())
+        (m_gameBoard.at(xP).at(y) == p.lock()->getMark()) &&
+        (m_gameBoard.at(xP).at(y + 1) == p.lock()->getMark())
         )
       {
         count++;
@@ -239,8 +248,8 @@ namespace app { namespace scenes {
     for (int x = x0; x < xMaxSize - 1; x++)
     {
       if (
-        (m_gameBoard.at(x).at(yP) == playerToCheck.lock()->getMark()) &&
-        (m_gameBoard.at(x + 1).at(yP) == playerToCheck.lock()->getMark())
+        (m_gameBoard.at(x).at(yP) == p.lock()->getMark()) &&
+        (m_gameBoard.at(x + 1).at(yP) == p.lock()->getMark())
         )
       {
         count++;
@@ -266,8 +275,8 @@ namespace app { namespace scenes {
         break;
       }
       if (
-        (m_gameBoard.at(x).at(y) == playerToCheck.lock()->getMark()) &&
-        (m_gameBoard.at(x + 1).at(y + 1) == playerToCheck.lock()->getMark())
+        (m_gameBoard.at(x).at(y) == p.lock()->getMark()) &&
+        (m_gameBoard.at(x + 1).at(y + 1) == p.lock()->getMark())
         )
       {
         count++;
@@ -293,8 +302,8 @@ namespace app { namespace scenes {
         break;
       }
       if (
-        (m_gameBoard.at(x).at(y) == playerToCheck.lock()->getMark()) &&
-        (m_gameBoard.at(x + 1).at(y - 1) == playerToCheck.lock()->getMark())
+        (m_gameBoard.at(x).at(y) == p.lock()->getMark()) &&
+        (m_gameBoard.at(x + 1).at(y - 1) == p.lock()->getMark())
         )
       {
         count++;
@@ -314,7 +323,6 @@ namespace app { namespace scenes {
 
   PlayScene::GameState PlayScene::checkMoveState(const app::Point2D &p)
   {
-
     return PlayScene::GameState::WIN;
   }
 
@@ -357,14 +365,15 @@ namespace app { namespace scenes {
 
   void PlayScene::removePlayer(const std::shared_ptr<Player> &player)
   {
-    for (std::size_t i = 0; i < m_listPlayer.size(); i++)
+    for (auto &p : m_listPlayer)
     {
-      if (player == m_listPlayer.at(i))
+      if (player == p)
       {
         // m_listPlayer.erase(m_listPlayer.begin() + i);
         break;
       }
     }
+
   }
 
   PlayScene::ListPlayer PlayScene::getListPlayer() const
