@@ -2,6 +2,7 @@
 #include <cassert>
 
 #include "app/scenes/PlayScene.hpp"
+#include "app/scenes/IntroScene.hpp"
 
 #include "app/core/Game.hpp"
 #include "app/Config.hpp"
@@ -48,6 +49,12 @@ namespace app { namespace scenes {
 
   void PlayScene::update(const float &/* dt */)
   {
+    if (m_isFinish == true)
+    {
+      std::cout << "Winner: " << m_currentPlayer << std::endl;
+      m_pGame->quit();
+    }
+
     if (m_listPlayer.size() > 0)
     {
       this->m_cursor = m_listPlayer.at(m_currentPlayer)->getCursor();
@@ -341,7 +348,6 @@ namespace app { namespace scenes {
       }
     }
     m_listPlayer.emplace_back(player);
-    // player->setScene(this->shared_from_this());
     player->setScene(this);
     player->setCursor(
       Point2D(m_gameBoard.size()/2,
