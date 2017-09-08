@@ -2,6 +2,7 @@
 
 #include "app/scenes/IntroScene.hpp"
 
+#include "../Common/Network.hpp"
 #include "app/core/Game.hpp"
 #include "app/scenes/PlayScene.hpp"
 

@@ -67,7 +67,6 @@ namespace app { namespace core {
   void Game::quit()
   {
     m_isRunning = false;
-
   }
 
   void Game::run()

@@ -8,7 +8,11 @@ RM=/bin/rm -rf
 default: build
 
 build:
-	$(CXX) -I. -o bin/caro \
+	$(CXX) -I. \
+		-I../Common/third_party/asio/asio/include \
+		-lpthread \
+		-pthread \
+		-o bin/caro \
 		src/main.cpp \
 		src/core/Game.cpp \
 		src/input/Kbhit.cpp \
