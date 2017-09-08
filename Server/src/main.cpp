@@ -5,7 +5,14 @@
 
 int main(int /* argc */, char * /* argv */[])
 {
-  (new Server())->run();
+  try
+  {
+    std::make_shared<app::Server>()->run();
+  }
+  catch(const std::runtime_error &e)
+  {
+
+  }
 
   return 0;
 }

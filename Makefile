@@ -1,9 +1,9 @@
-.PHONY: all run client
+.PHONY: all run client server
 
-default: client
+default: server
 
 client:
 	cd Client && make && make run
 
 server:
-	cd Server && make && run
+	cd Server && make && make run

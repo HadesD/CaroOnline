@@ -20,7 +20,6 @@ namespace app { namespace scenes {
   {
     // m_selection.push_back({"", [](){}});
     // m_selection.push_back({"", ""});
-
   }
 
   void IntroScene::update(const float &/* dt */)

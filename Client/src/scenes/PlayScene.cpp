@@ -44,6 +44,7 @@ namespace app { namespace scenes {
 
   void PlayScene::quit()
   {
+    // m_pGame->setScene(std::make_shared<app::scenes::IntroScene>(m_pGame));
     m_pGame->quit();
   }
 
@@ -52,7 +53,8 @@ namespace app { namespace scenes {
     if (m_isFinish == true)
     {
       std::cout << "Winner: " << m_currentPlayer << std::endl;
-      m_pGame->quit();
+      this->quit();
+      return;
     }
 
     if (m_listPlayer.size() > 0)

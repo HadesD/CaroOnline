@@ -17,7 +17,7 @@
 
 #include "app/Scene.hpp"
 #include "app/scenes/PlayScene.hpp"
-// #include "app/scenes/IntroScene.hpp"
+#include "app/scenes/IntroScene.hpp"
 
 namespace app { namespace core {
 
@@ -32,7 +32,7 @@ namespace app { namespace core {
 
   void Game::init()
   {
-    this->setScene(std::make_shared<app::scenes::PlayScene>(this->shared_from_this()));
+    this->setScene(std::make_shared<app::scenes::IntroScene>(this->shared_from_this()));
   }
 
   void Game::handleEvent()
@@ -77,14 +77,14 @@ namespace app { namespace core {
 
     int fixed_fps = 15;
 
-    std::chrono::time_point<std::chrono::system_clock> now_time =
-      std::chrono::system_clock::now();
+    std::chrono::time_point<std::chrono::steady_clock> now_time =
+      std::chrono::steady_clock::now();
 
     while (this->m_isRunning == true)
     {
       this->erase();
 
-      std::chrono::duration<float> dt = std::chrono::system_clock::now() -
+      std::chrono::duration<float> dt = std::chrono::steady_clock::now() -
         now_time;
 
       this->handleEvent();
@@ -93,7 +93,7 @@ namespace app { namespace core {
 
       this->render();
 
-      now_time = std::chrono::system_clock::now();
+      now_time = std::chrono::steady_clock::now();
 
       long wait = 1000 / fixed_fps - dt.count() * 1000;
 
@@ -111,6 +111,10 @@ namespace app { namespace core {
   void Game::setScene(const std::shared_ptr<app::Scene> &scene)
   {
     m_pScene = scene;
+    if (m_pScene == nullptr)
+    {
+      throw std::runtime_error("Game 's scene pointer error");
+    }
     m_pScene->init();
   }
 
