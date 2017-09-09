@@ -8,15 +8,27 @@
 
 namespace app {
 
+  class Room;
+
   class Server
   {
     public:
-      Server(const asio::io_service &s);
+      Server(asio::io_service &s);
       ~Server();
 
     public:
-      void run();
+      // void run();
       void init();
+      void accept();
+
+    private:
+      void onAcceptConnection(const std::error_code &e);
+
+    private:
+      asio::ip::tcp::acceptor m_acceptor;
+      asio::ip::tcp::socket m_socket;
+
+      // Room m_room;
   };
 
 }

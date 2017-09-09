@@ -2,7 +2,9 @@
 
 namespace app {
 
-  Server::Server(const asio::io_service &s)
+  Server::Server(asio::io_service &s) :
+    m_acceptor(s, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), 8889))
+    , m_socket(s)
   {
   }
 
@@ -15,11 +17,15 @@ namespace app {
     std::cout << "Server initialized" << std::endl;
   }
 
-  void Server::run()
+  void Server::accept()
   {
-    this->init();
+    m_acceptor.async_accept(m_socket, std::bind(&Server::onAcceptConnection, this,
+                                                std::placeholders::_1));
+  }
 
-    std::cout << "Server shutdown" << std::endl;
+  void Server::onAcceptConnection(const std::error_code &e)
+  {
+    std::cout << "Connected" << std::endl;
   }
 
 }

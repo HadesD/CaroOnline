@@ -19,7 +19,7 @@ int main(int /* argc */, char * /* argv */[])
   {
     std::make_shared<app::core::Game>()->run();
   }
-  catch(const std::runtime_error &e)
+  catch(const std::exception &e)
   {
     std::cerr << "Error: " << e.what() << std::endl;
   }
