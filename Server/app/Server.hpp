@@ -8,7 +8,7 @@
 
 namespace app {
 
-  class Room;
+  // class Room;
 
   class Server
   {
@@ -23,10 +23,16 @@ namespace app {
 
     private:
       void onAcceptConnection(const std::error_code &e);
+      void readHeader();
+      void onReadHeader(const std::error_code &e, const std::size_t &bytes);
 
     private:
+      // asio::ip::udp m_acceptor;
+      // asio::ip::udp::socket m_socket;
+
       asio::ip::tcp::acceptor m_acceptor;
       asio::ip::tcp::socket m_socket;
+      char m_buffer[];
 
       // Room m_room;
   };

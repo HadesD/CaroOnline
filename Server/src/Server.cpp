@@ -19,13 +19,52 @@ namespace app {
 
   void Server::accept()
   {
-    m_acceptor.async_accept(m_socket, std::bind(&Server::onAcceptConnection, this,
-                                                std::placeholders::_1));
+    // while (true)
+    {
+      m_acceptor.async_accept(m_socket, std::bind(&Server::onAcceptConnection,
+                                                  this,
+                                                  std::placeholders::_1));
+    }
   }
 
   void Server::onAcceptConnection(const std::error_code &e)
   {
-    std::cout << "Connected" << std::endl;
+    if (e)
+    {
+      std::cerr << "Error: " << e.message() << std::endl;
+    }
+    else
+    {
+      this->readHeader();
+    }
+  }
+
+  void Server::readHeader()
+  {
+    const std::size_t m_header = 4;
+    asio::async_read(
+      m_socket,
+      asio::buffer(m_buffer, m_header),
+      std::bind(
+        &Server::onReadHeader,
+        this,
+        std::placeholders::_1,
+        std::placeholders::_2
+        )
+      );
+  }
+
+  void Server::onReadHeader(const std::error_code &e, const std::size_t &bytes)
+  {
+    if (e)
+    {
+      std::cerr << "Error: " << e.message() << std::endl;
+    }
+    else
+    {
+      std::cout << "Size: " << bytes << std::endl;
+      std::cout << "Buffer: " << m_buffer << std::endl;
+    }
   }
 
 }
