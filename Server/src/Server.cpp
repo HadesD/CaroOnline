@@ -21,9 +21,13 @@ namespace app {
   {
     // while (true)
     {
-      m_acceptor.async_accept(m_socket, std::bind(&Server::onAcceptConnection,
-                                                  this,
-                                                  std::placeholders::_1));
+      m_acceptor.async_accept(
+        m_socket, std::bind(
+          &Server::onAcceptConnection,
+          this,
+          std::placeholders::_1
+          )
+        );
     }
   }
 

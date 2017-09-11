@@ -16,6 +16,13 @@ namespace app {
       ~Player();
 
     public:
+      void update();
+
+    private:
+      void waitKeyboardEvent();
+      void onKeyboardEvent();
+
+    public:
       void setId(const int &id);
       int getId() const;
       void setName(const std::string &name);
@@ -29,10 +36,6 @@ namespace app {
       bool getIsTurn() const;
       Point2D getCursor() const;
       void setCursor(const Point2D &c);
-
-    public:
-      void waitKeyboardEvent();
-      void onKeyboardEvent();
 
     protected:
       int id;

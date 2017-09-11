@@ -64,7 +64,7 @@ namespace app { namespace scenes {
       std::weak_ptr<Player> p = m_listPlayer.at(m_currentPlayer);
       if (auto pP = p.lock())
       {
-        p.lock()->waitKeyboardEvent();
+        pP->update();
       }
     }
   }
@@ -176,9 +176,11 @@ namespace app { namespace scenes {
     y0 = std::max(yP - common::config::maxCoupleCount, 0);
 
     xMaxSize = std::min(xP + common::config::maxCoupleCount + 1,
-                        static_cast<int>(m_gameBoard.size()));
+                        static_cast<int>(m_gameBoard.size())
+                       );
     yMaxSize = std::min(yP + common::config::maxCoupleCount + 1,
-                        static_cast<int>(m_gameBoard.at(xMaxSize-1).size()));
+                        static_cast<int>(m_gameBoard.at(xMaxSize-1).size())
+                       );
 
     // Game board likes:
     // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+

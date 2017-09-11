@@ -2,6 +2,8 @@
 
 #include "app/Player.hpp"
 
+#include "../Common/Network.hpp"
+
 namespace app {
 
   Player::Player()
@@ -11,6 +13,11 @@ namespace app {
   Player::~Player()
   {
     // delete m_pScene;
+  }
+
+  void Player::update()
+  {
+    this->waitKeyboardEvent();
   }
 
   void Player::onKeyboardEvent()
