@@ -38,10 +38,11 @@ namespace app {
       void setCursor(const Point2D &c);
 
     protected:
-      int id;
-      std::string name;
-      bool isTurn;
-      int mark;
+      int m_id;
+      std::string m_name;
+      bool m_isTurn;
+      int m_mark;
+      bool m_isReady;
 
     protected:
       Point2D m_cursor;

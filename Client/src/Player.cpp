@@ -8,6 +8,7 @@ namespace app {
 
   Player::Player()
   {
+    m_isReady = false;
   }
 
   Player::~Player()
@@ -22,7 +23,7 @@ namespace app {
 
   void Player::onKeyboardEvent()
   {
-    if (this->isTurn == false)
+    if (this->m_isTurn == false)
     {
       return;
     }
@@ -53,8 +54,8 @@ namespace app {
           {
             if (gb.at(m_cursor.x).at(m_cursor.y) == 0)
             {
-              this->isTurn = false;
-              gb[m_cursor.x][m_cursor.y] = this->mark;
+              this->m_isTurn = false;
+              gb[m_cursor.x][m_cursor.y] = this->m_mark;
             }
           }
           break;
@@ -102,7 +103,7 @@ namespace app {
 
       m_pScene->setGameBoard(gb);
 
-      if (this->isTurn == false)
+      if (this->m_isTurn == false)
       {
         m_pScene->checkFinish();
 
@@ -113,17 +114,17 @@ namespace app {
 
   void Player::setId(const int &id)
   {
-    this->id = id;
+    this->m_id = id;
   }
 
   int Player::getId() const
   {
-    return this->id;
+    return this->m_id;
   }
 
   void Player::setMark(const int &mark)
   {
-    this->mark = mark;
+    this->m_mark = mark;
   }
 
   Point2D Player::getCursor() const
@@ -138,17 +139,17 @@ namespace app {
 
   int Player::getMark() const
   {
-    return this->mark;
+    return this->m_mark;
   }
 
   void Player::setIsTurn(const bool &isTurn)
   {
-    this->isTurn = isTurn;
+    this->m_isTurn = isTurn;
   }
 
   bool Player::getIsTurn() const
   {
-    return this->isTurn;
+    return this->m_isTurn;
   }
 
   void Player::waitKeyboardEvent()
