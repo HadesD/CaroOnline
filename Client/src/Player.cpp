@@ -2,13 +2,19 @@
 
 #include "app/Player.hpp"
 
-#include "../Common/Network.hpp"
 
 namespace app {
 
-  Player::Player()
+  /*
+   * Player::Player()
+   * {
+   *   m_isReady = false;
+   * }
+   */
+
+  Player::Player(asio::io_service &s) : m_socket(s)
   {
-    m_isReady = false;
+
   }
 
   Player::~Player()
@@ -19,6 +25,11 @@ namespace app {
   void Player::update()
   {
     this->waitKeyboardEvent();
+  }
+
+  void Player::waitKeyboardEvent()
+  {
+    this->onKeyboardEvent();
   }
 
   void Player::onKeyboardEvent()
@@ -152,11 +163,6 @@ namespace app {
     return this->m_isTurn;
   }
 
-  void Player::waitKeyboardEvent()
-  {
-    this->onKeyboardEvent();
-  }
-
   void Player::setScene(std::shared_ptr<scenes::PlayScene> scene)
   {
     m_pScene = scene;
@@ -167,4 +173,28 @@ namespace app {
     this->setScene(std::shared_ptr<scenes::PlayScene>(scene));
   }
 
+  void Player::connect()
+  {
+    m_socket.async_connect(
+      asio::ip::tcp::endpoint(
+        asio::ip::address::from_string("0.0.0.0"),
+        8889
+        ),
+      std::bind(&Player::onConnect, this, std::placeholders::_1)
+      );
+  }
+
+  void Player::onConnect(const std::error_code &e)
+  {
+    if (e)
+    {
+      throw std::runtime_error("Error: " + e.message());
+    }
+    else
+    {
+      std::cout << "Connected" << std::endl;
+    }
+  }
+
 }
+

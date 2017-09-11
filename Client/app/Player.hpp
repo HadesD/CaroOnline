@@ -6,6 +6,7 @@
 #include "app/scenes/PlayScene.hpp"
 
 #include "app/input/Kbhit.hpp"
+#include "../Common/Network.hpp"
 
 namespace app {
 
@@ -13,10 +14,12 @@ namespace app {
   {
     public:
       Player();
+      Player(asio::io_service &s);
       ~Player();
 
     public:
       void update();
+      void connect(); // Network
 
     private:
       void waitKeyboardEvent();
@@ -36,6 +39,7 @@ namespace app {
       bool getIsTurn() const;
       Point2D getCursor() const;
       void setCursor(const Point2D &c);
+      void onConnect(const std::error_code &e);
 
     protected:
       int m_id;
@@ -49,6 +53,10 @@ namespace app {
       // std::shared_ptr<scenes::PlayScene> m_pScene;
       std::shared_ptr<scenes::PlayScene> m_pScene;
       app::input::Kbhit m_kbhit;
+
+      // Network socket
+      asio::ip::tcp::socket m_socket;
+      std::string m_sendData;
 
   };
 

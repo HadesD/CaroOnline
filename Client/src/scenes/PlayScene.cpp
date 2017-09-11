@@ -27,14 +27,20 @@ namespace app { namespace scenes {
 
   void PlayScene::init()
   {
-    std::shared_ptr<app::Player> me1(new app::Player());
+    asio::io_service ioService;
+
+    std::shared_ptr<app::Player> me1(new app::Player(ioService));
     me1->setIsTurn(true);
     me1->setMark(m_listPlayer.size()+1);
+    me1->connect();
     this->addPlayer(me1);
 
-    std::shared_ptr<app::Player> me2(new app::Player());
+    std::shared_ptr<app::Player> me2(new app::Player(ioService));
     me2->setMark(m_listPlayer.size()+1);
+    me1->connect();
     this->addPlayer(me2);
+
+    ioService.run();
   }
 
   void PlayScene::draw()
