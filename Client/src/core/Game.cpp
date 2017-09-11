@@ -12,7 +12,7 @@
 #include "../Common/Config.hpp"
 
 #include "app/core/Game.hpp"
-#include "app/WindowManager.h"
+// #include "app/WindowManager.h"
 #include "app/Config.hpp"
 
 #include "app/Scene.hpp"
@@ -96,8 +96,9 @@ namespace app { namespace core {
       now_time = std::chrono::steady_clock::now();
 
       long wait = 1000 / fixed_fps - dt.count() * 1000;
-
+#if defined(DEBUG_MODE)
       std::cout << "FPS: " << (1000 / (wait == 0 ? (1000/fixed_fps) : wait)) << std::endl;
+#endif
 
       if (wait > 0)
       {

@@ -188,7 +188,7 @@ namespace app {
   {
     if (e)
     {
-      throw std::runtime_error("Error: " + e.message());
+      throw std::runtime_error(e.message());
     }
     else
     {
