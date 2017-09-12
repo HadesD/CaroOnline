@@ -11,7 +11,8 @@
 
 namespace app { namespace scenes {
 
-  PlayScene::PlayScene(const std::shared_ptr<app::core::Game> &game) : app::Scene(game)
+  PlayScene::PlayScene(const std::shared_ptr<app::core::Game> &game) :
+    app::Scene(game)
   {
     m_gameBoard.assign(
       common::config::gameBoardRows,

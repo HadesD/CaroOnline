@@ -14,7 +14,6 @@ namespace app {
 
   Player::Player(asio::io_service &s) : m_socket(s)
   {
-
   }
 
   Player::~Player()
