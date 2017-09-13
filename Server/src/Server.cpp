@@ -56,6 +56,7 @@ namespace app {
         std::placeholders::_2
         )
       );
+    this->accept();
   }
 
   void Server::onReadHeader(const std::error_code &e, const std::size_t &bytes)
