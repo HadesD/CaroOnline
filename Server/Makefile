@@ -14,6 +14,7 @@ build:
 		-o bin/server \
 		src/main.cpp \
 		../Common/Config.cpp \
+		../Common/Net/Socket.cpp \
 		src/Server.cpp
 
 run:
