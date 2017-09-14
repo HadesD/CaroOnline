@@ -36,26 +36,23 @@ namespace app {
     }
     else
     {
-      this->readHeader();
+      const std::size_t m_bytes = 4;
+
+      // Bind to Read
+      asio::async_read(
+        m_socket,
+        asio::buffer(m_buffer, m_bytes),
+        std::bind(
+          &Server::onReadHeader,
+          this,
+          std::placeholders::_1,
+          std::placeholders::_2
+          )
+        );
     }
 
     // Reset accept new client
     this->accept();
-  }
-
-  void Server::readHeader()
-  {
-    const std::size_t m_header = 4;
-    asio::async_read(
-      m_socket,
-      asio::buffer(m_buffer, m_header),
-      std::bind(
-        &Server::onReadHeader,
-        this,
-        std::placeholders::_1,
-        std::placeholders::_2
-        )
-      );
   }
 
   void Server::onReadHeader(const std::error_code &e, const std::size_t &bytes)
@@ -68,6 +65,31 @@ namespace app {
     {
       std::cout << "Size: " << bytes << std::endl;
       std::cout << "Buffer: " << m_buffer << std::endl;
+
+      // Do Response
+      asio::async_write(
+        m_socket,
+        asio::buffer("HEHEHE", 4),
+        std::bind(
+          &Server::onResponse,
+          this,
+          std::placeholders::_1,
+          std::placeholders::_2
+          )
+        );
+
+    }
+  }
+
+  void Server::onResponse(const std::error_code &e, const std::size_t &bytes)
+  {
+    if (e)
+    {
+      std::cerr << "Error: " << e.message() << std::endl;
+    }
+    else
+    {
+      std::cout << "Responded: " << bytes << std::endl;
     }
   }
 

@@ -13,9 +13,9 @@ build:
 		-lpthread \
 		-pthread \
 		-o bin/server \
-		src/main.cpp \
 		../Common/Config.cpp \
-		../Common/Net/Socket.cpp \
+		../Common/net/Socket.cpp \
+		src/main.cpp \
 		src/Server.cpp
 
 run:

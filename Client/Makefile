@@ -13,12 +13,12 @@ build:
 		-lpthread \
 		-pthread \
 		-o bin/caro \
+		../Common/Config.cpp \
 		src/main.cpp \
 		src/core/Game.cpp \
 		src/input/Kbhit.cpp \
 		src/Player.cpp \
 		src/WindowManager.cpp \
-		../Common/Config.cpp \
 		src/Config.cpp \
 		src/Scene.cpp \
 		src/Point2D.cpp \

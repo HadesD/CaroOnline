@@ -2,7 +2,7 @@
 #define COMMON_NET_SOCKET
 // #include ""
 
-namespace common {
+namespace common { namespace net {
 
   class Socket
   {
@@ -11,6 +11,6 @@ namespace common {
       ~Socket();
   };
 
-}
+} }
 
 #endif

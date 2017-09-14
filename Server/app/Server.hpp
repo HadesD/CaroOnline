@@ -22,9 +22,14 @@ namespace app {
       void accept();
 
     private:
-      void onAcceptConnection(const std::error_code &e);
-      void readHeader();
-      void onReadHeader(const std::error_code &e, const std::size_t &bytes);
+      // First Accept
+      void onAcceptConnection(const std::error_code &/* e */);
+
+      // Second Read recived data
+      void onReadHeader(const std::error_code &/* e */, const std::size_t &/* bytes */);
+
+      // Last Response
+      void onResponse(const std::error_code &/* e */, const std::size_t &/* bytes */);
 
     private:
       // asio::ip::udp m_acceptor;
