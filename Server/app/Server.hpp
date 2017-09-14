@@ -6,6 +6,12 @@
 #include "../Common/Network.hpp"
 #include "../Common/Config.hpp"
 
+namespace common {
+  namespace net {
+    class Socket;
+  }
+}
+
 namespace app {
 
   // class Room;
@@ -23,20 +29,30 @@ namespace app {
 
     private:
       // First Accept
-      void onAcceptConnection(const std::error_code &/* e */);
+      void onAcceptConnection(
+        const std::shared_ptr<common::net::Socket> &/* socket */,
+        const std::error_code &/* e */
+        );
 
       // Second Read recived data
-      void onReadHeader(const std::error_code &/* e */, const std::size_t &/* bytes */);
+      void onReadHeader(
+        const std::shared_ptr<common::net::Socket> &/* socket */,
+        const std::error_code &/* e */,
+        const std::size_t &/* bytes */
+        );
 
       // Last Response
-      void onResponse(const std::error_code &/* e */, const std::size_t &/* bytes */);
+      void onResponse(
+        const std::shared_ptr<common::net::Socket> &/* socket */,
+        const std::error_code &/* e */,
+        const std::size_t &/* bytes */
+        );
 
     private:
       // asio::ip::udp m_acceptor;
-      // asio::ip::udp::socket m_socket;
 
+      asio::io_service &m_pIoService;
       asio::ip::tcp::acceptor m_acceptor;
-      asio::ip::tcp::socket m_socket;
       char m_buffer[];
 
       // Room m_room;

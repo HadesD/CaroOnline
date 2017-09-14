@@ -1,10 +1,11 @@
 #include "app/Server.hpp"
+#include "../Common/net/Socket.hpp"
 
 namespace app {
 
   Server::Server(asio::io_service &s) :
-    m_acceptor(s, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), 8889))
-    , m_socket(s)
+    m_pIoService(s)
+    , m_acceptor(s, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), 8889))
   {
   }
 
@@ -19,16 +20,22 @@ namespace app {
 
   void Server::accept()
   {
+    auto socket = std::make_shared<common::net::Socket>(m_pIoService);
+
     m_acceptor.async_accept(
-      m_socket, std::bind(
+      socket->getSocket(), std::bind(
         &Server::onAcceptConnection,
         this,
+        socket->shared_from_this(),
         std::placeholders::_1
         )
       );
   }
 
-  void Server::onAcceptConnection(const std::error_code &e)
+  void Server::onAcceptConnection(
+    const std::shared_ptr<common::net::Socket> &socket,
+    const std::error_code &e
+    )
   {
     if (e)
     {
@@ -40,11 +47,12 @@ namespace app {
 
       // Bind to Read
       asio::async_read(
-        m_socket,
+        socket->getSocket(),
         asio::buffer(m_buffer, m_bytes),
         std::bind(
           &Server::onReadHeader,
           this,
+          socket->shared_from_this(),
           std::placeholders::_1,
           std::placeholders::_2
           )
@@ -55,7 +63,10 @@ namespace app {
     this->accept();
   }
 
-  void Server::onReadHeader(const std::error_code &e, const std::size_t &bytes)
+  void Server::onReadHeader(
+    const std::shared_ptr<common::net::Socket> &socket,
+    const std::error_code &e, const std::size_t &bytes
+    )
   {
     if (e)
     {
@@ -68,11 +79,12 @@ namespace app {
 
       // Do Response
       asio::async_write(
-        m_socket,
+        socket->getSocket(),
         asio::buffer("HEHEHE", 4),
         std::bind(
           &Server::onResponse,
           this,
+          socket->shared_from_this(),
           std::placeholders::_1,
           std::placeholders::_2
           )
@@ -81,7 +93,10 @@ namespace app {
     }
   }
 
-  void Server::onResponse(const std::error_code &e, const std::size_t &bytes)
+  void Server::onResponse(
+    const std::shared_ptr<common::net::Socket> &/* socket */,
+    const std::error_code &e, const std::size_t &bytes
+    )
   {
     if (e)
     {

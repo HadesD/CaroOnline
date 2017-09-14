@@ -15,6 +15,7 @@ build:
 		-o bin/server \
 		../Common/Config.cpp \
 		../Common/net/Socket.cpp \
+		../Common/Network.cpp \
 		src/main.cpp \
 		src/Server.cpp
 
