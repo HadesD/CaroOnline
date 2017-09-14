@@ -24,6 +24,7 @@ namespace app {
     private:
       void waitKeyboardEvent();
       void onKeyboardEvent();
+      void sendHandle(const std::error_code &e, std::size_t bytes);
 
     public:
       void setId(const int &id);

@@ -24,6 +24,14 @@ namespace app {
   void Player::update()
   {
     this->waitKeyboardEvent();
+
+    m_socket.async_send(asio::buffer("GET"), std::bind(&Player::sendHandle, this,
+                                                          std::placeholders::_1, std::placeholders::_2));
+  }
+
+  void Player::sendHandle(const std::error_code &e, std::size_t bytes)
+  {
+    std::cout << bytes << std::endl;
   }
 
   void Player::waitKeyboardEvent()

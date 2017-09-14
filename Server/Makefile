@@ -9,6 +9,7 @@ default: build
 
 build:
 	$(CXX) -I. \
+		-I../Common/third_party/asio/asio/include \
 		-lpthread \
 		-pthread \
 		-o bin/server \
