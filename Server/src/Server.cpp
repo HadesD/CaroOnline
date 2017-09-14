@@ -19,16 +19,13 @@ namespace app {
 
   void Server::accept()
   {
-    // while (true)
-    {
-      m_acceptor.async_accept(
-        m_socket, std::bind(
-          &Server::onAcceptConnection,
-          this,
-          std::placeholders::_1
-          )
-        );
-    }
+    m_acceptor.async_accept(
+      m_socket, std::bind(
+        &Server::onAcceptConnection,
+        this,
+        std::placeholders::_1
+        )
+      );
   }
 
   void Server::onAcceptConnection(const std::error_code &e)
@@ -41,6 +38,9 @@ namespace app {
     {
       this->readHeader();
     }
+
+    // Reset accept new client
+    this->accept();
   }
 
   void Server::readHeader()
@@ -56,7 +56,6 @@ namespace app {
         std::placeholders::_2
         )
       );
-    this->accept();
   }
 
   void Server::onReadHeader(const std::error_code &e, const std::size_t &bytes)

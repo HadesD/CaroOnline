@@ -25,7 +25,7 @@ namespace app {
   {
     this->waitKeyboardEvent();
 
-    m_socket.async_send(asio::buffer("GET"), std::bind(&Player::sendHandle, this,
+    m_socket.async_send(asio::buffer("GETPP"), std::bind(&Player::sendHandle, this,
                                                           std::placeholders::_1, std::placeholders::_2));
   }
 
