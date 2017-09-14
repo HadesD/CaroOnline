@@ -25,8 +25,15 @@ namespace app {
   {
     this->waitKeyboardEvent();
 
-    m_socket.async_send(asio::buffer("GETPP"), std::bind(&Player::sendHandle, this,
-                                                          std::placeholders::_1, std::placeholders::_2));
+    m_socket.async_send(
+      asio::buffer("GETPP"),
+      std::bind(
+        &Player::sendHandle,
+        this,
+        std::placeholders::_1,
+        std::placeholders::_2
+        )
+      );
   }
 
   void Player::sendHandle(const std::error_code &e, std::size_t bytes)
@@ -193,12 +200,14 @@ namespace app {
 
   void Player::onConnect(const std::error_code &e)
   {
+    std::srand(0);
     if (e)
     {
       throw std::runtime_error(e.message());
     }
     else
     {
+      std::cout << std::rand() << std::endl;
       std::cout << "Connected" << std::endl;
     }
   }
