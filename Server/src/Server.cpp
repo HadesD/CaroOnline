@@ -95,7 +95,8 @@ namespace app {
 
   void Server::onResponse(
     const std::shared_ptr<common::net::Socket> &/* socket */,
-    const std::error_code &e, const std::size_t &bytes
+    const std::error_code &e,
+    const std::size_t &bytes
     )
   {
     if (e)

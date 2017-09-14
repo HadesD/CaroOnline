@@ -19,6 +19,8 @@ int main(int argc, char *argv[])
 
     app::Server server(service);
 
+    server.init();
+
     server.accept();
 
     service.run();
