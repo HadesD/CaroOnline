@@ -2,3 +2,6 @@
 	path = Common/third_party/asio
 	url = https://github.com/chriskohlhoff/asio.git
 	ignore=dirty
+[submodule "Common/third_party/spdlog"]
+	path = Common/third_party/spdlog
+	url = https://github.com/gabime/spdlog.git

@@ -1,5 +1,7 @@
 #include "app/Server.hpp"
+
 #include "../Common/net/Socket.hpp"
+#include "../Common/Logger.hpp"
 
 namespace app {
 
@@ -15,7 +17,7 @@ namespace app {
 
   void Server::init()
   {
-    std::cout << "Server initialized" << std::endl;
+    Log->info("Server Init");
   }
 
   void Server::accept()
@@ -74,8 +76,8 @@ namespace app {
     }
     else
     {
-      std::cout << "Size: " << bytes << std::endl;
-      std::cout << "Buffer: " << m_buffer << std::endl;
+      std::string m = "Size: " + std::to_string(bytes) + " Buffer: " + m_buffer;
+      Log->info(m);
 
       // Do Response
       asio::async_write(
@@ -105,7 +107,7 @@ namespace app {
     }
     else
     {
-      std::cout << "Responded: " << bytes << std::endl;
+      Log->info("Responsed" + std::to_string(bytes));
     }
   }
 

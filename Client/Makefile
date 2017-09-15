@@ -10,6 +10,7 @@ default: build
 build:
 	$(CXX) -I. \
 		-I../Common/third_party/asio/asio/include \
+		-I../Common/third_party/spdlog/include \
 		-lpthread \
 		-pthread \
 		-o bin/caro \
