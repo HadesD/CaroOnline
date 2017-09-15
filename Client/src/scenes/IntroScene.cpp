@@ -8,8 +8,10 @@
 
 namespace app { namespace scenes {
 
-  IntroScene::IntroScene(const std::shared_ptr<app::core::Game> &game) : app::Scene(game)
+  IntroScene::IntroScene(const std::shared_ptr<app::core::Game> &game) :
+    app::Scene(game)
   {
+    m_cursor = 0;
   }
 
   IntroScene::~IntroScene()
@@ -18,8 +20,8 @@ namespace app { namespace scenes {
 
   void IntroScene::init()
   {
-    // m_selection.push_back({"", [](){}});
-    // m_selection.push_back({"", ""});
+    m_selection.emplace_back("Play Game", std::bind(&IntroScene::goToPlay, this));
+    m_selection.emplace_back("Quit", std::bind(&IntroScene::quit, this));
   }
 
   void IntroScene::update(const float &/* dt */)
@@ -29,10 +31,10 @@ namespace app { namespace scenes {
 
   void IntroScene::draw()
   {
-    // std::cout << "sdkfjlsdfj" << std::endl;
     for (std::size_t i = 0; i < m_selection.size(); i++)
     {
-      std::cout << i << std::endl;
+      std::cout << "[" << ((m_cursor == i) ? "x" : " ") << "]" << " ";
+      std::cout << m_selection.at(i).name << std::endl;
     }
   }
 
@@ -48,14 +50,45 @@ namespace app { namespace scenes {
   {
     switch(m_kbhit.getch())
     {
+      case 'o':
+      case 13:
+        {
+          m_selection.at(m_cursor).call();
+        }
+        break;
       case 'q':
         {
           this->quit();
         }
         break;
-      case 'p':
+      case 'h':
         {
-          this->goToPlay();
+        }
+        break;
+      case 's':
+      case 'B':
+      case 'j':
+        {
+          if (m_cursor >= (m_selection.size() - 1))
+          {
+            return;
+          }
+          m_cursor++;
+        }
+        break;
+      case 'w':
+      case 'A':
+      case 'k':
+        {
+          if (m_cursor <= 0)
+          {
+            return;
+          }
+          m_cursor--;
+        }
+        break;
+      case 'l':
+        {
         }
         break;
     }
@@ -63,8 +96,11 @@ namespace app { namespace scenes {
 
   void IntroScene::goToPlay()
   {
-    m_pGame->setScene(std::shared_ptr<app::scenes::PlayScene>(new
-                                                              app::scenes::PlayScene(m_pGame)));
+    m_pGame->setScene(
+      std::shared_ptr<app::scenes::PlayScene>(
+        new app::scenes::PlayScene(m_pGame)
+        )
+      );
   }
 
   void IntroScene::quit()
