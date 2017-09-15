@@ -13,7 +13,7 @@ namespace app {
    * }
    */
 
-  Player::Player(asio::io_service &s) : m_pIoSocket(s)
+  Player::Player(asio::io_service &s) : m_pIoService(s)
   {
   }
 
@@ -26,9 +26,9 @@ namespace app {
   {
     this->waitKeyboardEvent();
 
-    auto socket = std::make_shared<common::net::Socket>(m_pIoService);
+    m_pSocket = std::make_shared<common::net::Socket>(m_pIoService);
 
-    m_pIoSocket.async_send(
+    m_pSocket->getSocket().async_send(
       asio::buffer("GETPP"),
       std::bind(
         &Player::sendHandle,
@@ -192,7 +192,7 @@ namespace app {
 
   void Player::connect()
   {
-    m_pIoSocket.async_connect(
+    m_pSocket->getSocket().async_connect(
       asio::ip::tcp::endpoint(
         asio::ip::address::from_string("0.0.0.0"),
         8889

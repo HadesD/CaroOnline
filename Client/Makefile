@@ -15,6 +15,8 @@ build:
 		-pthread \
 		-o bin/caro \
 		../Common/Config.cpp \
+		../Common/net/Socket.cpp \
+		../Common/Logger.cpp \
 		src/main.cpp \
 		src/core/Game.cpp \
 		src/input/Kbhit.cpp \

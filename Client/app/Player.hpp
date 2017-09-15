@@ -8,6 +8,12 @@
 #include "app/input/Kbhit.hpp"
 #include "../Common/Network.hpp"
 
+namespace common {
+  namespace net {
+    class Socket;
+  }
+}
+
 namespace app {
 
   class Player
@@ -56,7 +62,8 @@ namespace app {
       app::input::Kbhit m_kbhit;
 
       // Network socket
-      asio::ip::tcp::socket m_pIoSocket;
+      std::shared_ptr<common::net::Socket> m_pSocket;
+      asio::io_service &m_pIoService;
       std::string m_sendData;
 
   };
