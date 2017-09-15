@@ -22,20 +22,18 @@ namespace app {
 
   void Server::accept()
   {
-    auto socket = std::make_shared<common::net::Socket>(m_pIoService);
+    m_pSocket = std::make_shared<common::net::Socket>(m_pIoService);
 
     m_acceptor.async_accept(
-      socket->getSocket(), std::bind(
+      m_pSocket->getSocket(), std::bind(
         &Server::onAcceptConnection,
         this,
-        socket->shared_from_this(),
         std::placeholders::_1
         )
       );
   }
 
   void Server::onAcceptConnection(
-    const std::shared_ptr<common::net::Socket> &socket,
     const std::error_code &e
     )
   {
@@ -49,12 +47,11 @@ namespace app {
 
       // Bind to Read
       asio::async_read(
-        socket->getSocket(),
+        m_pSocket->getSocket(),
         asio::buffer(m_buffer, m_bytes),
         std::bind(
           &Server::onReadHeader,
           this,
-          socket->shared_from_this(),
           std::placeholders::_1,
           std::placeholders::_2
           )
@@ -66,7 +63,6 @@ namespace app {
   }
 
   void Server::onReadHeader(
-    const std::shared_ptr<common::net::Socket> &socket,
     const std::error_code &e, const std::size_t &bytes
     )
   {
@@ -81,12 +77,11 @@ namespace app {
 
       // Do Response
       asio::async_write(
-        socket->getSocket(),
+        m_pSocket->getSocket(),
         asio::buffer("HEHEHE", 4),
         std::bind(
           &Server::onResponse,
           this,
-          socket->shared_from_this(),
           std::placeholders::_1,
           std::placeholders::_2
           )
@@ -96,7 +91,6 @@ namespace app {
   }
 
   void Server::onResponse(
-    const std::shared_ptr<common::net::Socket> &/* socket */,
     const std::error_code &e,
     const std::size_t &bytes
     )

@@ -30,20 +30,20 @@ namespace app {
     private:
       // First Accept
       void onAcceptConnection(
-        const std::shared_ptr<common::net::Socket> &/* socket */,
+        // const std::unique_ptr<common::net::Socket> &#<{(| socket |)}>#,
         const std::error_code &/* e */
         );
 
       // Second Read recived data
       void onReadHeader(
-        const std::shared_ptr<common::net::Socket> &/* socket */,
+        // const std::unique_ptr<common::net::Socket> &#<{(| socket |)}>#,
         const std::error_code &/* e */,
         const std::size_t &/* bytes */
         );
 
       // Last Response
       void onResponse(
-        const std::shared_ptr<common::net::Socket> &/* socket */,
+        // const std::unique_ptr<common::net::Socket> &#<{(| socket |)}>#,
         const std::error_code &/* e */,
         const std::size_t &/* bytes */
         );
@@ -53,6 +53,7 @@ namespace app {
 
       asio::io_service &m_pIoService;
       asio::ip::tcp::acceptor m_acceptor;
+      std::shared_ptr<common::net::Socket> m_pSocket;
       char m_buffer[];
 
       // Room m_room;

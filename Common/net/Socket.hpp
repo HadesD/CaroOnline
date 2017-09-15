@@ -9,7 +9,7 @@ namespace common { namespace net {
     std::string unique_id;
   };
 
-  class Socket : public std::enable_shared_from_this<Socket>
+  class Socket// : public std::enable_shared_from_this<Socket>
   {
     public:
       typedef asio::ip::tcp::socket SocketType;
