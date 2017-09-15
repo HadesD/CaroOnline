@@ -56,7 +56,7 @@ namespace app {
       app::input::Kbhit m_kbhit;
 
       // Network socket
-      asio::ip::tcp::socket m_socket;
+      asio::ip::tcp::socket m_pIoSocket;
       std::string m_sendData;
 
   };
