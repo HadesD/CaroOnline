@@ -10,7 +10,7 @@
 
 namespace common {
   namespace net {
-    class Socket;
+    class Connection;
   }
 }
 
@@ -62,7 +62,7 @@ namespace app {
       app::input::Kbhit m_kbhit;
 
       // Network socket
-      std::shared_ptr<common::net::Socket> m_pSocket;
+      std::shared_ptr<common::net::Connection> m_pConnection;
       asio::io_service &m_pIoService;
       std::string m_sendData;
 

@@ -2,7 +2,7 @@
 
 #include "app/Player.hpp"
 
-#include "../Common/net/Socket.hpp"
+#include "../Common/net/Connection.hpp"
 
 namespace app {
 
@@ -26,9 +26,9 @@ namespace app {
   {
     this->waitKeyboardEvent();
 
-    m_pSocket = std::make_shared<common::net::Socket>(m_pIoService);
+    m_pConnection = std::make_shared<common::net::Connection>(m_pIoService);
 
-    m_pSocket->getSocket().async_send(
+    m_pConnection->getSocket().async_send(
       asio::buffer("GETPP"),
       std::bind(
         &Player::sendHandle,
@@ -192,7 +192,7 @@ namespace app {
 
   void Player::connect()
   {
-    m_pSocket->getSocket().async_connect(
+    m_pConnection->getSocket().async_connect(
       asio::ip::tcp::endpoint(
         asio::ip::address::from_string("0.0.0.0"),
         8889

@@ -15,7 +15,7 @@ build:
 		-pthread \
 		-o bin/server \
 		../Common/Config.cpp \
-		../Common/net/Socket.cpp \
+		../Common/net/Connection.cpp \
 		../Common/Network.cpp \
 		../Common/Logger.cpp \
 		src/main.cpp \

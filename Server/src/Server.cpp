@@ -1,6 +1,6 @@
 #include "app/Server.hpp"
 
-#include "../Common/net/Socket.hpp"
+#include "../Common/net/Connection.hpp"
 #include "../Common/Logger.hpp"
 
 namespace app {
@@ -22,10 +22,10 @@ namespace app {
 
   void Server::accept()
   {
-    m_pSocket = std::make_shared<common::net::Socket>(m_pIoService);
+    m_pConnection = std::make_shared<common::net::Connection>(m_pIoService);
 
     m_acceptor.async_accept(
-      m_pSocket->getSocket(), std::bind(
+      m_pConnection->getSocket(), std::bind(
         &Server::onAcceptConnection,
         this,
         std::placeholders::_1
@@ -47,7 +47,7 @@ namespace app {
 
       // Bind to Read
       asio::async_read(
-        m_pSocket->getSocket(),
+        m_pConnection->getSocket(),
         asio::buffer(m_buffer, m_bytes),
         std::bind(
           &Server::onReadHeader,
@@ -77,7 +77,7 @@ namespace app {
 
       // Do Response
       asio::async_write(
-        m_pSocket->getSocket(),
+        m_pConnection->getSocket(),
         asio::buffer("HEHEHE", 4),
         std::bind(
           &Server::onResponse,

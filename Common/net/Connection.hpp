@@ -1,5 +1,5 @@
-#ifndef COMMON_NET_SOCKET
-#define COMMON_NET_SOCKET
+#ifndef COMMON_NET_CONNECTION_HPP
+#define COMMON_NET_CONNECTION_HPP
 #include "../Network.hpp"
 
 namespace common { namespace net {
@@ -9,14 +9,14 @@ namespace common { namespace net {
     std::string unique_id;
   };
 
-  class Socket// : public std::enable_shared_from_this<Socket>
+  class Connection
   {
     public:
       typedef asio::ip::tcp::socket SocketType;
 
     public:
-      Socket(asio::io_service &/* s */);
-      ~Socket();
+      Connection(asio::io_service &/* s */);
+      // ~Connection();
 
     public:
       void send(const ResponseStruct &/* res */);
