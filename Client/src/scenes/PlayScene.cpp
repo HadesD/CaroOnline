@@ -36,10 +36,10 @@ namespace app { namespace scenes {
     me1->connect();
     this->addPlayer(me1);
 
-    std::shared_ptr<app::Player> me2(new app::Player(ioService));
-    me2->setMark(m_listPlayer.size()+1);
+    // std::shared_ptr<app::Player> me2(new app::Player(ioService));
+    // me2->setMark(m_listPlayer.size()+1);
     // me1->connect();
-    this->addPlayer(me2);
+    // this->addPlayer(me2);
 
     ioService.run();
   }

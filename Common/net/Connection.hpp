@@ -16,7 +16,7 @@ namespace common { namespace net {
 
     public:
       Connection(asio::io_service &/* s */);
-      // ~Connection();
+      ~Connection();
 
     public:
       void send(const ResponseStruct &/* res */);

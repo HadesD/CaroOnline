@@ -25,7 +25,8 @@ namespace app {
     m_pConnection = std::make_shared<common::net::Connection>(m_pIoService);
 
     m_acceptor.async_accept(
-      m_pConnection->getSocket(), std::bind(
+      m_pConnection->getSocket(),
+      std::bind(
         &Server::onAcceptConnection,
         this,
         std::placeholders::_1
@@ -33,10 +34,10 @@ namespace app {
       );
   }
 
-  void Server::onAcceptConnection(
-    const std::error_code &e
-    )
+  void Server::onAcceptConnection(const std::error_code &e)
   {
+    Log->info("Starting accept connection");
+
     if (e)
     {
       std::cerr << "Error: " << e.message() << std::endl;
@@ -59,7 +60,7 @@ namespace app {
     }
 
     // Reset accept new client
-    this->accept();
+    // this->accept();
   }
 
   void Server::onReadHeader(

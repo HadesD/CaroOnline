@@ -16,7 +16,7 @@ namespace app {
 
   // class Room;
 
-  class Server
+  class Server : public std::enable_shared_from_this<Server>
   {
     public:
       Server(asio::io_service &s);

@@ -15,6 +15,7 @@ namespace app {
 
   Player::Player(asio::io_service &s) : m_pIoService(s)
   {
+    std::srand(0);
   }
 
   Player::~Player()
@@ -24,12 +25,13 @@ namespace app {
 
   void Player::update()
   {
+    std::cout << std::rand() << std::endl;
     this->waitKeyboardEvent();
 
     m_pConnection = std::make_shared<common::net::Connection>(m_pIoService);
 
     m_pConnection->getSocket().async_send(
-      asio::buffer("GETPP"),
+      asio::buffer("GETPP", 4),
       std::bind(
         &Player::sendHandle,
         this,
@@ -41,6 +43,10 @@ namespace app {
 
   void Player::sendHandle(const std::error_code &e, std::size_t bytes)
   {
+    if (e)
+    {
+      throw std::runtime_error(e.message());
+    }
     std::cout << bytes << std::endl;
   }
 
@@ -203,14 +209,12 @@ namespace app {
 
   void Player::onConnect(const std::error_code &e)
   {
-    std::srand(0);
     if (e)
     {
       throw std::runtime_error(e.message());
     }
     else
     {
-      std::cout << std::rand() << std::endl;
       std::cout << "Connected" << std::endl;
     }
   }
