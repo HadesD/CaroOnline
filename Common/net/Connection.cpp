@@ -40,7 +40,13 @@ namespace common { namespace net {
     }
     else
     {
-      Log->info("Received: " + std::to_string(bytes));
+      Log->info("Received: " + std::to_string(bytes) + " bytes");
+      for (std::size_t i = 0; i < m_buffer.size(); i++)
+      {
+        std::cout << m_buffer.at(i);
+      }
+      std::cout << std::endl;
+
     }
 
     this->receive();
