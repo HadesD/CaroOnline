@@ -34,7 +34,7 @@ namespace common { namespace net {
     private:
       Socket m_socket;
       Endpoint m_endpoint;
-      std::array< char, 1024 > m_buffer;
+      std::array< char, 512 > m_buffer;
   };
 
 } }

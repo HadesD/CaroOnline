@@ -47,6 +47,11 @@ namespace common { namespace net {
       }
       std::cout << std::endl;
 
+      Log->info("Start response to");
+      m_socket.send_to(
+        asio::buffer("FFF", 3),
+        m_endpoint
+        );
     }
 
     this->receive();
