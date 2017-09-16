@@ -17,11 +17,9 @@ int main(int argc, char *argv[])
   {
     asio::io_service service;
 
-    app::Server server(service);
+    app::Server server(service, 8889);
 
-    server.init();
-
-    server.accept();
+    server.run();
 
     service.run();
 
