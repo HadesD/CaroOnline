@@ -7,7 +7,7 @@
 namespace common { namespace net {
 
   Connection::Connection(asio::io_service &s, const short &port) :
-    m_socket(s, Endpoint(Connection::Protocol::v4(), port))
+    m_socket(s, Connection::Endpoint(Connection::Protocol::v4(), port))
   {
   }
 
