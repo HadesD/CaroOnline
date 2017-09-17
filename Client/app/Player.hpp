@@ -7,12 +7,7 @@
 
 #include "app/input/Kbhit.hpp"
 #include "../Common/Network.hpp"
-
-namespace common {
-  namespace net {
-    class Connection;
-  }
-}
+#include "../Common/net/Connection.hpp"
 
 namespace app {
 
@@ -25,12 +20,10 @@ namespace app {
 
     public:
       void update();
-      void connect(); // Network
 
     private:
       void waitKeyboardEvent();
       void onKeyboardEvent();
-      void sendHandle(const std::error_code &e, std::size_t bytes);
 
     public:
       void setId(const int &id);
@@ -64,6 +57,7 @@ namespace app {
       // Network socket
       std::shared_ptr<common::net::Connection> m_pConnection;
       asio::io_service &m_pIoService;
+      common::net::Connection::Endpoint m_endpoint;
       std::string m_sendData;
 
   };

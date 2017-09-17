@@ -13,9 +13,14 @@ namespace app {
    * }
    */
 
-  Player::Player(asio::io_service &s) : m_pIoService(s)
+  Player::Player(asio::io_service &s) :
+    m_pIoService(s)
   {
     std::srand(0);
+    m_pConnection = std::make_shared<common::net::Connection>(
+      m_pIoService,
+      0
+      );
   }
 
   Player::~Player()
@@ -28,26 +33,19 @@ namespace app {
     std::cout << std::rand() << std::endl;
     this->waitKeyboardEvent();
 
-    m_pConnection = std::make_shared<common::net::Connection>(m_pIoService);
-
-    m_pConnection->getSocket().async_send(
-      asio::buffer("GETPP", 4),
-      std::bind(
-        &Player::sendHandle,
-        this,
-        std::placeholders::_1,
-        std::placeholders::_2
-        )
+    common::net::Connection::Endpoint dis(
+      common::net::Connection::Protocol::v4(),
+      8889
       );
-  }
 
-  void Player::sendHandle(const std::error_code &e, std::size_t bytes)
-  {
-    if (e)
-    {
-      throw std::runtime_error(e.message());
-    }
-    std::cout << bytes << std::endl;
+    m_pConnection->getSocket().async_send_to(
+    // m_pConnection->getSocket().send_to(
+      asio::buffer("ffff", 6),
+      dis,
+      std::bind([&](const std::error_code &e){
+
+      }, this, std::placeholders::_1)
+      );
   }
 
   void Player::waitKeyboardEvent()
@@ -194,29 +192,6 @@ namespace app {
   void Player::setScene(scenes::PlayScene *scene)
   {
     this->setScene(std::shared_ptr<scenes::PlayScene>(scene));
-  }
-
-  void Player::connect()
-  {
-    m_pConnection->getSocket().async_connect(
-      asio::ip::tcp::endpoint(
-        asio::ip::address::from_string("0.0.0.0"),
-        8889
-        ),
-      std::bind(&Player::onConnect, this, std::placeholders::_1)
-      );
-  }
-
-  void Player::onConnect(const std::error_code &e)
-  {
-    if (e)
-    {
-      throw std::runtime_error(e.message());
-    }
-    else
-    {
-      std::cout << "Connected" << std::endl;
-    }
   }
 
 }
