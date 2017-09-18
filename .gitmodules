@@ -5,3 +5,4 @@
 [submodule "Common/third_party/spdlog"]
 	path = Common/third_party/spdlog
 	url = https://github.com/gabime/spdlog.git
+	ignore=dirty

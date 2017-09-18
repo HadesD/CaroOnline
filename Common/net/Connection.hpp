@@ -25,7 +25,10 @@ namespace common { namespace net {
       void send(const ResponseStruct &/* res */);
 
     private:
-      void onReceive(const std::error_code &e, const std::size_t &bytes);
+      void onReceive(
+        const std::error_code &/* e */,
+        const std::size_t &/* bytes */
+        );
       void onSend();
 
     public:
