@@ -8,10 +8,18 @@ namespace common { namespace net { namespace socket {
   class Udp : public common::net::Socket
   {
     public:
-      Udp(const std::string ip, const int &port);
+      typedef asio::ip::udp::endpoint Endpoint;
+
+    public:
+      Udp(const std::string &/* ip */, const short &/* port */);
+      ~Udp();
+
+    public:
+      void send(const std::string &/* s */, const Endpoint &/* endpoint */);
 
     private:
       asio::ip::udp::socket m_socket;
+
   };
 
 } } }

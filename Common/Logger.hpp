@@ -31,6 +31,16 @@ namespace common {
 
 }
 
-extern std::shared_ptr<common::Logger> Log;
+static const auto Logger = common::Logger::getInstance();
+// template <typename ...T>
+class Log {
+  private:
+
+  public:
+    static void info(const std::string &s)
+    {
+      Logger->info(s);
+    }
+};
 
 #endif

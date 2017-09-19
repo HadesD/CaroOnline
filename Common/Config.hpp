@@ -9,6 +9,8 @@ namespace common { namespace config {
 
   extern const int maxCoupleCount; // Count To Win = maxCoupleCount + 1
 
+  static const std::size_t maxNetworkBufferSize = 2;
+
 } }
 
 #endif

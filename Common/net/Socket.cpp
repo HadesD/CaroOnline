@@ -2,10 +2,15 @@
 
 namespace common { namespace net {
 
-  Socket::Socket(const std::string ip, const int &port) :
+  Socket::Socket() :
     m_ioService()
   {
 
+  }
+
+  Socket::~Socket()
+  {
+    m_ioService.stop();
   }
 
 } }

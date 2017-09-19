@@ -20,7 +20,7 @@ namespace app {
 
   void Server::init()
   {
-    Log->info("Server Init");
+    Log::info("Server Init");
   }
 
   void Server::run()
@@ -29,7 +29,7 @@ namespace app {
 
     try
     {
-      Log->info("Server runing");
+      Log::info("Server runing");
       m_pConnection->receive();
     }
     catch (const std::exception &e)

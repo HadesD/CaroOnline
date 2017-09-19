@@ -2,8 +2,6 @@
 
 #include "spdlog/spdlog.h"
 
-std::shared_ptr<common::Logger> Log = common::Logger::getInstance();
-
 namespace common {
 
   static auto console = spdlog::stdout_color_mt("console");
