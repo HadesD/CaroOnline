@@ -28,6 +28,11 @@ namespace common {
     console->info(s);
   }
 
+  void Logger::error(const std::string &s)
+  {
+    console->error(s);
+  }
+
   std::shared_ptr<Logger> Logger::operator<<(const std::string &message)
   {
     // m_pLogAPI-> << message;

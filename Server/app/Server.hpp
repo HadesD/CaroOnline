@@ -2,15 +2,11 @@
 #define APP_SERVER_HPP
 #include <iostream>
 #include <memory>
+#include <map>
 
 #include "../Common/Config.hpp"
 #include "../Common/Network.hpp"
-
-namespace common {
-  namespace net {
-    class Connection;
-  }
-}
+#include "../Common/net/socket/Udp.hpp"
 
 namespace app {
 
@@ -19,7 +15,11 @@ namespace app {
   class Server
   {
     public:
-      Server(asio::io_service &s, const short &port);
+      typedef std::map<int, common::net::socket::Udp::EndPoint> ListClient;
+      typedef ListClient::value_type Client;
+
+    public:
+      Server(const std::string &ip, const short &port);
       ~Server();
 
     public:
@@ -27,14 +27,14 @@ namespace app {
 
     private:
       void init();
+      void receive();
 
     private:
-      asio::io_service &m_pIoService;
-      std::shared_ptr<common::net::Connection> m_pConnection;
+      std::shared_ptr<common::net::socket::Udp> m_pUdpSocket;
+      ListClient m_clients;
+      Client m_client;
+      common::net::Socket::Buffer m_buffers;
 
-      char m_buffer[];
-
-      // Room m_room;
   };
 
 }

@@ -1,17 +1,14 @@
 #include "app/Server.hpp"
 
-#include "../Common/net/Connection.hpp"
+// #include "../Common/net/Connection.hpp"
+#include "../Common/net/socket/Udp.hpp"
 #include "../Common/Logger.hpp"
 
 namespace app {
 
-  Server::Server(asio::io_service &s, const short &port) :
-    m_pIoService(s)
+  Server::Server(const std::string &ip, const short &port)
   {
-    m_pConnection = std::make_shared<common::net::Connection>(
-      m_pIoService,
-      port
-      );
+    m_pUdpSocket = std::make_shared<common::net::socket::Udp>(ip, port);
   }
 
   Server::~Server()
@@ -20,22 +17,57 @@ namespace app {
 
   void Server::init()
   {
-    Log::info("Server Init");
+    Log::info("Server :: init()");
   }
 
   void Server::run()
   {
     this->init();
 
-    try
+    Log::info("Server :: run()");
+
+    this->receive();
+
+    while (m_pUdpSocket->isOpening() == true)
     {
-      Log::info("Server runing");
-      m_pConnection->receive();
+      try
+      {
+        m_pUdpSocket->open();
+      }
+      catch (const std::exception &e)
+      {
+        Log::error(e.what());
+      }
+      catch (...)
+      {
+
+      }
     }
-    catch (const std::exception &e)
-    {
-      std::cerr << "Exeption: " << e.what() << std::endl;
-    }
+  }
+
+  void Server::receive()
+  {
+    m_pUdpSocket->receive(
+      m_buffers,
+      m_client.second,
+      [this](
+        const std::error_code &e,
+        const std::size_t
+        &bytes
+        )
+      {
+        if (e)
+        {
+          Log::error(e.message());
+        }
+        else
+        {
+          std::cout << this->m_buffers.data() << std::endl;
+        }
+
+        this->receive();
+      }
+      );
   }
 
 }

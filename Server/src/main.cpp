@@ -15,13 +15,9 @@ int main(int argc, char *argv[])
 
   try
   {
-    asio::io_service service;
-
-    app::Server server(service, 8889);
+    app::Server server("0.0.0.0", 8889);
 
     server.run();
-
-    service.run();
 
     std::cout << "Server shutdown" << std::endl;
   }

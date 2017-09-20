@@ -11,8 +11,11 @@ namespace common { namespace net {
     public:
       typedef std::array<char, common::config::maxNetworkBufferSize> Buffer;
       typedef std::function<
-        void(const std::error_code &, const std::size_t &bytes)
+        void(const std::error_code &, const std::size_t &)
         > onReceiveHandle;
+      typedef std::function<
+        void(const std::error_code &, const std::size_t &)
+        > onSendHandle;
 
     public:
       Socket();

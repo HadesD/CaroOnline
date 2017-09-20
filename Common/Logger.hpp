@@ -17,6 +17,7 @@ namespace common {
 
     public:
       void info(const std::string &s);
+      void error(const std::string &s);
 
     private:
     // public:
@@ -44,7 +45,7 @@ class Log {
 
     static void error(const std::string &s)
     {
-      Logger->info(s);
+      Logger->error(s);
     }
 };
 
