@@ -32,7 +32,7 @@ namespace app {
     private:
       std::shared_ptr<common::net::socket::Udp> m_pUdpSocket;
       ListClient m_clients;
-      Client m_client;
+      Client m_currentClient;
       common::net::Socket::Buffer m_buffers;
 
   };

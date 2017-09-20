@@ -49,7 +49,7 @@ namespace app {
   {
     m_pUdpSocket->receive(
       m_buffers,
-      m_client.second,
+      m_currentClient.second,
       [this](
         const std::error_code &e,
         const std::size_t
@@ -62,7 +62,18 @@ namespace app {
         }
         else
         {
-          std::cout << this->m_buffers.data() << std::endl;
+          std::string data(
+            this->m_buffers.data(),
+            this->m_buffers.data() + bytes
+            );
+
+          Log::info(
+            data
+            + " From: "
+            + this->m_currentClient.second.address().to_v4().to_string()
+            + ":"
+            + std::to_string(this->m_currentClient.second.port())
+            );
         }
 
         this->receive();

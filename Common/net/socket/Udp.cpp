@@ -25,6 +25,7 @@ namespace common { namespace net { namespace socket {
   void Udp::open()
   {
     Log::info("UdpSocket :: open()");
+
     try
     {
       m_ioService.run();
@@ -42,20 +43,7 @@ namespace common { namespace net { namespace socket {
     const onReceiveHandle &handle
     )
   {
-    m_socket.async_send_to(
-      asio::buffer(s), endpoint, handle
-      /*[](const std::error_code &e, const std::size_t &bytes){
-        if (e)
-        {
-          Log::info(e.message());
-          // throw std::
-        }
-        else
-        {
-          Log::info("Sent <" + std::to_string(bytes)  + ">");
-        }
-      }*/
-      );
+    m_socket.async_send_to(asio::buffer(s), endpoint, handle);
   }
 
   void Udp::receive(
@@ -64,7 +52,7 @@ namespace common { namespace net { namespace socket {
     const onReceiveHandle &handle
     )
   {
-    // Log::info("Start :: receive()");
+    Log::info("UdpSocket :: receive()");
     m_socket.async_receive_from(asio::buffer(buffer), endpoint, handle);
   }
 

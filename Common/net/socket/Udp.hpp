@@ -30,7 +30,6 @@ namespace common { namespace net { namespace socket {
 
     private:
       asio::ip::udp::socket m_socket;
-      // Endpoint m_endpoint;
 
   };
 

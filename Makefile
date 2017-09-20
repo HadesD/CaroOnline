@@ -1,4 +1,4 @@
-.PHONY: all run client server
+.PHONY: all run client server test
 
 default: server
 # default: client
@@ -8,3 +8,6 @@ client:
 
 server:
 	cd Server && make && make run
+
+test:
+	cd tests && python pingudp.py
