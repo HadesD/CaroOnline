@@ -41,6 +41,11 @@ class Log {
     {
       Logger->info(s);
     }
+
+    static void error(const std::string &s)
+    {
+      Logger->info(s);
+    }
 };
 
 #endif

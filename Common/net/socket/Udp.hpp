@@ -15,10 +15,13 @@ namespace common { namespace net { namespace socket {
       ~Udp();
 
     public:
-      void send(const std::string &/* s */, const Endpoint &/* endpoint */);
+      void open();
+      void send(const std::string &/* data */, const Endpoint &/* endpoint */);
+      void receive(Buffer &/* buffer */, EndPoint &/* endpoint */);
 
     private:
       asio::ip::udp::socket m_socket;
+      // Endpoint m_endpoint;
 
   };
 

@@ -17,6 +17,18 @@ namespace common { namespace net { namespace socket {
   {
   }
 
+  void Udp::open()
+  {
+    try
+    {
+      m_ioService.run();
+    }
+    catch(...)
+    {
+      Log::error("Error while open()");
+    }
+  }
+
   void Udp::send(const std::string &s,const Endpoint &endpoint)
   {
     m_socket.async_send_to(
@@ -29,9 +41,14 @@ namespace common { namespace net { namespace socket {
         }
         else
         {
+          Log::info("Sent <" + std::to_string(bytes)  + ">");
         }
       }
       );
+  }
+
+  void Udp::receive(Buffer &buffer, Endpoint &endpoint)
+  {
   }
 
 } } }

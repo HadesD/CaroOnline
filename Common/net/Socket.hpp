@@ -9,12 +9,18 @@ namespace common { namespace net {
   class Socket
   {
     public:
+      typedef std::array<char, common::config::maxNetworkBufferSize> Buffer;
+      typedef std::function<
+        void(const std::error_code &, const std::size_t &bytes)
+        > onReceiveHandle;
+
+    public:
       Socket();
       ~Socket();
 
     protected:
       asio::io_service m_ioService;
-      std::array<char, common::config::maxNetworkBufferSize> m_recvBuffer;
+      // m_recvBuffer;
 
   };
 
