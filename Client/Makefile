@@ -1,4 +1,4 @@
-CXX=g++ -std=gnu++1z -g
+CXX=g++ -std=gnu++1y -g
 LIBS=$()
 FLAGS=
 RM=/bin/rm -rf
