@@ -29,7 +29,7 @@ namespace common { namespace net { namespace socket {
     }
   }
 
-  void Udp::send(const std::string &s,const Endpoint &endpoint)
+  void Udp::send(const std::string &s,const EndPoint &endpoint)
   {
     m_socket.async_send_to(
       asio::buffer(s), endpoint,
@@ -47,7 +47,7 @@ namespace common { namespace net { namespace socket {
       );
   }
 
-  void Udp::receive(Buffer &buffer, Endpoint &endpoint)
+  void Udp::receive(Buffer &buffer, EndPoint &endpoint)
   {
   }
 
