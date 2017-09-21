@@ -4,7 +4,7 @@
 
 namespace common {
 
-  static auto console = spdlog::stdout_color_mt("console");
+  static auto console = spdlog::stdout_color_mt("");
 
   std::weak_ptr<Logger> Logger::m_pLogger;
 

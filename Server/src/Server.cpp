@@ -56,29 +56,51 @@ namespace app {
         &bytes
         )
       {
-        if (e)
-        {
-          Log::error(e.message());
-        }
-        else
-        {
-          std::string data(
-            this->m_buffers.data(),
-            this->m_buffers.data() + bytes
-            );
-
-          Log::info(
-            data
-            + " From: "
-            + this->m_currentClient.second.address().to_v4().to_string()
-            + ":"
-            + std::to_string(this->m_currentClient.second.port())
-            );
-        }
-
-        this->receive();
+        this->onReceive(e, bytes);
       }
       );
+  }
+
+  void Server::onReceive(const std::error_code &e, const std::size_t &bytes)
+  {
+    if (e)
+    {
+      Log::error(e.message());
+    }
+    else
+    {
+      std::string data(
+        this->m_buffers.data(),
+        this->m_buffers.data() + bytes
+        );
+
+      Log::info(
+        data
+        + " From: "
+        + this->m_currentClient.second.address().to_v4().to_string()
+        + ":"
+        + std::to_string(this->m_currentClient.second.port())
+        );
+
+
+    }
+
+    this->receive();
+  }
+
+  Client::key_type Server::getOrCreateClientId(
+        const Client::mapped_type &endpoint
+        )
+  {
+    for (const auto &client : m_clients)
+    {
+      if (client == endpoint)
+      {
+        return client.first;
+      }
+    }
+    auto id = m_clients.cend().first + 1;
+    m_clients.push(Client(id, endpoint));
   }
 
 }

@@ -20,7 +20,7 @@ namespace common { namespace net { namespace socket {
       void send(
         const std::string &/* data */,
         const EndPoint &/* endpoint */,
-        const onSendHandle &handle
+        const onSendHandle &/* handle */
         );
       void receive(
         Buffer &/* buffer */,
