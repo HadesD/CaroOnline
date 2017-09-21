@@ -6,9 +6,9 @@
 
 namespace app {
 
-  Server::Server(const std::string &ip, const short &port)
+  Server::Server(const std::string &ip, const short &port) :
+    m_pUdpSocket(ip, port)
   {
-    m_pUdpSocket = std::make_shared<common::net::socket::Udp>(ip, port);
   }
 
   Server::~Server()
@@ -28,11 +28,11 @@ namespace app {
 
     this->receive();
 
-    while (m_pUdpSocket->isOpening() == true)
+    while (m_pUdpSocket.isOpening() == true)
     {
       try
       {
-        m_pUdpSocket->open();
+        m_pUdpSocket.open();
       }
       catch (const std::exception &e)
       {
@@ -47,7 +47,7 @@ namespace app {
 
   void Server::receive()
   {
-    m_pUdpSocket->receive(
+    m_pUdpSocket.receive(
       m_buffers,
       m_currentClient.second,
       [this](
@@ -82,25 +82,28 @@ namespace app {
         + std::to_string(this->m_currentClient.second.port())
         );
 
-
+      Log::info(std::to_string(getOrCreateClientId(m_currentClient.second)));
     }
 
     this->receive();
   }
 
-  Client::key_type Server::getOrCreateClientId(
-        const Client::mapped_type &endpoint
-        )
+  Server::ListClient::key_type Server::getOrCreateClientId(
+    const ListClient::mapped_type &endpoint
+    )
   {
     for (const auto &client : m_clients)
     {
-      if (client == endpoint)
+      if (client.second == endpoint)
       {
         return client.first;
       }
     }
-    auto id = m_clients.cend().first + 1;
-    m_clients.push(Client(id, endpoint));
+
+    auto id = (*m_clients.cend()).first + 1;
+    m_clients.insert(Client(id, endpoint));
+
+    return id;
   }
 
 }
