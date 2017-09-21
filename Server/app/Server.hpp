@@ -5,8 +5,13 @@
 #include <map>
 
 #include "../Common/Config.hpp"
-#include "../Common/Network.hpp"
 #include "../Common/net/socket/Udp.hpp"
+
+namespace common {
+
+
+
+}
 
 namespace app {
 

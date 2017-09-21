@@ -1,8 +1,12 @@
 #ifndef COMMON_NET_SOCKET_HPP
 #define COMMON_NET_SOCKET_HPP
+#include <chrono>
+#define ASIO_STANDALONE
+#define ASIO_HAS_STD_CHRONO
+#include <asio.hpp>
 #include <array>
 
-#include "../Network.hpp"
+#include "../Config.hpp"
 
 namespace common { namespace net {
 
