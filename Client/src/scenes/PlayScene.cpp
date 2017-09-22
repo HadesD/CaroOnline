@@ -6,7 +6,8 @@
 
 #include "app/core/Game.hpp"
 #include "app/Config.hpp"
-#include "app/Player.hpp"
+#include "app/objects/Player.hpp"
+#include "app/objects/PlayerOnline.hpp"
 #include "../Common/Config.hpp"
 
 namespace app { namespace scenes {
@@ -28,7 +29,7 @@ namespace app { namespace scenes {
 
   void PlayScene::init()
   {
-    auto me = std::make_shared<app::Player>();
+    auto me = std::make_shared<app::objects::PlayerOnline>();
     me->setIsTurn(true);
     this->addPlayer(me);
 
@@ -62,7 +63,7 @@ namespace app { namespace scenes {
     {
       this->m_cursor = m_listPlayer.at(m_currentPlayer)->getCursor();
 
-      std::weak_ptr<Player> p = m_listPlayer.at(m_currentPlayer);
+      std::weak_ptr<app::objects::Player> p = m_listPlayer.at(m_currentPlayer);
       if (auto pP = p.lock())
       {
         pP->update();
@@ -161,7 +162,7 @@ namespace app { namespace scenes {
   {
     int xP, yP, x0, y0, xMaxSize, yMaxSize;
 
-    std::weak_ptr<Player> p = m_listPlayer.at(m_currentPlayer);
+    std::weak_ptr<app::objects::Player> p = m_listPlayer.at(m_currentPlayer);
 
     if (auto pP = p.lock())
     {
@@ -351,7 +352,9 @@ namespace app { namespace scenes {
     m_gameBoard = gb;
   }
 
-  void PlayScene::addPlayer(const std::shared_ptr<Player> &player)
+  void PlayScene::addPlayer(
+    const std::shared_ptr<app::objects::Player> &player
+    )
   {
     for (auto &p : m_listPlayer)
     {
@@ -371,7 +374,9 @@ namespace app { namespace scenes {
       );
   }
 
-  void PlayScene::removePlayer(const std::shared_ptr<Player> &player)
+  void PlayScene::removePlayer(
+    const std::shared_ptr<app::objects::Player> &player
+    )
   {
     for (auto &p : m_listPlayer)
     {

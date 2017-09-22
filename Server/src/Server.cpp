@@ -75,7 +75,7 @@ namespace app {
       Log::info(
         data
         + " From: "
-        + this->m_currentClient.second.address().to_v4().to_string()
+        + this->m_currentClient.second.address().to_string()
         + ":"
         + std::to_string(this->m_currentClient.second.port())
         );

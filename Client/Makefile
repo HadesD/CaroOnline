@@ -15,12 +15,14 @@ build:
 		-pthread \
 		-o bin/caro \
 		../Common/Config.cpp \
-		../Common/net/socket/Udp.cpp \
 		../Common/Logger.cpp \
+		../Common/net/Socket.cpp \
+		../Common/net/socket/Udp.cpp \
 		src/main.cpp \
 		src/core/Game.cpp \
 		src/input/Kbhit.cpp \
-		src/Player.cpp \
+		src/objects/Player.cpp \
+		src/objects/PlayerOnline.cpp \
 		src/WindowManager.cpp \
 		src/Config.cpp \
 		src/Scene.cpp \

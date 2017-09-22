@@ -1,18 +1,12 @@
 #include <ctime>
 
-#include "app/Player.hpp"
+#include "app/objects/Player.hpp"
 
-namespace app {
-
-  /*
-   * Player::Player()
-   * {
-   *   m_isReady = false;
-   * }
-   */
+namespace app { namespace objects {
 
   Player::Player()
   {
+    m_isReady = false;
   }
 
   Player::~Player()
@@ -173,5 +167,5 @@ namespace app {
     this->setScene(std::shared_ptr<scenes::PlayScene>(scene));
   }
 
-}
+} }
 

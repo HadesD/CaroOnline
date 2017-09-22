@@ -1,3 +1,4 @@
+#include "Config.hpp"
 #include <cstddef>
 
 namespace common { namespace config {
@@ -7,6 +8,6 @@ namespace common { namespace config {
 
   const int maxCoupleCount = 4;
 
-  // const int maxNetworkBufferSize = 4096;
+  // const std::size_t maxNetworkBufferSize;
 
 } }

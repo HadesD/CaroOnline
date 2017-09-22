@@ -11,7 +11,9 @@ namespace app
   {
     class Game;
   }
-  class Player;
+  namespace objects {
+    class Player;
+  }
 }
 
 namespace app { namespace scenes {
@@ -20,7 +22,7 @@ namespace app { namespace scenes {
   {
     public:
       typedef std::vector< std::vector< int > > GameBoard;
-      typedef std::vector< std::shared_ptr< app::Player > > ListPlayer;
+      typedef std::vector< std::shared_ptr< app::objects::Player > > ListPlayer;
       enum class GameState
       {
         WIN,
@@ -44,8 +46,8 @@ namespace app { namespace scenes {
       void quit();
 
     public:
-      void addPlayer(const std::shared_ptr<Player> &player);
-      void removePlayer(const std::shared_ptr<Player> &player);
+      void addPlayer(const std::shared_ptr<app::objects::Player> &player);
+      void removePlayer(const std::shared_ptr<app::objects::Player> &player);
 
     public:
       GameBoard getGameBoard() const;

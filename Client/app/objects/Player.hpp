@@ -1,5 +1,5 @@
-#ifndef APP_PLAYER_HPP
-#define APP_PLAYER_HPP
+#ifndef APP_OBJECTS_PLAYER_HPP
+#define APP_OBJECTS_PLAYER_HPP
 #include <iostream>
 #include <memory>
 
@@ -8,7 +8,7 @@
 #include "app/input/Kbhit.hpp"
 #include "../Common/net/socket/Udp.hpp"
 
-namespace app {
+namespace app { namespace objects {
 
   class Player
   {
@@ -48,17 +48,11 @@ namespace app {
 
     protected:
       Point2D m_cursor;
-      // std::shared_ptr<scenes::PlayScene> m_pScene;
       std::shared_ptr<scenes::PlayScene> m_pScene;
       app::input::Kbhit m_kbhit;
 
-      // Network socket
-      common::net::socket::Udp m_udpSocket;
-      asio::io_service &m_pIoService;
-      std::string m_sendData;
-
   };
 
-}
+} }
 
 #endif

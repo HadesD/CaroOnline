@@ -7,12 +7,6 @@
 #include "../Common/Config.hpp"
 #include "../Common/net/socket/Udp.hpp"
 
-namespace common {
-
-
-
-}
-
 namespace app {
 
   // class Room;

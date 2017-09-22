@@ -43,7 +43,10 @@ namespace common { namespace net { namespace socket {
     const onReceiveHandle &handle
     )
   {
-    m_socket.async_send_to(asio::buffer(s), endpoint, handle);
+    m_socket.async_send_to(
+      asio::buffer(s),
+      endpoint,
+      handle);
   }
 
   void Udp::receive(
