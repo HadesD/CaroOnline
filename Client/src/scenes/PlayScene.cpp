@@ -28,19 +28,14 @@ namespace app { namespace scenes {
 
   void PlayScene::init()
   {
-    asio::io_service ioService;
-
-    std::shared_ptr<app::Player> me1(new app::Player(ioService));
-    me1->setIsTurn(true);
-    me1->setMark(m_listPlayer.size()+1);
-    this->addPlayer(me1);
+    auto me = std::make_shared<app::Player>();
+    me->setIsTurn(true);
+    this->addPlayer(me);
 
     // std::shared_ptr<app::Player> me2(new app::Player(ioService));
     // me2->setMark(m_listPlayer.size()+1);
     // me1->connect();
     // this->addPlayer(me2);
-
-    ioService.run();
   }
 
   void PlayScene::draw()
@@ -365,11 +360,14 @@ namespace app { namespace scenes {
         return;
       }
     }
+    player->setMark(m_listPlayer.size()+1);
     m_listPlayer.emplace_back(player);
     player->setScene(this);
     player->setCursor(
-      Point2D(m_gameBoard.size()/2,
-              m_gameBoard.at(m_gameBoard.size()/2).size()/2)
+      Point2D(
+        m_gameBoard.size()/2,
+        m_gameBoard.at(m_gameBoard.size()/2).size()/2
+        )
       );
   }
 

@@ -15,7 +15,7 @@ build:
 		-pthread \
 		-o bin/caro \
 		../Common/Config.cpp \
-		../Common/net/Connection.cpp \
+		../Common/net/socket/Udp.cpp \
 		../Common/Logger.cpp \
 		src/main.cpp \
 		src/core/Game.cpp \

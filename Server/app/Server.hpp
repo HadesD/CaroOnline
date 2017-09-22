@@ -42,7 +42,7 @@ namespace app {
         );
 
     private:
-      common::net::socket::Udp m_pUdpSocket;
+      common::net::socket::Udp m_udpSocket;
       ListClient m_clients;
       Client m_currentClient;
       common::net::Socket::Buffer m_buffers;

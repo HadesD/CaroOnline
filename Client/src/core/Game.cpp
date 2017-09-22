@@ -6,8 +6,6 @@
 #include <chrono> // update function : float dt
 #include <ctime>
 #include <thread>
-// #include <chrono>
-// #include <thread>
 
 #include "../Common/Config.hpp"
 
@@ -23,6 +21,7 @@ namespace app { namespace core {
 
   Game::Game()
   {
+    std::srand(0);
     m_isRunning = true;
   }
 
@@ -75,7 +74,7 @@ namespace app { namespace core {
 
     // WindowManager wm;
 
-    int fixed_fps = 15;
+    const int fixed_fps = 15;
 
     std::chrono::time_point<std::chrono::steady_clock> now_time =
       std::chrono::steady_clock::now();
@@ -111,6 +110,7 @@ namespace app { namespace core {
 
   void Game::setScene(const std::shared_ptr<app::Scene> &scene)
   {
+    m_pScene.reset();
     m_pScene = scene;
     if (m_pScene == nullptr)
     {

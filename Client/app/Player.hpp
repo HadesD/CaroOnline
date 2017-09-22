@@ -6,8 +6,7 @@
 #include "app/scenes/PlayScene.hpp"
 
 #include "app/input/Kbhit.hpp"
-#include "../Common/Network.hpp"
-#include "../Common/net/Connection.hpp"
+#include "../Common/net/socket/Udp.hpp"
 
 namespace app {
 
@@ -15,7 +14,6 @@ namespace app {
   {
     public:
       Player();
-      Player(asio::io_service &s);
       ~Player();
 
     public:
@@ -55,9 +53,8 @@ namespace app {
       app::input::Kbhit m_kbhit;
 
       // Network socket
-      std::shared_ptr<common::net::Connection> m_pConnection;
+      common::net::socket::Udp m_udpSocket;
       asio::io_service &m_pIoService;
-      common::net::Connection::Endpoint m_endpoint;
       std::string m_sendData;
 
   };

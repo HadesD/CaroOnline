@@ -2,8 +2,6 @@
 
 #include "app/Player.hpp"
 
-#include "../Common/net/Connection.hpp"
-
 namespace app {
 
   /*
@@ -13,14 +11,8 @@ namespace app {
    * }
    */
 
-  Player::Player(asio::io_service &s) :
-    m_pIoService(s)
+  Player::Player()
   {
-    std::srand(0);
-    m_pConnection = std::make_shared<common::net::Connection>(
-      m_pIoService,
-      0
-      );
   }
 
   Player::~Player()
@@ -33,19 +25,6 @@ namespace app {
     std::cout << std::rand() << std::endl;
     this->waitKeyboardEvent();
 
-    common::net::Connection::Endpoint dis(
-      common::net::Connection::Protocol::v4(),
-      8889
-      );
-
-    m_pConnection->getSocket().async_send_to(
-    // m_pConnection->getSocket().send_to(
-      asio::buffer("ffff", 6),
-      dis,
-      std::bind([&](const std::error_code &e){
-
-      }, this, std::placeholders::_1)
-      );
   }
 
   void Player::waitKeyboardEvent()

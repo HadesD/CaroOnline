@@ -5,7 +5,7 @@
 namespace app {
 
   Server::Server(const std::string &ip, const short &port) :
-    m_pUdpSocket(ip, port)
+    m_udpSocket(ip, port)
   {
   }
 
@@ -26,11 +26,11 @@ namespace app {
 
     this->receive();
 
-    while (m_pUdpSocket.isOpening() == true)
+    while (m_udpSocket.isOpening() == true)
     {
       try
       {
-        m_pUdpSocket.open();
+        m_udpSocket.open();
       }
       catch (const std::exception &e)
       {
@@ -45,7 +45,7 @@ namespace app {
 
   void Server::receive()
   {
-    m_pUdpSocket.receive(
+    m_udpSocket.receive(
       m_buffers,
       m_currentClient.second,
       [this](
