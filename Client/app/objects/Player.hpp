@@ -17,7 +17,7 @@ namespace app { namespace objects {
       ~Player();
 
     public:
-      void update();
+      virtual void update(const float &/* dt */);
 
     private:
       void waitKeyboardEvent();

@@ -14,11 +14,10 @@ namespace app { namespace objects {
     // delete m_pScene;
   }
 
-  void Player::update()
+  void Player::update(const float &/* dt */)
   {
     std::cout << std::rand() << std::endl;
     this->waitKeyboardEvent();
-
   }
 
   void Player::waitKeyboardEvent()

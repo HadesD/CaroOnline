@@ -50,7 +50,7 @@ namespace app { namespace scenes {
     m_pGame->quit();
   }
 
-  void PlayScene::update(const float &/* dt */)
+  void PlayScene::update(const float &dt)
   {
     if (m_isFinish == true)
     {
@@ -66,7 +66,7 @@ namespace app { namespace scenes {
       std::weak_ptr<app::objects::Player> p = m_listPlayer.at(m_currentPlayer);
       if (auto pP = p.lock())
       {
-        pP->update();
+        pP->update(dt);
       }
     }
   }
@@ -177,12 +177,14 @@ namespace app { namespace scenes {
     x0 = std::max(xP - common::config::maxCoupleCount, 0);
     y0 = std::max(yP - common::config::maxCoupleCount, 0);
 
-    xMaxSize = std::min(xP + common::config::maxCoupleCount + 1,
-                        static_cast<int>(m_gameBoard.size())
-                       );
-    yMaxSize = std::min(yP + common::config::maxCoupleCount + 1,
-                        static_cast<int>(m_gameBoard.at(xMaxSize-1).size())
-                       );
+    xMaxSize = std::min(
+      xP + common::config::maxCoupleCount + 1,
+      static_cast<int>(m_gameBoard.size())
+      );
+    yMaxSize = std::min(
+      yP + common::config::maxCoupleCount + 1,
+      static_cast<int>(m_gameBoard.at(xMaxSize-1).size())
+      );
 
     // Game board likes:
     // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
@@ -327,7 +329,7 @@ namespace app { namespace scenes {
     }
   }
 
-  PlayScene::GameState PlayScene::checkMoveState(const app::Point2D &p)
+  PlayScene::GameState PlayScene::checkMoveState(const app::Point2D &/* p */)
   {
     return PlayScene::GameState::WIN;
   }

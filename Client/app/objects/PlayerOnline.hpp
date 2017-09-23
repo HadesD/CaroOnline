@@ -10,6 +10,9 @@ namespace app { namespace objects {
     public:
       PlayerOnline();
 
+    public:
+      virtual void update(const float &/* dt */);
+
     private:
       // Network socket
       common::net::socket::Udp m_udpSocket;

@@ -3,9 +3,12 @@ LIBS=$()
 FLAGS=
 RM=/bin/rm -rf
 
-.PHONY: run clean
+.PHONY: run clean cmake
 
-default: build
+default: cmake
+
+cmake:
+	cd build && cmake .. && make
 
 build:
 	$(CXX) -I. \
@@ -31,7 +34,7 @@ build:
 		src/scenes/IntroScene.cpp
 
 run:
-	cd bin && ./caro
+	cd bin && ./Caro
 
 clean:
 	$(RM) bin/*

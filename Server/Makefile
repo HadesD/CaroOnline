@@ -5,7 +5,10 @@ RM=/bin/rm -rf
 
 .PHONY: run clean
 
-default: build
+default: cmake
+
+cmake:
+	cd build && cmake .. && make
 
 build:
 	$(CXX) -I. \
@@ -22,7 +25,7 @@ build:
 		src/Server.cpp
 
 run:
-	cd bin && ./server
+	cd bin && ./CaroServer
 
 clean:
 	$(RM) bin/*

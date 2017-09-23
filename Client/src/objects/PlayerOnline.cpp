@@ -18,4 +18,10 @@ namespace app { namespace objects {
       );
   }
 
+  void PlayerOnline::update(const float &dt)
+  {
+    Player::update(dt);
+
+  }
+
 } }
