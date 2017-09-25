@@ -11,6 +11,7 @@ namespace common { namespace net { namespace socket {
       asio::ip::udp::endpoint(asio::ip::address::from_string(ip), port)
       )
   {
+    Log::info("UdpSocket will use " + ip + ":" + std::to_string(port));
   }
 
   Udp::~Udp()

@@ -38,7 +38,7 @@ namespace app {
       }
       catch (...)
       {
-
+        Log::error("Server :: run() :: openSocket()");
       }
     }
   }
