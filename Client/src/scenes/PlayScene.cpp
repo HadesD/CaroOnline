@@ -33,10 +33,8 @@ namespace app { namespace scenes {
     me->setIsTurn(true);
     this->addPlayer(me);
 
-    // std::shared_ptr<app::Player> me2(new app::Player(ioService));
-    // me2->setMark(m_listPlayer.size()+1);
-    // me1->connect();
-    // this->addPlayer(me2);
+    auto g1 = std::make_shared<app::objects::PlayerOnline>();
+    this->addPlayer(g1);
   }
 
   void PlayScene::draw()
