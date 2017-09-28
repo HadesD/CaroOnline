@@ -6,11 +6,14 @@ namespace common {
 
   struct MessageStruct
   {
-    int checkSumId;
+    typedef int Sum;
 
+    Sum sum;
+    unsigned int sequenceNumber;
     std::string message;
-  }
 
+    bool isValidSum();
+  };
 
 }
 

@@ -19,6 +19,7 @@ build:
 		-o bin/caro \
 		../Common/Config.cpp \
 		../Common/Logger.cpp \
+		../Common/MessageStruct.cpp \
 		../Common/net/Socket.cpp \
 		../Common/net/socket/Udp.cpp \
 		src/main.cpp \

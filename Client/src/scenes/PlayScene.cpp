@@ -33,7 +33,7 @@ namespace app { namespace scenes {
     me->setIsTurn(true);
     this->addPlayer(me);
 
-    auto g1 = std::make_shared<app::objects::PlayerOnline>();
+    auto g1 = std::make_shared<app::objects::Player>();
     this->addPlayer(g1);
   }
 
