@@ -14,7 +14,8 @@ namespace app {
   class Server
   {
     public:
-      typedef std::map<std::uint32_t, common::net::socket::Udp::EndPoint> ListClient;
+      typedef std::map<std::uint32_t, common::net::socket::Udp::EndPoint>
+        ListClient;
       typedef ListClient::value_type Client;
 
     public:
@@ -27,10 +28,7 @@ namespace app {
     private:
       void init();
       void receive();
-      void onReceive(
-        const std::error_code &/* e */,
-        const std::size_t &/* data */
-        );
+      void onReceiveHandle(const std::string &/* data */);
       ListClient::key_type getOrCreateClientId(
         const ListClient::mapped_type &/* client */
         );

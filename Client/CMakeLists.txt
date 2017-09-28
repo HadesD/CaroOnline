@@ -57,7 +57,7 @@ set(APP_SRC
 #
 #############################################################################
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS} -Wall -std=gnu++1y")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS} -Wall -std=c++1y")
 # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_FLAGS}")
 include_directories(${INCLUDE_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)

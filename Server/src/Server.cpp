@@ -54,36 +54,37 @@ namespace app {
         &bytes
         )
       {
-        this->onReceive(e, bytes);
+        if (e)
+        {
+          Log::error(e.message());
+        }
+        else
+        {
+          std::string data(
+            this->m_buffers.data(),
+            this->m_buffers.data() + bytes
+            );
+
+          this->onReceive(data);
+
+          Log::info(
+            data
+            + " From: "
+            + this->m_currentClient.second.address().to_string()
+            + ":"
+            + std::to_string(this->m_currentClient.second.port())
+            );
+
+          Log::info(std::to_string(getOrCreateClientId(m_currentClient.second)));
+        }
+
+        this->receive();
       }
       );
   }
 
-  void Server::onReceive(const std::error_code &e, const std::size_t &bytes)
+  void Server::onReceiveHandle(const std::string &data)
   {
-    if (e)
-    {
-      Log::error(e.message());
-    }
-    else
-    {
-      std::string data(
-        this->m_buffers.data(),
-        this->m_buffers.data() + bytes
-        );
-
-      Log::info(
-        data
-        + " From: "
-        + this->m_currentClient.second.address().to_string()
-        + ":"
-        + std::to_string(this->m_currentClient.second.port())
-        );
-
-      Log::info(std::to_string(getOrCreateClientId(m_currentClient.second)));
-    }
-
-    this->receive();
   }
 
   Server::ListClient::key_type Server::getOrCreateClientId(
