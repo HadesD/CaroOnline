@@ -44,8 +44,8 @@ namespace app { namespace scenes {
 
   void PlayScene::quit()
   {
-    // m_pGame->setScene(std::make_shared<app::scenes::IntroScene>(m_pGame));
-    m_pGame->quit();
+    m_pGame->setScene(std::make_shared<app::scenes::IntroScene>(m_pGame));
+    // m_pGame->quit();
   }
 
   void PlayScene::update(const float &dt)

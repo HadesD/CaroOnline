@@ -65,7 +65,7 @@ namespace app {
             this->m_buffers.data() + bytes
             );
 
-          this->onReceive(data);
+          this->onReceiveHandle(data);
 
           Log::info(
             data
@@ -85,6 +85,7 @@ namespace app {
 
   void Server::onReceiveHandle(const std::string &data)
   {
+    std::cout << data.c_str() << std::endl;
   }
 
   Server::ListClient::key_type Server::getOrCreateClientId(
