@@ -4,6 +4,12 @@
 
 namespace common {
 
+  enum class MessageType
+  {
+    LOGIN,
+    SET_MOVE,
+  };
+
   struct MessageStruct
   {
     MessageStruct(const std::string &/* data */);
@@ -15,7 +21,7 @@ namespace common {
     unsigned int seqNum;
 
     // Message
-    std::string msg;
+    const std::string &data;
 
     bool isValidSum();
   };

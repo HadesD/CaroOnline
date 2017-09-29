@@ -2,7 +2,7 @@
 
 namespace common {
 
-  MessageStruct::MessageStruct(const std::string &data)
+  MessageStruct::MessageStruct(const std::string &msg) : data(msg)
   {
 
   }

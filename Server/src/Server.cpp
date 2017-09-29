@@ -86,12 +86,12 @@ namespace app {
 
   void Server::onReceiveHandle(const std::string &data)
   {
-    // common::MessageStruct ms(data);
+    common::MessageStruct ms(data);
+
     m_udpSocket.send(
       "FFF",
       m_currentClient.second,
-      [](const std::error_code &e, const std::size_t &bytes)
-      {
+      [](const std::error_code &e, const std::size_t &bytes){
         Log::info(std::to_string(bytes));
       }
       );

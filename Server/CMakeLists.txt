@@ -34,6 +34,7 @@ set(APP_SRC
   # Common
   ../Common/Config.cpp
   ../Common/Logger.cpp
+  ../Common/MessageStruct.cpp
   ../Common/net/Socket.cpp
   ../Common/net/socket/Udp.cpp
 
@@ -48,7 +49,7 @@ set(APP_SRC
 #
 #############################################################################
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS} -Wall -std=c++1y")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS} -Wall -std=c++11")
 # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_FLAGS}")
 include_directories(${INCLUDE_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
