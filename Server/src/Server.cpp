@@ -1,5 +1,6 @@
 #include "app/Server.hpp"
 
+#include "../Common/MessageStruct.hpp"
 #include "../Common/Logger.hpp"
 
 namespace app {
@@ -85,7 +86,16 @@ namespace app {
 
   void Server::onReceiveHandle(const std::string &data)
   {
-    std::cout << data.c_str() << std::endl;
+    // common::MessageStruct ms(data);
+    m_udpSocket.send(
+      "FFF",
+      m_currentClient.second,
+      [](const std::error_code &e, const std::size_t &bytes)
+      {
+        Log::info(std::to_string(bytes));
+      }
+      );
+
   }
 
   Server::ListClient::key_type Server::getOrCreateClientId(

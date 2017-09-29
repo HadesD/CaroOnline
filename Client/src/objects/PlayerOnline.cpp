@@ -22,6 +22,10 @@ namespace app { namespace objects {
   {
     Player::update(dt);
 
+    m_udpSocket.send(
+      "SDFS", m_udpServerEndpoint,
+      [](const std::error_code &, const std::size_t &){}
+      );
   }
 
 } }

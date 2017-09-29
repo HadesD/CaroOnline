@@ -2,9 +2,13 @@
 
 namespace common {
 
-  bool MessageStruct::isValidSum()
+  MessageStruct::MessageStruct(const std::string &data)
   {
 
+  }
+
+  bool MessageStruct::isValidSum()
+  {
     return false;
   }
 
