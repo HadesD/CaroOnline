@@ -14,9 +14,12 @@ namespace app { namespace objects {
       virtual void update(const float &/* dt */);
 
     private:
+      void receive();
+
+    private:
       // Network socket
       common::net::socket::Udp m_udpSocket;
-      std::string m_sendData;
+      common::net::Socket::Buffer m_buffers;
 
       // Server
       common::net::socket::Udp::EndPoint m_udpServerEndpoint;
