@@ -12,7 +12,7 @@ namespace common {
 
   struct MessageStruct
   {
-    MessageStruct(const std::string &/* data */);
+    MessageStruct(const std::string &/* msg */);
 
     // Checksum code
     char sum[4];

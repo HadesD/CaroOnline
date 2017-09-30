@@ -27,20 +27,17 @@ namespace app {
 
     this->receive();
 
-    while (m_udpSocket.isOpening() == true)
+    try
     {
-      try
-      {
-        m_udpSocket.open();
-      }
-      catch (const std::exception &e)
-      {
-        Log::error(e.what());
-      }
-      catch (...)
-      {
-        Log::error("Server :: run() :: openSocket()");
-      }
+      m_udpSocket.open();
+    }
+    catch (const std::exception &e)
+    {
+      Log::error(e.what());
+    }
+    catch (...)
+    {
+      Log::error("Server :: run() :: openSocket()");
     }
   }
 

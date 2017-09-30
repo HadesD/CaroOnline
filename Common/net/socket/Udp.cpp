@@ -27,14 +27,17 @@ namespace common { namespace net { namespace socket {
   {
     Log::info("UdpSocket :: open()");
 
-    try
+    // while (this->isOpening() == false)
     {
-      m_ioService.run();
-    }
-    catch(...)
-    {
-      Log::error("Error while open()");
-      throw std::runtime_error("Can not run io_service");
+      try
+      {
+        m_ioService.run();
+      }
+      catch(...)
+      {
+        Log::error("Error while open()");
+        throw std::runtime_error("Can not run io_service");
+      }
     }
   }
 
