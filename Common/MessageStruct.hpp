@@ -8,18 +8,23 @@ namespace common {
 
   enum class MessageType
   {
-    LOGIN,
+    LOGIN = 'a',
     SET_MOVE,
   };
 
   struct MessageStruct
   {
     MessageStruct(const std::string &/* msg */);
+    ~MessageStruct();
 
     // Checksum code
-    // char sum[];
+    // char *sum;
+    std::string sum;
 
     // Sequence Number
+
+    char command;
+
     unsigned int seqNum;
 
     // Message
