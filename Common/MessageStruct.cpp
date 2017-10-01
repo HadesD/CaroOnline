@@ -36,8 +36,6 @@ namespace common {
       return false;
     }
 
-
-
     Log::info("MessageStruct :: isValidSum() :: true");
 
     return true;

@@ -91,6 +91,25 @@ namespace app {
       return;
     }
 
+    switch (ms.msgType)
+    {
+      case common::MessageType::LOGIN:
+        {
+          Log::info("Server :: onReceiveHandle() :: LOGIN");
+        }
+        break;
+      case common::MessageType::SET_MOVE:
+        {
+          Log::info("Server :: onReceiveHandle() :: SET_MOVE");
+        }
+        break;
+      default:
+        {
+          Log::info("Server :: onReceiveHandle() :: NOTHING");
+        }
+        return;
+    }
+
     auto from_client = getOrCreateClientId(m_currentClient.second);
 
     m_udpSocket.send(
