@@ -47,8 +47,9 @@ namespace common { namespace net { namespace socket {
     const onReceiveHandle &handle
     )
   {
+    std::string send_buff = common::config::networkCheckSum + s;
     m_socket.async_send_to(
-      asio::buffer(s),
+      asio::buffer(send_buff),
       endpoint,
       handle);
   }

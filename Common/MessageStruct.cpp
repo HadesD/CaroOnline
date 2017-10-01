@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 #include "MessageStruct.hpp"
 
@@ -8,31 +9,29 @@ namespace common {
 
   MessageStruct::MessageStruct(const std::string &msg) : data(msg)
   {
-    try
-    {
-      std::size_t maxI = sizeof(sum);
-      if (data.length() >= maxI)
-      {
-        for (std::size_t i = 0; i < maxI; i++)
-        {
-          sum[i] = data.at(i);
-        }
-        std::cout << sum << std::endl;
-      }
-    }
-    catch(const std::out_of_range &e)
-    {
-      Log::error(e.what());
-    }
-    catch(...)
-    {
-      Log::error("MessageStruct :: construct() :: Error not found!");
-    }
   }
 
   bool MessageStruct::isValidSum()
   {
-    return false;
+    Log::info("MessageStruct :: isValidSum() :: start");
+    auto &config_sum = common::config::networkCheckSum;
+
+    if (data.empty() || data.size() < config_sum.size())
+    {
+      return false;
+    }
+
+    for (std::size_t i = 0; i < config_sum.size(); i++)
+    {
+      if (data.at(i) != config_sum.at(i))
+      {
+        return false;
+      }
+    }
+
+    Log::info("MessageStruct :: isValidSum() :: true");
+
+    return true;
   }
 
 }

@@ -1,3 +1,5 @@
+// #include <future>
+
 #include "app/Server.hpp"
 
 #include "../Common/MessageStruct.hpp"
@@ -73,7 +75,6 @@ namespace app {
             + std::to_string(this->m_currentClient.second.port())
             );
 
-          Log::info(std::to_string(getOrCreateClientId(m_currentClient.second)));
         }
 
         this->receive();
@@ -85,6 +86,13 @@ namespace app {
   {
     common::MessageStruct ms(data);
 
+    if (ms.isValidSum() == false)
+    {
+      return;
+    }
+
+    auto from_client = getOrCreateClientId(m_currentClient.second);
+
     m_udpSocket.send(
       "FFF",
       m_currentClient.second,
@@ -92,7 +100,6 @@ namespace app {
         Log::info(std::to_string(bytes));
       }
       );
-
   }
 
   Server::ListClient::key_type Server::getOrCreateClientId(

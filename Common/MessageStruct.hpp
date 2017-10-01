@@ -2,6 +2,8 @@
 #define COMMON_MESSAGE_STRUCT_HPP
 #include <string>
 
+#include "Config.hpp"
+
 namespace common {
 
   enum class MessageType
@@ -15,7 +17,7 @@ namespace common {
     MessageStruct(const std::string &/* msg */);
 
     // Checksum code
-    char sum[4];
+    // char sum[];
 
     // Sequence Number
     unsigned int seqNum;

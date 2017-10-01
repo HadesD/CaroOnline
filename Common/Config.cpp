@@ -10,4 +10,6 @@ namespace common { namespace config {
 
   // const std::size_t maxNetworkBufferSize;
 
+  // const char networkCheckSum[] = "CARO";
+
 } }
