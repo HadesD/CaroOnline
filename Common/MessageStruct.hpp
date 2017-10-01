@@ -6,6 +6,8 @@
 
 namespace common {
 
+  // MessageType must be char
+  // static_cast<MessageType>('a')
   enum class MessageType
   {
     LOGIN = 'a',
@@ -23,7 +25,7 @@ namespace common {
 
     // Sequence Number
 
-    char command;
+    MessageType msgType;
 
     unsigned int seqNum;
 

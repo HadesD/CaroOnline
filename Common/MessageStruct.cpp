@@ -11,9 +11,14 @@ namespace common {
   {
     auto &config_sum = common::config::networkCheckSum;
 
-    if (!data.empty() && (data.size() < config_sum.size()))
+    // Must check received data has correct sum 's size
+    if (!data.empty() && (data.size() > config_sum.size()))
     {
-      sum = std::string(msg.cbegin(), msg.cbegin() + 4);
+      // Sum
+      sum = std::string(msg.cbegin(), msg.cbegin() + config_sum.size());
+
+      // Request Method
+      msgType = static_cast<MessageType>(msg.at(sum.size()));
     }
   }
 
@@ -25,6 +30,13 @@ namespace common {
   bool MessageStruct::isValidSum()
   {
     Log::info("MessageStruct :: isValidSum() :: start");
+
+    if (sum.empty())
+    {
+      return false;
+    }
+
+
 
     Log::info("MessageStruct :: isValidSum() :: true");
 
