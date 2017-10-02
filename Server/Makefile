@@ -3,7 +3,7 @@ LIBS=$()
 FLAGS=
 RM=/bin/rm -rf
 
-.PHONY: run clean
+.PHONY: run clean build
 
 default: cmake
 
@@ -16,7 +16,7 @@ build:
 		-I../Common/third_party/spdlog/include \
 		-lpthread \
 		-pthread \
-		-o bin/server \
+		-o bin/CaroServer \
 		../Common/Config.cpp \
 		../Common/Logger.cpp \
 		../Common/MessageStruct.cpp \

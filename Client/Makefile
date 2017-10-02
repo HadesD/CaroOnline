@@ -3,7 +3,7 @@ LIBS=$()
 FLAGS=
 RM=/bin/rm -rf
 
-.PHONY: run clean cmake
+.PHONY: run clean cmake build
 
 default: cmake
 
