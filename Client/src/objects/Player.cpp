@@ -16,7 +16,6 @@ namespace app { namespace objects {
 
   void Player::update(const float &/* dt */)
   {
-    std::cout << std::rand() << std::endl;
     this->waitKeyboardEvent();
   }
 
