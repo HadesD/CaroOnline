@@ -1,6 +1,7 @@
 #include "app/objects/PlayerOnline.hpp"
 
 #include "app/Config.hpp"
+#include "../Common/MessageStruct.hpp"
 
 #include "../Common/Logger.hpp"
 
@@ -14,8 +15,12 @@ namespace app { namespace objects {
         app::config::serverPort
       )
   {
+    char cmd = static_cast<char>(common::MessageType::LOGIN);
+
+    std::string msg = std::string(1, cmd) + "FF";
+
     m_udpSocket.send(
-      "FFF", m_udpServerEndpoint,
+      msg, m_udpServerEndpoint,
       [](const std::error_code &, const std::size_t &){}
       );
 
@@ -25,11 +30,6 @@ namespace app { namespace objects {
   void PlayerOnline::update(const float &dt)
   {
     Player::update(dt);
-
-    m_udpSocket.send(
-      "SDFSFF", m_udpServerEndpoint,
-      [](const std::error_code &, const std::size_t &){}
-      );
   }
 
   void PlayerOnline::receive()
