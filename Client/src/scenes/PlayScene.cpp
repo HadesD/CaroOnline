@@ -342,7 +342,7 @@ namespace app { namespace scenes {
     m_cursor = c;
   }
 
-  PlayScene::GameBoard PlayScene::getGameBoard() const
+  PlayScene::GameBoard &PlayScene::getGameBoard() const
   {
     return m_gameBoard;
   }
