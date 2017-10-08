@@ -16,6 +16,9 @@ namespace app { namespace objects {
     private:
       void receive();
 
+    protected:
+      virtual void onSetMove();
+
     private:
       // Network socket
       common::net::socket::Udp m_udpSocket;

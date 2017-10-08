@@ -26,8 +26,8 @@ namespace app { namespace scenes {
       enum class GameState
       {
         WIN,
-          LOSE,
-          DRAW
+        LOSE,
+        DRAW
       };
 
     public:
@@ -50,7 +50,7 @@ namespace app { namespace scenes {
       void removePlayer(const std::shared_ptr<app::objects::Player> &player);
 
     public:
-      GameBoard &getGameBoard() const;
+      GameBoard getGameBoard() const;
       void setGameBoard(const GameBoard &gb);
       ListPlayer getListPlayer() const;
       void setNextPlayer(const int &nextPlayer);

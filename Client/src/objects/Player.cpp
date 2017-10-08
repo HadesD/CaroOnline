@@ -40,7 +40,7 @@ namespace app { namespace objects {
     {
       int keyPushed = m_kbhit.getch();
 
-      app::scenes::PlayScene::GameBoard &gb = m_pScene->getGameBoard();
+      app::scenes::PlayScene::GameBoard gb = m_pScene->getGameBoard();
 
       switch (keyPushed)
       {
@@ -57,15 +57,7 @@ namespace app { namespace objects {
           {
             if (gb.at(m_cursor.x).at(m_cursor.y) == 0)
             {
-              this->m_isTurn = false;
-              gb[m_cursor.x][m_cursor.y] = this->m_mark;
-
-              ///m_pScene->setGameBoard(gb);
-
-              m_pScene->checkFinish();
-
-              m_pScene->setNextPlayer(m_pScene->getCurrentPlayer() + 1);
-
+              this->onSetMove();
             }
           }
           break;
@@ -112,6 +104,21 @@ namespace app { namespace objects {
       }
 
     }
+  }
+
+  void Player::onSetMove()
+  {
+    app::scenes::PlayScene::GameBoard gb = m_pScene->getGameBoard();
+
+    this->m_isTurn = false;
+
+    gb[m_cursor.x][m_cursor.y] = this->m_mark;
+
+    m_pScene->setGameBoard(gb);
+
+    m_pScene->checkFinish();
+
+    m_pScene->setNextPlayer(m_pScene->getCurrentPlayer() + 1);
   }
 
   void Player::setId(const int &id)

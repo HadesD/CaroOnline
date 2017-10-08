@@ -40,6 +40,9 @@ namespace app { namespace objects {
       void onConnect(const std::error_code &e);
 
     protected:
+      virtual void onSetMove();
+
+    protected:
       int m_id;
       std::string m_name;
       bool m_isTurn;

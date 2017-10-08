@@ -32,6 +32,32 @@ namespace app { namespace objects {
     Player::update(dt);
   }
 
+  void PlayerOnline::onSetMove()
+  {
+
+    char cmd = static_cast<char>(common::MessageType::SET_MOVE);
+
+    std::string msg = std::string(1, cmd) + "FF";
+
+    m_udpSocket.send(
+      msg, m_udpServerEndpoint,
+      [](const std::error_code &, const std::size_t &){}
+      );
+    return;
+
+    app::scenes::PlayScene::GameBoard gb = m_pScene->getGameBoard();
+
+    this->m_isTurn = false;
+
+    gb[m_cursor.x][m_cursor.y] = this->m_mark;
+
+    m_pScene->setGameBoard(gb);
+
+    m_pScene->checkFinish();
+
+    m_pScene->setNextPlayer(m_pScene->getCurrentPlayer() + 1);
+  }
+
   void PlayerOnline::receive()
   {
     m_udpSocket.receive(
