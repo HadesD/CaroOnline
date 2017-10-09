@@ -20,7 +20,6 @@ namespace common {
     ~MessageStruct();
 
     // Checksum code
-    // char *sum;
     std::string sum;
 
     // Sequence Number
@@ -31,6 +30,7 @@ namespace common {
 
     // Message
     const std::string &data;
+    std::string msg;
 
     bool isValidSum();
   };

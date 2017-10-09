@@ -2,6 +2,7 @@
 
 #include "app/Server.hpp"
 
+#include "../Common/Util.hpp"
 #include "../Common/MessageStruct.hpp"
 #include "../Common/Logger.hpp"
 
@@ -101,6 +102,18 @@ namespace app {
       case common::MessageType::SET_MOVE:
         {
           Log::info("Server :: onReceiveHandle() :: SET_MOVE");
+
+          std::vector<std::string> xy = Util::str_split(ms.msg, ':');
+
+          Log::info("X:" + xy.at(0) + " - Y:" + xy.at(1));
+
+          m_udpSocket.send(
+            "FFF",
+            m_currentClient.second,
+            [](const std::error_code &e, const std::size_t &bytes){
+              Log::info(std::to_string(bytes));
+            }
+            );
         }
         break;
       default:
@@ -112,13 +125,6 @@ namespace app {
 
     auto from_client = getOrCreateClientId(m_currentClient.second);
 
-    m_udpSocket.send(
-      "FFF",
-      m_currentClient.second,
-      [](const std::error_code &e, const std::size_t &bytes){
-        Log::info(std::to_string(bytes));
-      }
-      );
   }
 
   Server::ListClient::key_type Server::getOrCreateClientId(

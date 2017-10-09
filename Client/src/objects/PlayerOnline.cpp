@@ -17,7 +17,9 @@ namespace app { namespace objects {
   {
     char cmd = static_cast<char>(common::MessageType::LOGIN);
 
-    std::string msg = std::string(1, cmd) + "FF";
+    std::string msg = std::string(sizeof(cmd), cmd)
+      + "FF"
+      ;
 
     m_udpSocket.send(
       msg, m_udpServerEndpoint,
@@ -34,15 +36,19 @@ namespace app { namespace objects {
 
   void PlayerOnline::onSetMove()
   {
-
     char cmd = static_cast<char>(common::MessageType::SET_MOVE);
 
-    std::string msg = std::string(1, cmd) + "FF";
+    std::string msg = std::string(sizeof(cmd), cmd)
+      + std::to_string(m_cursor.x)
+      + ":"
+      + std::to_string(m_cursor.y)
+      ;
 
     m_udpSocket.send(
       msg, m_udpServerEndpoint,
       [](const std::error_code &, const std::size_t &){}
       );
+
     return;
 
     app::scenes::PlayScene::GameBoard gb = m_pScene->getGameBoard();

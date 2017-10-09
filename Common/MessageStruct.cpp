@@ -7,7 +7,7 @@
 
 namespace common {
 
-  MessageStruct::MessageStruct(const std::string &msg) : data(msg)
+  MessageStruct::MessageStruct(const std::string &m) : data(m)
   {
     auto &config_sum = common::config::networkCheckSum;
 
@@ -15,10 +15,10 @@ namespace common {
     if (!data.empty() && (data.size() > config_sum.size()))
     {
       // Sum
-      sum = std::string(msg.cbegin(), msg.cbegin() + config_sum.size());
+      sum = std::string(data.cbegin(), data.cbegin() + config_sum.size());
 
       // Request Method
-      msgType = static_cast<MessageType>(msg.at(sum.size()));
+      msgType = static_cast<MessageType>(data.at(sum.size()));
     }
   }
 
@@ -37,6 +37,28 @@ namespace common {
     }
 
     Log::info("MessageStruct :: isValidSum() :: true");
+
+    try
+    {
+      msg = std::string(
+        data.cbegin()
+        + sum.size()
+        + sizeof(static_cast<char>(msgType))
+        ,
+        data.cend()
+        );
+    }
+    catch(...)
+    {
+      Log::error("Error msg");
+    }
+
+    if (msg.empty())
+    {
+      return false;
+    }
+
+    Log::info("Message: " + msg);
 
     return true;
   }
