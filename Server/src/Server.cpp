@@ -97,6 +97,17 @@ namespace app {
       case common::MessageType::LOGIN:
         {
           Log::info("Server :: onReceiveHandle() :: LOGIN");
+          std::vector<std::string> acc = Util::str_split(ms.msg, ':');
+
+          if (acc.size() != 2)
+          {
+            return;
+          }
+
+          Log::info("X:" + acc.at(0) + " - Y:" + acc.at(1));
+
+          auto from_client = getOrCreateClientId(m_currentClient.second);
+
         }
         break;
       case common::MessageType::SET_MOVE:
@@ -104,6 +115,12 @@ namespace app {
           Log::info("Server :: onReceiveHandle() :: SET_MOVE");
 
           std::vector<std::string> xy = Util::str_split(ms.msg, ':');
+          if (xy.size() != 2)
+          {
+            return;
+          }
+
+          auto from_client = getOrCreateClientId(m_currentClient.second);
 
           Log::info("X:" + xy.at(0) + " - Y:" + xy.at(1));
 
@@ -114,6 +131,7 @@ namespace app {
               Log::info(std::to_string(bytes));
             }
             );
+
         }
         break;
       default:
@@ -122,9 +140,6 @@ namespace app {
         }
         return;
     }
-
-    auto from_client = getOrCreateClientId(m_currentClient.second);
-
   }
 
   Server::ListClient::key_type Server::getOrCreateClientId(
