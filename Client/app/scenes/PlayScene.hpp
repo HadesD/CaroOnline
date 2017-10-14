@@ -4,6 +4,7 @@
 
 #include "app/Scene.hpp"
 #include "app/Point2D.hpp"
+#include "../Common/GameBoard.hpp"
 
 namespace app
 {
@@ -21,7 +22,7 @@ namespace app { namespace scenes {
   class PlayScene : public app::Scene
   {
     public:
-      typedef std::vector< std::vector< int > > GameBoard;
+      typedef common::GameBoard GameBoard;
       typedef std::vector< std::shared_ptr< app::objects::Player > > ListPlayer;
       enum class GameState
       {

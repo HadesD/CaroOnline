@@ -104,7 +104,7 @@ namespace app {
             return;
           }
 
-          Log::info("X:" + acc.at(0) + " - Y:" + acc.at(1));
+          Log::info("Username:" + acc.at(0) + " - Pass:" + acc.at(1));
 
           auto from_client = getOrCreateClientId(m_currentClient.second);
 
@@ -128,7 +128,7 @@ namespace app {
             "FFF",
             m_currentClient.second,
             [](const std::error_code &e, const std::size_t &bytes){
-              Log::info(std::to_string(bytes));
+
             }
             );
 

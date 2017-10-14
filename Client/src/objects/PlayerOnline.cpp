@@ -18,7 +18,9 @@ namespace app { namespace objects {
     char cmd = static_cast<char>(common::MessageType::LOGIN);
 
     std::string msg = std::string(sizeof(cmd), cmd)
-      + "FF"
+      + "Dark.Hades"
+      + ":"
+      + "password"
       ;
 
     m_udpSocket.send(
