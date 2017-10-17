@@ -69,8 +69,7 @@ namespace app {
       m_currentClient.second,
       [this](
         const std::error_code &e,
-        const std::size_t
-        &bytes
+        const std::size_t &bytes
         )
       {
         if (e)
@@ -93,10 +92,7 @@ namespace app {
             + ":"
             + std::to_string(this->m_currentClient.second.port())
             );
-
         }
-
-        this->receive();
       }
       );
   }
