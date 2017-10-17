@@ -1,5 +1,3 @@
-// #include <future>
-
 #include "app/Server.hpp"
 
 #include "../Common/Util.hpp"
@@ -27,6 +25,26 @@ namespace app {
     this->init();
 
     Log::info("Server :: run()");
+
+    // http://giderosmobile.com/forum/discussion/2766/online-multiplayer-turn-based-game-with-udp/p1
+    auto update = [&](float dt) {
+
+    };
+
+    auto sendToAllClients = [&](
+      const int &seqNo, const Client &turnOfcli, const std::string &data
+      )
+    {
+
+    };
+
+    int seqNo = 0;
+    while (true)
+    {
+      update(1.f);
+      Client cli;
+      sendToAllClients(seqNo, cli, "");
+    }
 
     this->receive();
 
