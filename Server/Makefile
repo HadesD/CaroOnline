@@ -24,6 +24,7 @@ build:
 		../Common/net/socket/Udp.cpp \
 		src/main.cpp \
 		src/Server.cpp
+		-D__USE_W32_SOCKETS
 
 run:
 	cd bin && ./CaroServer

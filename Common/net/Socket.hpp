@@ -3,6 +3,9 @@
 #include <chrono>
 #define ASIO_STANDALONE
 #define ASIO_HAS_STD_CHRONO
+#if defined(_WIN32) || defined(_WIN64)
+#define _WIN32_WINDOWS
+#endif
 #include <asio.hpp>
 #include <array>
 

@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
+message(" ${CMAKE_CXX_COMPILER_ID} ")
+
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "limited configs" FORCE)
 set(APP_NAME CaroServer)
 project(${APP_NAME})
@@ -49,7 +51,14 @@ set(APP_SRC
 #
 #############################################################################
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS} -Wall -std=c++11")
+set(CXX_FLAGS "-std=c++11")
+
+# if(IS_WINDOWS OR CYGWIN OR MINGW OR WIN32 OR ("$ENV{OSTYPE}" STREQUAL "msys"))
+if (MSYS)
+  add_compile_options(-D__USE_W32_SOCKETS)
+endif()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS} -Wall")
 # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_FLAGS}")
 include_directories(${INCLUDE_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
