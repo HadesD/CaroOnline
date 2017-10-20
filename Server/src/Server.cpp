@@ -27,10 +27,6 @@ namespace app {
     Log::info("Server :: run()");
 
     // http://giderosmobile.com/forum/discussion/2766/online-multiplayer-turn-based-game-with-udp/p1
-    auto update = [&](float dt) {
-
-    };
-
     auto sendToAllClients = [&](
       const int &seqNo, const Client &turnOfcli, const std::string &data
       )
@@ -39,18 +35,20 @@ namespace app {
     };
 
     int seqNo = 0;
-    while (true)
-    {
-      update(1.f);
-      Client cli;
-      sendToAllClients(seqNo, cli, "");
-    }
-
-    this->receive();
 
     try
     {
       m_udpSocket.open();
+
+      auto t_now = std::chrono::steady_clock::now();
+
+      while (true)
+      {
+        this->receive();
+        Client cli;
+        sendToAllClients(seqNo, cli, "");
+        this->update(1.f);
+      }
     }
     catch (const std::exception &e)
     {
@@ -60,6 +58,10 @@ namespace app {
     {
       Log::error("Server :: run() :: openSocket()");
     }
+  }
+
+  void Server::update(float dt)
+  {
   }
 
   void Server::receive()

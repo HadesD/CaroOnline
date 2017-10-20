@@ -28,6 +28,7 @@ namespace app {
     private:
       void init();
       void receive();
+      void update(float dt);
       void onReceiveHandle(const std::string &/* data */);
       ListClient::key_type getOrCreateClientId(
         const ListClient::mapped_type &/* client */
