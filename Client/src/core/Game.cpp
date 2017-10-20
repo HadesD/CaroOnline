@@ -76,8 +76,7 @@ namespace app { namespace core {
 
     const int fixed_fps = 15;
 
-    std::chrono::time_point<std::chrono::steady_clock> now_time =
-      std::chrono::steady_clock::now();
+    auto now_time = std::chrono::steady_clock::now();
 
     while (this->m_isRunning == true)
     {

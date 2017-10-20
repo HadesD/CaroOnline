@@ -28,8 +28,9 @@ namespace app {
     private:
       void init();
       void receive();
-      void update(float dt);
+      void update(const float &dt);
       void onReceiveHandle(const std::string &/* data */);
+      void sendToAllClients(const std::string &/* msg */);
       ListClient::key_type getOrCreateClientId(
         const ListClient::mapped_type &/* client */
         );
@@ -39,6 +40,7 @@ namespace app {
       ListClient m_clients;
       Client m_currentClient;
       common::net::Socket::Buffer m_buffers;
+      int m_seqNo;
 
   };
 

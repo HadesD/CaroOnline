@@ -27,27 +27,26 @@ namespace app {
     Log::info("Server :: run()");
 
     // http://giderosmobile.com/forum/discussion/2766/online-multiplayer-turn-based-game-with-udp/p1
-    auto sendToAllClients = [&](
-      const int &seqNo, const Client &turnOfcli, const std::string &data
-      )
-    {
-
-    };
-
-    int seqNo = 0;
+    m_seqNo = 0;
 
     try
     {
       m_udpSocket.open();
 
-      auto t_now = std::chrono::steady_clock::now();
+      auto tnow = std::chrono::steady_clock::now();
 
       while (true)
       {
         this->receive();
-        Client cli;
-        sendToAllClients(seqNo, cli, "");
-        this->update(1.f);
+
+        std::chrono::duration<float> dt = std::chrono::steady_clock::now() -
+          tnow;
+
+        this->sendToAllClients("FFF");
+
+        this->update(static_cast<float>(dt.count()));
+
+        tnow = std::chrono::steady_clock::now();
       }
     }
     catch (const std::exception &e)
@@ -60,8 +59,26 @@ namespace app {
     }
   }
 
-  void Server::update(float dt)
+  void Server::update(const float &dt)
   {
+  }
+
+  void Server::sendToAllClients(const std::string &msg)
+  {
+    Log::info("Start send to " + std::to_string(m_clients.size()) + " clients");
+
+    for (const auto &client : m_clients)
+    {
+      m_udpSocket.send(
+        msg, client.second,
+        [&](const std::error_code &e, const std::size_t &bytes){
+          Log::info("Send to ID: "
+                    + std::to_string(client.first)
+                    + " " + std::to_string(bytes)
+                    +"Bytes"
+                    );
+        });
+    }
   }
 
   void Server::receive()
@@ -69,11 +86,7 @@ namespace app {
     m_udpSocket.receive(
       m_buffers,
       m_currentClient.second,
-      [this](
-        const std::error_code &e,
-        const std::size_t &bytes
-        )
-      {
+      [this](const std::error_code &e, const std::size_t &bytes){
         if (e)
         {
           Log::error(e.message());
