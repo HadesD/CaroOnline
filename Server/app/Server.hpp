@@ -19,7 +19,7 @@ namespace app {
       typedef ListClient::value_type Client;
 
     public:
-      Server(const std::string &ip, const short &port);
+      Server(const std::string &/* ip */, const short &/* port */);
       ~Server();
 
     public:
@@ -28,12 +28,16 @@ namespace app {
     private:
       void init();
       void receive();
-      void update(float dt);
+      void update(float /* dt */);
       void onReceiveHandle(const std::string &/* data */);
       void sendGameDataToAllClients();
+      ListClient::key_type getClientId(
+        const ListClient::mapped_type &/* client */
+        );
       ListClient::key_type getOrCreateClientId(
         const ListClient::mapped_type &/* client */
         );
+      bool removeClientId(ListClient::key_type /* id */);
 
     private:
       common::net::socket::Udp m_udpSocket;

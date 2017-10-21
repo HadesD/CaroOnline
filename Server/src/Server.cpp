@@ -67,6 +67,8 @@ namespace app {
   {
     Log::info("Start send to " + std::to_string(m_clients.size()) + " clients");
 
+
+
     std::string msg = "";
 
     for (const auto &client : m_clients)
@@ -141,7 +143,7 @@ namespace app {
 
           Log::info("Username:" + acc.at(0) + " - Pass:" + acc.at(1));
 
-          auto from_client = getOrCreateClientId(m_currentClient.second);
+          auto from_client = this->getOrCreateClientId(m_currentClient.second);
 
         }
         break;
@@ -155,10 +157,10 @@ namespace app {
             return;
           }
 
-          Log::info("X:" + xy.at(0) + " - Y:" + xy.at(1));
-
-          auto from_client = getOrCreateClientId(m_currentClient.second);
-
+          if (auto cliId = this->getClientId(this->m_currentClient.second))
+          {
+            Log::info("X:" + xy.at(0) + " - Y:" + xy.at(1));
+          }
         }
         break;
       default:
@@ -173,7 +175,22 @@ namespace app {
     const ListClient::mapped_type &endpoint
     )
   {
-    for (const auto &client : m_clients)
+    if (auto id = this->getClientId(endpoint))
+    {
+      return id;
+    }
+
+    auto id = this->m_clients.cend()->first + 1;
+    m_clients.insert(Client(id, endpoint));
+
+    return id;
+  }
+
+  Server::ListClient::key_type Server::getClientId(
+    const ListClient::mapped_type &endpoint
+    )
+  {
+    for (const auto &client : this->m_clients)
     {
       if (client.second == endpoint)
       {
@@ -181,10 +198,16 @@ namespace app {
       }
     }
 
-    auto id = (*m_clients.cend()).first + 1;
-    m_clients.insert(Client(id, endpoint));
+    return 0;
+  }
 
-    return id;
+  bool Server::removeClientId(
+    ListClient::key_type id
+    )
+  {
+    this->m_clients.erase(id);
+
+    return true;
   }
 
 }
