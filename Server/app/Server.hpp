@@ -30,7 +30,7 @@ namespace app {
       void receive();
       void update(float dt);
       void onReceiveHandle(const std::string &/* data */);
-      void sendToAllClients(const std::string &/* msg */);
+      void sendGameDataToAllClients();
       ListClient::key_type getOrCreateClientId(
         const ListClient::mapped_type &/* client */
         );

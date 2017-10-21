@@ -63,9 +63,11 @@ namespace app {
   {
   }
 
-  void Server::sendToAllClients(const std::string &msg)
+  void Server::sendGameDataToAllClients()
   {
     Log::info("Start send to " + std::to_string(m_clients.size()) + " clients");
+
+    std::string msg = "";
 
     for (const auto &client : m_clients)
     {
@@ -76,8 +78,9 @@ namespace app {
                     + std::to_string(client.first)
                     + " " + std::to_string(bytes)
                     +"Bytes"
-                    );
-        });
+                   );
+        }
+        );
     }
   }
 
@@ -111,6 +114,8 @@ namespace app {
         this->receive();
       }
       );
+
+    this->sendGameDataToAllClients();
   }
 
   void Server::onReceiveHandle(const std::string &data)
@@ -129,10 +134,10 @@ namespace app {
           Log::info("Server :: onReceiveHandle() :: LOGIN");
           std::vector<std::string> acc = Util::str_split(ms.msg, ':');
 
-          // if (acc.size() != 2)
-          // {
-          //   return;
-          // }
+          if (acc.size() != 2)
+          {
+            return;
+          }
 
           Log::info("Username:" + acc.at(0) + " - Pass:" + acc.at(1));
 
@@ -145,22 +150,14 @@ namespace app {
           Log::info("Server :: onReceiveHandle() :: SET_MOVE");
 
           std::vector<std::string> xy = Util::str_split(ms.msg, ':');
-          // if (xy.size() != 2)
-          // {
-          //   return;
-          // }
-
-          auto from_client = getOrCreateClientId(m_currentClient.second);
+          if (xy.size() != 2)
+          {
+            return;
+          }
 
           Log::info("X:" + xy.at(0) + " - Y:" + xy.at(1));
 
-          m_udpSocket.send(
-            "FFF",
-            m_currentClient.second,
-            [](const std::error_code &e, const std::size_t &bytes){
-
-            }
-            );
+          auto from_client = getOrCreateClientId(m_currentClient.second);
 
         }
         break;
