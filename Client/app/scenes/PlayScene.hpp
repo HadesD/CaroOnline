@@ -37,7 +37,7 @@ namespace app { namespace scenes {
 
     public:
       void init();
-      void update(const float &dt);
+      void update(float dt);
       void draw();
 
     public:

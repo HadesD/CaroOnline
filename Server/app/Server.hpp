@@ -28,7 +28,7 @@ namespace app {
     private:
       void init();
       void receive();
-      void update(const float &dt);
+      void update(float dt);
       void onReceiveHandle(const std::string &/* data */);
       void sendToAllClients(const std::string &/* msg */);
       ListClient::key_type getOrCreateClientId(

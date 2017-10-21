@@ -1,12 +1,12 @@
 .PHONY: all run client server test
 
-default: server
+default: s
 # default: client
 
-client:
+c:
 	cd Client && make && make run
 
-server:
+s:
 	cd Server && make && make run
 
 test:

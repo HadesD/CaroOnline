@@ -31,23 +31,23 @@ namespace app {
 
     try
     {
-      m_udpSocket.open();
-
       auto tnow = std::chrono::steady_clock::now();
 
-      while (true)
-      {
-        this->receive();
+      this->receive();
 
+      // while (true)
+      {
         std::chrono::duration<float> dt = std::chrono::steady_clock::now() -
           tnow;
 
-        this->sendToAllClients("FFF");
+        // this->sendToAllClients("FFF");
 
         this->update(static_cast<float>(dt.count()));
 
         tnow = std::chrono::steady_clock::now();
       }
+
+      m_udpSocket.open();
     }
     catch (const std::exception &e)
     {
@@ -59,7 +59,7 @@ namespace app {
     }
   }
 
-  void Server::update(const float &dt)
+  void Server::update(float dt)
   {
   }
 
@@ -108,6 +108,7 @@ namespace app {
             + std::to_string(this->m_currentClient.second.port())
             );
         }
+        this->receive();
       }
       );
   }
@@ -128,10 +129,10 @@ namespace app {
           Log::info("Server :: onReceiveHandle() :: LOGIN");
           std::vector<std::string> acc = Util::str_split(ms.msg, ':');
 
-          if (acc.size() != 2)
-          {
-            return;
-          }
+          // if (acc.size() != 2)
+          // {
+          //   return;
+          // }
 
           Log::info("Username:" + acc.at(0) + " - Pass:" + acc.at(1));
 
@@ -144,10 +145,10 @@ namespace app {
           Log::info("Server :: onReceiveHandle() :: SET_MOVE");
 
           std::vector<std::string> xy = Util::str_split(ms.msg, ':');
-          if (xy.size() != 2)
-          {
-            return;
-          }
+          // if (xy.size() != 2)
+          // {
+          //   return;
+          // }
 
           auto from_client = getOrCreateClientId(m_currentClient.second);
 

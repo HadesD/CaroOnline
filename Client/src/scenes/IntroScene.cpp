@@ -23,7 +23,7 @@ namespace app { namespace scenes {
     m_selection.emplace_back("Quit", std::bind(&IntroScene::quit, this));
   }
 
-  void IntroScene::update(const float &/* dt */)
+  void IntroScene::update(float /* dt */)
   {
     this->waitKeyboardEvent();
   }

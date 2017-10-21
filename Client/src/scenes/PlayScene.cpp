@@ -48,7 +48,7 @@ namespace app { namespace scenes {
     // m_pGame->quit();
   }
 
-  void PlayScene::update(const float &dt)
+  void PlayScene::update(float dt)
   {
     if (m_isFinish == true)
     {
