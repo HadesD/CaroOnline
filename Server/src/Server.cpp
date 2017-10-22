@@ -44,8 +44,6 @@ namespace app {
         std::chrono::duration<float> dt = std::chrono::steady_clock::now() -
           tnow;
 
-        // this->sendToAllClients("FFF");
-
         this->update(static_cast<float>(dt.count()));
 
         tnow = std::chrono::steady_clock::now();
@@ -92,7 +90,7 @@ namespace app {
           );
       }
 
-      // Log::info(msg);
+      Log::info(msg);
     }
     catch (...)
     {
@@ -173,6 +171,7 @@ namespace app {
             Log::info("Server :: onReceiveHandle() :: SET_MOVE");
 
             std::vector<std::string> xy = Util::str_split(ms.msg, ':');
+
             if (xy.size() != 2)
             {
               return;
@@ -188,9 +187,11 @@ namespace app {
               common::GameBoard gb = this->m_gameBoard;
 
               // gb.getBoard().at(x).at(y);
-              gb.getBoard()[x][y] = cliId;
+              gb.getBoard()[x][y] = 1;
+              Log::info(std::to_string(gb.getBoard()[x][y]));
 
-              this->m_gameBoard.setBoard(gb.getBoard());
+              this->m_gameBoard = gb;
+
 
               this->sendGameDataToAllClients();
             }

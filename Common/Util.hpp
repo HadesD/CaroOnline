@@ -8,7 +8,7 @@ namespace Util {
 
   std::vector<std::string> str_split(
     const std::string &str,
-    const char &delimiter
+    const char delimiter
     )
   {
     std::vector<std::string> internal;

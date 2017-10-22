@@ -26,6 +26,7 @@ namespace common {
   void GameBoard::setBoard(const GameBoard::Board &board)
   {
     this->m_board = board;
+    std::cout << toString() << std::endl;
   }
 
   void GameBoard::setBoard(const std::string &board)
