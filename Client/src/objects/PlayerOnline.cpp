@@ -53,11 +53,11 @@ namespace app { namespace objects {
 
     return;
 
-    app::scenes::PlayScene::GameBoard gb = m_pScene->getGameBoard();
+    common::GameBoard gb = m_pScene->getGameBoard();
 
     this->m_isTurn = false;
 
-    gb[m_cursor.x][m_cursor.y] = this->m_mark;
+    gb.getBoard()[m_cursor.x][m_cursor.y] = this->m_mark;
 
     m_pScene->setGameBoard(gb);
 

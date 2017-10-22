@@ -86,6 +86,11 @@ namespace app {
     }
   }
 
+  Server::GameBoard Server::getGameBoard() const
+  {
+    return this->m_gameBoard;
+  }
+
   void Server::receive()
   {
     m_udpSocket.receive(

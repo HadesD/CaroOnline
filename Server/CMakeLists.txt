@@ -36,6 +36,7 @@ set(APP_SRC
   # Common
   ../Common/Config.cpp
   ../Common/Logger.cpp
+  ../Common/GameBoard.cpp
   ../Common/MessageStruct.cpp
   ../Common/net/Socket.cpp
   ../Common/net/socket/Udp.cpp

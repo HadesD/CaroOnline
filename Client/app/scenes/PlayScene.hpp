@@ -22,7 +22,7 @@ namespace app { namespace scenes {
   class PlayScene : public app::Scene
   {
     public:
-      typedef common::GameBoard GameBoard;
+      // typedef common::GameBoard GameBoard;
       typedef std::vector< std::shared_ptr< app::objects::Player > > ListPlayer;
       enum class GameState
       {
@@ -51,8 +51,8 @@ namespace app { namespace scenes {
       void removePlayer(const std::shared_ptr<app::objects::Player> &player);
 
     public:
-      GameBoard getGameBoard() const;
-      void setGameBoard(const GameBoard &gb);
+      common::GameBoard getGameBoard() const;
+      void setGameBoard(const common::GameBoard &/* gb */);
       ListPlayer getListPlayer() const;
       void setNextPlayer(const int nextPlayer);
       int getCurrentPlayer() const;
@@ -60,7 +60,7 @@ namespace app { namespace scenes {
       void setCursor(const Point2D &c);
 
     protected:
-      GameBoard m_gameBoard;
+      common::GameBoard m_gameBoard;
       ListPlayer m_listPlayer;
       int m_currentPlayer;
       Point2D m_cursor;

@@ -15,10 +15,14 @@ namespace app { namespace scenes {
   PlayScene::PlayScene(const std::shared_ptr<app::core::Game> &game) :
     app::Scene(game)
   {
-    m_gameBoard.assign(
+    m_gameBoard = common::GameBoard(
       common::config::gameBoardRows,
-      std::vector< int >(common::config::gameBoardCols, 0)
+      common::config::gameBoardCols
       );
+    // m_gameBoard.assign(
+    //   common::config::gameBoardRows,
+    //   std::vector< int >(common::config::gameBoardCols, 0)
+    //   );
 
     m_gameBoardOneObjSize = 3;
   }
@@ -74,7 +78,7 @@ namespace app { namespace scenes {
     assert((m_gameBoardOneObjSize % 2) != 0);
     // Barrier
     std::cout << "Current Player: " << m_currentPlayer << std::endl;
-    auto drawBarrier = [](const int &len){
+    auto drawBarrier = [](const int len){
       for (std::size_t i = 0; i < common::config::gameBoardCols; i++)
       {
         std::cout << '+';
@@ -92,7 +96,7 @@ namespace app { namespace scenes {
       std::cout << std::string(m_gameBoardOneObjSize / 2, ' ');
     };
 
-    for (size_t x = 0; x < m_gameBoard.size(); x++)
+    for (size_t x = 0; x < m_gameBoard.getBoard().size(); x++)
     {
       drawBarrier(m_gameBoardOneObjSize);
       // for (size_t y = 0; y < m_gameBoard.at(x).size(); y++)
@@ -101,12 +105,12 @@ namespace app { namespace scenes {
       // }
       // std::cout << '|';
       // std::cout << std::endl;
-      for (size_t y = 0; y < m_gameBoard.at(x).size(); y++)
+      for (size_t y = 0; y < m_gameBoard.getBoard().at(x).size(); y++)
       {
         std::string curr;
         std::string color;
 
-        switch (m_gameBoard.at(x).at(y))
+        switch (m_gameBoard.getBoard().at(x).at(y))
         {
           default:
           case 0:
@@ -177,11 +181,11 @@ namespace app { namespace scenes {
 
     xMaxSize = std::min(
       xP + common::config::maxCoupleCount + 1,
-      static_cast<int>(m_gameBoard.size())
+      static_cast<int>(m_gameBoard.getBoard().size())
       );
     yMaxSize = std::min(
       yP + common::config::maxCoupleCount + 1,
-      static_cast<int>(m_gameBoard.at(xMaxSize-1).size())
+      static_cast<int>(m_gameBoard.getBoard().at(xMaxSize-1).size())
       );
 
     // Game board likes:
@@ -231,8 +235,8 @@ namespace app { namespace scenes {
     for (int y = y0; y < yMaxSize - 1; y++)
     {
       if (
-        (m_gameBoard.at(xP).at(y) == p.lock()->getMark()) &&
-        (m_gameBoard.at(xP).at(y + 1) == p.lock()->getMark())
+        (m_gameBoard.getBoard().at(xP).at(y) == p.lock()->getMark()) &&
+        (m_gameBoard.getBoard().at(xP).at(y + 1) == p.lock()->getMark())
         )
       {
         count++;
@@ -254,8 +258,8 @@ namespace app { namespace scenes {
     for (int x = x0; x < xMaxSize - 1; x++)
     {
       if (
-        (m_gameBoard.at(x).at(yP) == p.lock()->getMark()) &&
-        (m_gameBoard.at(x + 1).at(yP) == p.lock()->getMark())
+        (m_gameBoard.getBoard().at(x).at(yP) == p.lock()->getMark()) &&
+        (m_gameBoard.getBoard().at(x + 1).at(yP) == p.lock()->getMark())
         )
       {
         count++;
@@ -281,8 +285,8 @@ namespace app { namespace scenes {
         break;
       }
       if (
-        (m_gameBoard.at(x).at(y) == p.lock()->getMark()) &&
-        (m_gameBoard.at(x + 1).at(y + 1) == p.lock()->getMark())
+        (m_gameBoard.getBoard().at(x).at(y) == p.lock()->getMark()) &&
+        (m_gameBoard.getBoard().at(x + 1).at(y + 1) == p.lock()->getMark())
         )
       {
         count++;
@@ -308,8 +312,8 @@ namespace app { namespace scenes {
         break;
       }
       if (
-        (m_gameBoard.at(x).at(y) == p.lock()->getMark()) &&
-        (m_gameBoard.at(x + 1).at(y - 1) == p.lock()->getMark())
+        (m_gameBoard.getBoard().at(x).at(y) == p.lock()->getMark()) &&
+        (m_gameBoard.getBoard().at(x + 1).at(y - 1) == p.lock()->getMark())
         )
       {
         count++;
@@ -327,6 +331,16 @@ namespace app { namespace scenes {
     }
   }
 
+  common::GameBoard PlayScene::getGameBoard() const
+  {
+    return this->m_gameBoard;
+  }
+
+  void PlayScene::setGameBoard(const common::GameBoard &gb)
+  {
+    this->m_gameBoard = gb;
+  }
+
   PlayScene::GameState PlayScene::checkMoveState(const app::Point2D &/* p */)
   {
     return PlayScene::GameState::WIN;
@@ -340,16 +354,6 @@ namespace app { namespace scenes {
   void PlayScene::setCursor(const Point2D &c)
   {
     m_cursor = c;
-  }
-
-  PlayScene::GameBoard PlayScene::getGameBoard() const
-  {
-    return m_gameBoard;
-  }
-
-  void PlayScene::setGameBoard(const PlayScene::GameBoard &gb)
-  {
-    m_gameBoard = gb;
   }
 
   void PlayScene::addPlayer(
@@ -368,8 +372,8 @@ namespace app { namespace scenes {
     player->setScene(this);
     player->setCursor(
       Point2D(
-        m_gameBoard.size()/2,
-        m_gameBoard.at(m_gameBoard.size()/2).size()/2
+        m_gameBoard.getBoard().size()/2,
+        m_gameBoard.getBoard().at(m_gameBoard.getBoard().size()/2).size()/2
         )
       );
   }
