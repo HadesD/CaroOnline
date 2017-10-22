@@ -76,6 +76,7 @@ namespace app { namespace scenes {
   void PlayScene::drawGameBoard()
   {
     assert((m_gameBoardOneObjSize % 2) != 0);
+    std::cout << m_gameBoard.toString() << std::endl;
     // Barrier
     std::cout << "Current Player: " << m_currentPlayer << std::endl;
     auto drawBarrier = [](const int len){

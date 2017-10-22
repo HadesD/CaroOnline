@@ -9,6 +9,10 @@ namespace app {
   Server::Server(const std::string &ip, const short &port) :
     m_udpSocket(ip, port)
   {
+    this->m_gameBoard = common::GameBoard(
+      common::config::gameBoardRows,
+      common::config::gameBoardCols
+      );
   }
 
   Server::~Server()
@@ -65,24 +69,32 @@ namespace app {
 
   void Server::sendGameDataToAllClients()
   {
-    Log::info("Start send to " + std::to_string(m_clients.size()) + " clients");
-
-
-
-    std::string msg = "";
-
-    for (const auto &client : m_clients)
+    try
     {
-      m_udpSocket.send(
-        msg, client.second,
-        [&](const std::error_code &e, const std::size_t &bytes){
-          Log::info("Send to ID: "
-                    + std::to_string(client.first)
-                    + " " + std::to_string(bytes)
-                    +"Bytes"
-                   );
-        }
-        );
+      Log::info("Start send to " + std::to_string(m_clients.size()) + " clients");
+
+      char cmd = static_cast<char>(common::MessageType::UPDATE_GAME);
+
+      std::string msg = std::string(sizeof(cmd), cmd) + m_gameBoard.toString();
+
+      for (const auto &client : m_clients)
+      {
+        m_udpSocket.send(
+          msg, client.second,
+          [&](const std::error_code &e, const std::size_t &bytes){
+            Log::info(
+              "Send to ID: "
+              + std::to_string(client.first)
+              + " " + std::to_string(bytes)
+              +" Bytes"
+              );
+          }
+          );
+      }
+    }
+    catch (...)
+    {
+      Log::error("Server :: sendGameDataToAllClients() :: Error");
     }
   }
 
@@ -127,52 +139,71 @@ namespace app {
 
   void Server::onReceiveHandle(const std::string &data)
   {
-    common::MessageStruct ms(data);
-
-    if (ms.isValidSum() == false)
+    try
     {
-      return;
-    }
+      common::MessageStruct ms(data);
 
-    switch (ms.msgType)
-    {
-      case common::MessageType::LOGIN:
-        {
-          Log::info("Server :: onReceiveHandle() :: LOGIN");
-          std::vector<std::string> acc = Util::str_split(ms.msg, ':');
-
-          if (acc.size() != 2)
-          {
-            return;
-          }
-
-          Log::info("Username:" + acc.at(0) + " - Pass:" + acc.at(1));
-
-          auto from_client = this->getOrCreateClientId(m_currentClient.second);
-
-        }
-        break;
-      case common::MessageType::SET_MOVE:
-        {
-          Log::info("Server :: onReceiveHandle() :: SET_MOVE");
-
-          std::vector<std::string> xy = Util::str_split(ms.msg, ':');
-          if (xy.size() != 2)
-          {
-            return;
-          }
-
-          if (auto cliId = this->getClientId(this->m_currentClient.second))
-          {
-            Log::info("X:" + xy.at(0) + " - Y:" + xy.at(1));
-          }
-        }
-        break;
-      default:
-        {
-          Log::info("Server :: onReceiveHandle() :: NOTHING");
-        }
+      if (ms.isValidSum() == false)
+      {
         return;
+      }
+
+      switch (ms.msgType)
+      {
+        case common::MessageType::LOGIN:
+          {
+            Log::info("Server :: onReceiveHandle() :: LOGIN");
+            std::vector<std::string> acc = Util::str_split(ms.msg, ':');
+
+            if (acc.size() != 2)
+            {
+              return;
+            }
+
+            Log::info("Username:" + acc.at(0) + " - Pass:" + acc.at(1));
+
+            auto from_client = this->getOrCreateClientId(m_currentClient.second);
+
+          }
+          break;
+        case common::MessageType::SET_MOVE:
+          {
+            Log::info("Server :: onReceiveHandle() :: SET_MOVE");
+
+            std::vector<std::string> xy = Util::str_split(ms.msg, ':');
+            if (xy.size() != 2)
+            {
+              return;
+            }
+
+            if (auto cliId = this->getClientId(this->m_currentClient.second))
+            {
+              int x = std::stoi(xy.at(0));
+              int y = std::stoi(xy.at(1));
+
+              Log::info("X:" + std::to_string(x) + " - Y:" + std::to_string(y));
+
+              common::GameBoard gb = this->m_gameBoard;
+
+              // gb.getBoard().at(x).at(y);
+              gb.getBoard()[x][y] = cliId;
+
+              this->m_gameBoard.setBoard(gb.getBoard());
+
+              this->sendGameDataToAllClients();
+            }
+          }
+          break;
+        default:
+          {
+            Log::info("Server :: onReceiveHandle() :: NOTHING");
+          }
+          return;
+      }
+    }
+    catch (...)
+    {
+      Log::error("Server :: onReceiveHandle() :: ERROR");
     }
   }
 

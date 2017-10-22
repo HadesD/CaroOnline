@@ -12,6 +12,7 @@ namespace common {
   {
     LOGIN = 'a',
     SET_MOVE,
+    UPDATE_GAME,
   };
 
   struct MessageStruct

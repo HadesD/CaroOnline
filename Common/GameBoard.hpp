@@ -14,6 +14,7 @@ namespace common {
       GameBoard(const std::size_t rows, const std::size_t cols);
       Board getBoard() const;
       void setBoard(const Board &board);
+      std::string toString() const;
 
     private:
       Board m_board;

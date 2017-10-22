@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "GameBoard.hpp"
 
 namespace common {
@@ -22,6 +24,28 @@ namespace common {
   void GameBoard::setBoard(const GameBoard::Board &board)
   {
     this->m_board = board;
+  }
+
+  std::string GameBoard::toString() const
+  {
+    std::string gb;
+
+    for (std::size_t x = 0; x < m_board.size(); x++)
+    {
+      for (std::size_t y = 0; y < m_board.at(x).size(); y++)
+      {
+        gb += std::to_string(m_board.at(x).at(y));
+
+        gb += ":";
+      }
+    }
+
+    if (!gb.empty())
+    {
+      gb.pop_back();
+    }
+
+    return gb;
   }
 
 }
