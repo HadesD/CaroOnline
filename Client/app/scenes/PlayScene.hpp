@@ -37,7 +37,7 @@ namespace app { namespace scenes {
 
     public:
       void init();
-      void update(float dt);
+      void update(const float dt);
       void draw();
 
     public:
@@ -54,7 +54,7 @@ namespace app { namespace scenes {
       GameBoard getGameBoard() const;
       void setGameBoard(const GameBoard &gb);
       ListPlayer getListPlayer() const;
-      void setNextPlayer(const int &nextPlayer);
+      void setNextPlayer(const int nextPlayer);
       int getCurrentPlayer() const;
       Point2D getCursor() const;
       void setCursor(const Point2D &c);

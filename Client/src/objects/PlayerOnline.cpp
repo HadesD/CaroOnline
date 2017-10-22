@@ -31,7 +31,7 @@ namespace app { namespace objects {
     this->receive();
   }
 
-  void PlayerOnline::update(const float &dt)
+  void PlayerOnline::update(const float dt)
   {
     Player::update(dt);
   }

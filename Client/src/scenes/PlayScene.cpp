@@ -48,7 +48,7 @@ namespace app { namespace scenes {
     // m_pGame->quit();
   }
 
-  void PlayScene::update(float dt)
+  void PlayScene::update(const float dt)
   {
     if (m_isFinish == true)
     {
@@ -394,7 +394,7 @@ namespace app { namespace scenes {
     return m_listPlayer;
   }
 
-  void PlayScene::setNextPlayer(const int &nextPlayer)
+  void PlayScene::setNextPlayer(const int nextPlayer)
   {
     if (nextPlayer >= static_cast<int>(m_listPlayer.size()))
     {

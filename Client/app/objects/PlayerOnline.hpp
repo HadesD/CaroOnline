@@ -11,7 +11,7 @@ namespace app { namespace objects {
       PlayerOnline();
 
     public:
-      virtual void update(const float &/* dt */);
+      virtual void update(const float /* dt */);
 
     private:
       void receive();

@@ -38,7 +38,7 @@ namespace app { namespace core {
   {
   }
 
-  void Game::update(float dt)
+  void Game::update(const float dt)
   {
     if (m_pScene == nullptr)
     {

@@ -14,7 +14,7 @@ namespace app { namespace objects {
     // delete m_pScene;
   }
 
-  void Player::update(const float &/* dt */)
+  void Player::update(const float /* dt */)
   {
     this->waitKeyboardEvent();
   }
@@ -121,7 +121,7 @@ namespace app { namespace objects {
     m_pScene->setNextPlayer(m_pScene->getCurrentPlayer() + 1);
   }
 
-  void Player::setId(const int &id)
+  void Player::setId(const int id)
   {
     this->m_id = id;
   }
@@ -131,7 +131,7 @@ namespace app { namespace objects {
     return this->m_id;
   }
 
-  void Player::setMark(const int &mark)
+  void Player::setMark(const int mark)
   {
     this->m_mark = mark;
   }
@@ -151,7 +151,7 @@ namespace app { namespace objects {
     return this->m_mark;
   }
 
-  void Player::setIsTurn(const bool &isTurn)
+  void Player::setIsTurn(const bool isTurn)
   {
     this->m_isTurn = isTurn;
   }

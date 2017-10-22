@@ -28,16 +28,16 @@ namespace app {
     private:
       void init();
       void receive();
-      void update(float /* dt */);
+      void update(const float /* dt */);
       void onReceiveHandle(const std::string &/* data */);
       void sendGameDataToAllClients();
       ListClient::key_type getClientId(
         const ListClient::mapped_type &/* client */
-        );
+        ) const;
       ListClient::key_type getOrCreateClientId(
         const ListClient::mapped_type &/* client */
         );
-      bool removeClientId(ListClient::key_type /* id */);
+      bool removeClientId(const ListClient::key_type /* id */);
 
     private:
       common::net::socket::Udp m_udpSocket;

@@ -33,7 +33,7 @@ namespace app { namespace core {
        * @return void
        * @param float dt : Delta time
        */
-      void update(float dt);
+      void update(const float dt);
       void waitKeyboardEvent();
 
     protected:

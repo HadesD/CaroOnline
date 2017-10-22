@@ -17,14 +17,14 @@ namespace app { namespace objects {
       ~Player();
 
     public:
-      virtual void update(const float &/* dt */);
+      virtual void update(const float /* dt */);
 
     private:
       void waitKeyboardEvent();
       void onKeyboardEvent();
 
     public:
-      void setId(const int &id);
+      void setId(const int id);
       int getId() const;
       void setName(const std::string &name);
       std::string getName() const;
@@ -32,8 +32,8 @@ namespace app { namespace objects {
       void setScene(scenes::PlayScene *scene);
       void setScene(std::shared_ptr<scenes::PlayScene> scene);
       int getMark() const;
-      void setMark(const int &mark);
-      void setIsTurn(const bool &isTurn);
+      void setMark(const int mark);
+      void setIsTurn(const bool isTurn);
       bool getIsTurn() const;
       Point2D getCursor() const;
       void setCursor(const Point2D &c);

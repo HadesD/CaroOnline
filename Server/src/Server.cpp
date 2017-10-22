@@ -59,7 +59,7 @@ namespace app {
     }
   }
 
-  void Server::update(float dt)
+  void Server::update(const float dt)
   {
   }
 
@@ -188,7 +188,7 @@ namespace app {
 
   Server::ListClient::key_type Server::getClientId(
     const ListClient::mapped_type &endpoint
-    )
+    ) const
   {
     for (const auto &client : this->m_clients)
     {
@@ -202,7 +202,7 @@ namespace app {
   }
 
   bool Server::removeClientId(
-    ListClient::key_type id
+    const ListClient::key_type id
     )
   {
     this->m_clients.erase(id);
