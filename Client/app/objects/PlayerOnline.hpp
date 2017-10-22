@@ -15,6 +15,7 @@ namespace app { namespace objects {
 
     private:
       void receive();
+      void onReceiveHandle(const std::string &/* data */);
 
     protected:
       virtual void onSetMove();

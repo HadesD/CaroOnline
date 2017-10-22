@@ -1,5 +1,6 @@
 #ifndef APP_GAME_HPP
 #define APP_GAME_HPP
+#define APP_CLIENT
 #include <memory>
 #include <vector>
 

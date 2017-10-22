@@ -70,13 +70,54 @@ namespace app { namespace objects {
   {
     m_udpSocket.receive(
       m_buffers, m_udpServerEndpoint,
-      [this](const std::error_code &, const std::size_t &bytes)
+      [this](const std::error_code &e, const std::size_t &bytes)
       {
-        Log::info(std::string(m_buffers.data(), m_buffers.data() + bytes));
+        if (e)
+        {
+          Log::error(e.message());
+        }
+        else
+        {
+          std::string recv = std::string(m_buffers.data(), m_buffers.data() + bytes);
 
+          this->onReceiveHandle(recv);
+        }
         this->receive();
       }
       );
+  }
+
+  void PlayerOnline::onReceiveHandle(const std::string &data)
+  {
+    try
+    {
+      Log::info("Server :: onReceiveHandle() :: NOTHING");
+
+      common::MessageStruct ms(data);
+
+      if (ms.isValidSum() == false)
+      {
+        return;
+      }
+
+      switch (ms.msgType)
+      {
+        case common::MessageType::UPDATE_GAME:
+          {
+            m_pScene->getGameBoard().setBoard(ms.msg);
+          }
+          break;
+        default:
+          {
+            Log::info("Server :: onReceiveHandle() :: NOTHING");
+          }
+          return;
+      }
+    }
+    catch (...)
+    {
+      Log::error("Server :: onReceiveHandle() :: ERROR");
+    }
   }
 
 } }

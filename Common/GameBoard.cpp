@@ -2,6 +2,8 @@
 
 #include "GameBoard.hpp"
 
+#include "../Common/Util.hpp"
+
 namespace common {
 
   GameBoard::GameBoard()
@@ -24,6 +26,23 @@ namespace common {
   void GameBoard::setBoard(const GameBoard::Board &board)
   {
     this->m_board = board;
+  }
+
+  void GameBoard::setBoard(const std::string &board)
+  {
+    // GameBoard::Board b;
+
+    std::vector< std::string > matBoard = Util::str_split(board, ':');
+
+    for (std::size_t x = 0; x < m_board.size(); x++)
+    {
+      for (std::size_t y = 0; y < m_board.at(x).size(); y++)
+      {
+        m_board[x][y] = std::stoi(matBoard.at(
+            x * common::config::gameBoardRows + y
+            ));
+      }
+    }
   }
 
   std::string GameBoard::toString() const

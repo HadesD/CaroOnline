@@ -91,6 +91,8 @@ namespace app {
           }
           );
       }
+
+      // Log::info(msg);
     }
     catch (...)
     {
