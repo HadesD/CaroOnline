@@ -38,6 +38,7 @@ set(APP_SRC
   ../Common/GameBoard.cpp
   ../Common/net/Socket.cpp
   ../Common/net/socket/Udp.cpp
+  ../Common/Util.cpp
 
   # Application
   src/main.cpp

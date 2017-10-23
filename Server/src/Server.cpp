@@ -80,12 +80,19 @@ namespace app {
         m_udpSocket.send(
           msg, client.second,
           [&](const std::error_code &e, const std::size_t &bytes){
-            Log::info(
-              "Send to ID: "
-              + std::to_string(client.first)
-              + " " + std::to_string(bytes)
-              +" Bytes"
-              );
+            if (e)
+            {
+              Log::error(e.message());
+            }
+            else
+            {
+              Log::info(
+                "Send to ID: "
+                + std::to_string(client.first)
+                + " " + std::to_string(bytes)
+                +" Bytes"
+                );
+            }
           }
           );
       }
@@ -184,14 +191,12 @@ namespace app {
 
               Log::info("X:" + std::to_string(x) + " - Y:" + std::to_string(y));
 
-              common::GameBoard gb = this->m_gameBoard;
+              // common::GameBoard gb = this->m_gameBoard;
 
-              // gb.getBoard().at(x).at(y);
-              gb.getBoard()[x][y] = 1;
-              Log::info(std::to_string(gb.getBoard()[x][y]));
+              common::GameBoard::Board board = this->m_gameBoard.getBoard();
+              board[x][y] = 1;
 
-              this->m_gameBoard = gb;
-
+              this->m_gameBoard.setBoard(board);
 
               this->sendGameDataToAllClients();
             }

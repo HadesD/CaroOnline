@@ -1,3 +1,5 @@
+#ifndef COMMON_GAME_BOARD_HPP
+#define COMMON_GAME_BOARD_HPP
 #include <vector>
 
 #include "Config.hpp"
@@ -22,3 +24,5 @@ namespace common {
   };
 
 }
+
+#endif
