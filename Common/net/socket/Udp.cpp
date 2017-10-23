@@ -62,4 +62,14 @@ namespace common { namespace net { namespace socket {
     m_socket.async_receive_from(asio::buffer(buffer), endpoint, handle);
   }
 
+  void Udp::sync_recv(
+    const std::string &s,
+    EndPoint &endpoint
+    )
+  {
+    Log::info("UdpSocket :: sync_recv()");
+    std::string send_buff = common::config::networkCheckSum + s;
+    m_socket.receive_from(asio::buffer(send_buff), endpoint);
+  }
+
 } } }

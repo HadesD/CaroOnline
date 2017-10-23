@@ -27,6 +27,10 @@ namespace common { namespace net { namespace socket {
         EndPoint &/* endpoint */,
         const onReceiveHandle &/* handle */
         );
+      void sync_recv(
+        const std::string &s,
+        EndPoint &/* endpoint */
+        );
 
     private:
       asio::ip::udp::socket m_socket;

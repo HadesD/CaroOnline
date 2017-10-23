@@ -28,7 +28,6 @@ namespace app { namespace objects {
       [](const std::error_code &, const std::size_t &){}
       );
 
-    this->receive();
   }
 
   void PlayerOnline::update(const float dt)
@@ -48,8 +47,11 @@ namespace app { namespace objects {
 
     m_udpSocket.send(
       msg, m_udpServerEndpoint,
-      [](const std::error_code &, const std::size_t &){}
+      [this](const std::error_code &, const std::size_t &){
+        this->receive();
+      }
       );
+
 
     return;
 
@@ -68,23 +70,31 @@ namespace app { namespace objects {
 
   void PlayerOnline::receive()
   {
-    m_udpSocket.receive(
-      m_buffers, m_udpServerEndpoint,
-      [this](const std::error_code &e, const std::size_t &bytes)
-      {
-        if (e)
-        {
-          Log::error(e.message());
-        }
-        else
-        {
-          std::string recv = std::string(m_buffers.data(), m_buffers.data() + bytes);
+    // common::net::socket::Udp::EndPoint endp;
+    std::string s;
+    // m_udpSocket.sync_recv(s, endp);
+    // this->onReceiveHandle(s);
+    std::cin >> s;
 
-          this->onReceiveHandle(recv);
-        }
-        this->receive();
-      }
-      );
+    // m_udpSocket.receive(
+    //   m_buffers, endp,
+    //   [this](const std::error_code &e, const std::size_t &bytes)
+    //   {
+    //     std::string s;
+    //     std::cin >> s;
+    //     if (e)
+    //     {
+    //       Log::error(e.message());
+    //     }
+    //     else
+    //     {
+    //       std::string recv = std::string(m_buffers.data(), m_buffers.data() + bytes);
+    //
+    //       this->onReceiveHandle(recv);
+    //     }
+    //     this->receive();
+    //   }
+    //   );
   }
 
   void PlayerOnline::onReceiveHandle(const std::string &data)
@@ -100,6 +110,9 @@ namespace app { namespace objects {
         return;
       }
 
+      std::string s;
+      std::cin >> s;
+
       switch (ms.msgType)
       {
         case common::MessageType::UPDATE_GAME:
@@ -111,7 +124,7 @@ namespace app { namespace objects {
           {
             Log::info("Server :: onReceiveHandle() :: NOTHING");
           }
-          return;
+          break;
       }
     }
     catch (...)

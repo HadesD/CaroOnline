@@ -189,12 +189,22 @@ namespace app {
               int x = std::stoi(xy.at(0));
               int y = std::stoi(xy.at(1));
 
+              if (m_gameBoard.getBoard().at(x).at(y) != 0)
+              {
+                Log::error(
+                  "Had value at x,y:"
+                  + std::to_string(x)
+                  + ","
+                  + std::to_string(y)
+                  );
+
+                return;
+              }
+
               Log::info("X:" + std::to_string(x) + " - Y:" + std::to_string(y));
 
-              // common::GameBoard gb = this->m_gameBoard;
-
               common::GameBoard::Board board = this->m_gameBoard.getBoard();
-              board[x][y] = 1;
+              board[x][y] = cliId;
 
               this->m_gameBoard.setBoard(board);
 
