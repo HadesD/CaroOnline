@@ -19,6 +19,7 @@ namespace app { namespace scenes {
       common::config::gameBoardRows,
       common::config::gameBoardCols
       );
+    m_isFinish = false;
 
     m_gameBoardOneObjSize = 3;
   }
@@ -29,14 +30,14 @@ namespace app { namespace scenes {
 
   void PlayScene::init()
   {
-    //auto me = std::make_shared<app::objects::PlayerOnline>();
+    // auto me = std::make_shared<app::objects::PlayerOnline>();
     auto me = std::make_shared<app::objects::Player>();
     me->setIsTurn(true);
-    me->setMark(1);
+    // me->setMark(1);
     this->addPlayer(me);
 
     auto g1 = std::make_shared<app::objects::Player>();
-    g1->setMark(2);
+    // g1->setMark(2);
     this->addPlayer(g1);
   }
 
