@@ -4,8 +4,6 @@
 #include <memory>
 #include <vector>
 
-#include "app/Point2D.hpp"
-
 namespace app {
   class Scene;
 }

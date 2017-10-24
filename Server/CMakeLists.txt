@@ -41,6 +41,7 @@ set(APP_SRC
   ../Common/net/Socket.cpp
   ../Common/net/socket/Udp.cpp
   ../Common/Util.cpp
+  ../Common/Point2D.cpp
 
   # Application
   src/main.cpp

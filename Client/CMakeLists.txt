@@ -39,6 +39,7 @@ set(APP_SRC
   ../Common/net/Socket.cpp
   ../Common/net/socket/Udp.cpp
   ../Common/Util.cpp
+  ../Common/Point2D.cpp
 
   # Application
   src/main.cpp
@@ -49,7 +50,6 @@ set(APP_SRC
   src/WindowManager.cpp
   src/Config.cpp
   src/Scene.cpp
-  src/Point2D.cpp
   src/scenes/PlayScene.cpp
   src/scenes/IntroScene.cpp
   )

@@ -31,12 +31,12 @@ namespace app { namespace objects {
       // [[deprecated("Not compatible with smart pointer")]]
       void setScene(scenes::PlayScene *scene);
       void setScene(std::shared_ptr<scenes::PlayScene> scene);
-      int getMark() const;
+      common::PlayerMark getMark() const;
       void setMark(const int mark);
       void setIsTurn(const bool isTurn);
       bool getIsTurn() const;
-      Point2D getCursor() const;
-      void setCursor(const Point2D &c);
+      common::Point2D getCursor() const;
+      void setCursor(const common::Point2D &c);
       void onConnect(const std::error_code &e);
 
     protected:
@@ -46,11 +46,11 @@ namespace app { namespace objects {
       int m_id;
       std::string m_name;
       bool m_isTurn;
-      int m_mark;
+      common::PlayerMark m_mark;
       bool m_isReady;
 
     protected:
-      Point2D m_cursor;
+      common::Point2D m_cursor;
       std::shared_ptr<scenes::PlayScene> m_pScene;
       app::input::Kbhit m_kbhit;
 

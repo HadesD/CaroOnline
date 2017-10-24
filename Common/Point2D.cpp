@@ -1,6 +1,6 @@
-#include "app/Point2D.hpp"
+#include "Point2D.hpp"
 
-namespace app {
+namespace common {
 
   Point2D::Point2D()
   {

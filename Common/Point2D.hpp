@@ -1,7 +1,7 @@
-#ifndef APP_POINT_2D_HPP
-#define APP_POINT_2D_HPP
+#ifndef COMMON_POINT_2D_HPP
+#define COMMON_POINT_2D_HPP
 
-namespace app {
+namespace common {
 
   struct Point2D
   {

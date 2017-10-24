@@ -3,6 +3,8 @@
 #include <vector>
 
 #include "Config.hpp"
+#include "Type.hpp"
+#include "Point2D.hpp"
 
 namespace common {
 
@@ -18,6 +20,7 @@ namespace common {
       void setBoard(const Board &/* board */);
       void setBoard(const std::string &/* board */);
       std::string toString() const;
+      bool isWinPoint(const Point2D &p, const common::PlayerMark mark) const;
 
     private:
       Board m_board;

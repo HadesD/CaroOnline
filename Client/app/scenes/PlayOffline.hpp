@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "PlayScene.hpp"
-#include "app/Point2D.hpp"
+#include "../Common/Point2D.hpp"
 #include "../Common/GameBoard.hpp"
 
 namespace app
@@ -32,7 +32,7 @@ namespace app { namespace scenes {
 
     public:
       virtual void drawGameBoard();
-      GameState checkMoveState(const app::Point2D &p);
+      GameState checkMoveState(const common::Point2D &p);
       void checkFinish();
       void quit();
 

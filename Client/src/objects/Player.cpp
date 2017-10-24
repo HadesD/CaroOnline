@@ -113,15 +113,17 @@ namespace app { namespace objects {
 
     board[m_cursor.x][m_cursor.y] = this->m_mark;
 
-    std::cout << board[m_cursor.x][m_cursor.y];
-
     common::GameBoard gb = m_pScene->getGameBoard();
 
     gb.setBoard(board);
 
     m_pScene->setGameBoard(gb);
 
-    m_pScene->checkFinish();
+    if (m_pScene->getGameBoard().isWinPoint(m_cursor, m_mark))
+    {
+      m_pScene->quit();
+      return;
+    }
 
     m_pScene->setNextPlayer(m_pScene->getCurrentPlayer() + 1);
   }
@@ -141,17 +143,17 @@ namespace app { namespace objects {
     this->m_mark = mark;
   }
 
-  Point2D Player::getCursor() const
+  common::Point2D Player::getCursor() const
   {
     return this->m_cursor;
   }
 
-  void Player::setCursor(const Point2D &c)
+  void Player::setCursor(const common::Point2D &c)
   {
     this->m_cursor = c;
   }
 
-  int Player::getMark() const
+  common::PlayerMark Player::getMark() const
   {
     return this->m_mark;
   }

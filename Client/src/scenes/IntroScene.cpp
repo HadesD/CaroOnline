@@ -19,7 +19,12 @@ namespace app { namespace scenes {
 
   void IntroScene::init()
   {
-    m_selection.emplace_back("Play Game", std::bind(&IntroScene::goToPlay, this));
+    m_selection.emplace_back("Play Online",
+                             std::bind(&IntroScene::goToPlayOnline, this)
+                            );
+    m_selection.emplace_back("Play With Computer",
+                             std::bind(&IntroScene::goToPlayOffline, this)
+                            );
     m_selection.emplace_back("Quit", std::bind(&IntroScene::quit, this));
   }
 
@@ -93,13 +98,22 @@ namespace app { namespace scenes {
     }
   }
 
-  void IntroScene::goToPlay()
+  void IntroScene::goToPlayOffline()
   {
     m_pGame->setScene(
       std::shared_ptr<app::scenes::PlayScene>(
         new app::scenes::PlayScene(m_pGame)
         )
       );
+  }
+
+  void IntroScene::goToPlayOnline()
+  {
+    // m_pGame->setScene(
+    //   std::shared_ptr<app::scenes::PlayerOnlineScene>(
+    //     new app::scenes::PlayScene(m_pGame)
+    //     )
+    //   );
   }
 
   void IntroScene::quit()

@@ -45,7 +45,8 @@ namespace app { namespace scenes {
       void onKeyboardEvent();
 
     private:
-      void goToPlay();
+      void goToPlayOnline();
+      void goToPlayOffline();
       void quit();
 
     protected:

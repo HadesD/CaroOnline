@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "app/Scene.hpp"
-#include "app/Point2D.hpp"
+#include "../Common/Point2D.hpp"
 #include "../Common/GameBoard.hpp"
 
 namespace app
@@ -42,7 +42,7 @@ namespace app { namespace scenes {
 
     public:
       virtual void drawGameBoard();
-      GameState checkMoveState(const app::Point2D &p);
+      GameState checkMoveState(const common::Point2D &p);
       void checkFinish();
       void quit();
 
@@ -56,14 +56,14 @@ namespace app { namespace scenes {
       ListPlayer getListPlayer() const;
       void setNextPlayer(const int nextPlayer);
       int getCurrentPlayer() const;
-      Point2D getCursor() const;
-      void setCursor(const Point2D &c);
+      common::Point2D getCursor() const;
+      void setCursor(const common::Point2D &c);
 
     protected:
       common::GameBoard m_gameBoard;
       ListPlayer m_listPlayer;
       int m_currentPlayer;
-      Point2D m_cursor;
+      common::Point2D m_cursor;
       bool m_isFinish;
 
     private:

@@ -138,7 +138,7 @@ namespace app { namespace scenes {
             break;
 
         }
-        if (m_cursor == Point2D(x, y))
+        if (m_cursor == common::Point2D(x, y))
         {
           color = "\e[48;5;255m";
         }
@@ -161,173 +161,7 @@ namespace app { namespace scenes {
 
   void PlayScene::checkFinish()
   {
-    int xP, yP, x0, y0, xMaxSize, yMaxSize;
-
-    std::weak_ptr<app::objects::Player> p = m_listPlayer.at(m_currentPlayer);
-
-    if (auto pP = p.lock())
-    {
-      xP = pP->getCursor().x;
-      yP = pP->getCursor().y;
-    }
-    else
-    {
-      throw std::runtime_error("Cant lock player: " + std::to_string(m_currentPlayer));
-    }
-
-    x0 = std::max(xP - common::config::maxCoupleCount, 0);
-    y0 = std::max(yP - common::config::maxCoupleCount, 0);
-
-    xMaxSize = std::min(
-      xP + common::config::maxCoupleCount + 1,
-      static_cast<int>(m_gameBoard.getBoard().size())
-      );
-    yMaxSize = std::min(
-      yP + common::config::maxCoupleCount + 1,
-      static_cast<int>(m_gameBoard.getBoard().at(xMaxSize-1).size())
-      );
-
-    // Game board likes:
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    int count;
-
-    // Check Hoz line
-    count = 0;
-    for (int y = y0; y < yMaxSize - 1; y++)
-    {
-      if (
-        (m_gameBoard.getBoard().at(xP).at(y) == p.lock()->getMark()) &&
-        (m_gameBoard.getBoard().at(xP).at(y + 1) == p.lock()->getMark())
-        )
-      {
-        count++;
-      }
-      else
-      {
-        count = 0;
-      }
-
-      if (count >= common::config::maxCoupleCount)
-      {
-        this->m_isFinish = true;
-        return;
-      }
-    }
-
-    // Check vert
-    count = 0;
-    for (int x = x0; x < xMaxSize - 1; x++)
-    {
-      if (
-        (m_gameBoard.getBoard().at(x).at(yP) == p.lock()->getMark()) &&
-        (m_gameBoard.getBoard().at(x + 1).at(yP) == p.lock()->getMark())
-        )
-      {
-        count++;
-      }
-      else
-      {
-        count = 0;
-      }
-
-      if (count >= common::config::maxCoupleCount)
-      {
-        this->m_isFinish = true;
-        return;
-      }
-    }
-
-    // Check diagonal L->R
-    count = 0;
-    for (int x = x0, y = y0; x < xMaxSize - 1; x++, y++)
-    {
-      if (y >= yMaxSize - 1)
-      {
-        break;
-      }
-      if (
-        (m_gameBoard.getBoard().at(x).at(y) == p.lock()->getMark()) &&
-        (m_gameBoard.getBoard().at(x + 1).at(y + 1) == p.lock()->getMark())
-        )
-      {
-        count++;
-      }
-      else
-      {
-        count = 0;
-      }
-
-      if (count >= common::config::maxCoupleCount)
-      {
-        this->m_isFinish = true;
-        return;
-      }
-    }
-
-    // Check diagonal R->L
-    count = 0;
-    for (int x = x0, y = yMaxSize - 1; x < xMaxSize - 1; x++, y--)
-    {
-      if (y <= y0)
-      {
-        break;
-      }
-      if (
-        (m_gameBoard.getBoard().at(x).at(y) == p.lock()->getMark()) &&
-        (m_gameBoard.getBoard().at(x + 1).at(y - 1) == p.lock()->getMark())
-        )
-      {
-        count++;
-      }
-      else
-      {
-        count = 0;
-      }
-
-      if (count >= common::config::maxCoupleCount)
-      {
-        this->m_isFinish = true;
-        return;
-      }
-    }
+    // if (this->m_gameBoard.isWinPoint(m_cursor, ))
   }
 
   common::GameBoard PlayScene::getGameBoard() const
@@ -340,17 +174,17 @@ namespace app { namespace scenes {
     this->m_gameBoard = gb;
   }
 
-  PlayScene::GameState PlayScene::checkMoveState(const app::Point2D &/* p */)
+  PlayScene::GameState PlayScene::checkMoveState(const common::Point2D &/* p */)
   {
     return PlayScene::GameState::WIN;
   }
 
-  Point2D PlayScene::getCursor() const
+  common::Point2D PlayScene::getCursor() const
   {
     return m_cursor;
   }
 
-  void PlayScene::setCursor(const Point2D &c)
+  void PlayScene::setCursor(const common::Point2D &c)
   {
     m_cursor = c;
   }
@@ -370,7 +204,7 @@ namespace app { namespace scenes {
     m_listPlayer.emplace_back(player);
     player->setScene(this);
     player->setCursor(
-      Point2D(
+      common::Point2D(
         m_gameBoard.getBoard().size()/2,
         m_gameBoard.getBoard().at(m_gameBoard.getBoard().size()/2).size()/2
         )
