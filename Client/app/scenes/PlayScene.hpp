@@ -36,12 +36,12 @@ namespace app { namespace scenes {
       ~PlayScene();
 
     public:
-      void init();
-      void update(const float dt);
-      void draw();
+      virtual void init();
+      virtual void update(const float dt);
+      virtual void draw();
 
     public:
-      void drawGameBoard();
+      virtual void drawGameBoard();
       GameState checkMoveState(const app::Point2D &p);
       void checkFinish();
       void quit();

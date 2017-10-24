@@ -19,10 +19,6 @@ namespace app { namespace scenes {
       common::config::gameBoardRows,
       common::config::gameBoardCols
       );
-    // m_gameBoard.assign(
-    //   common::config::gameBoardRows,
-    //   std::vector< int >(common::config::gameBoardCols, 0)
-    //   );
 
     m_gameBoardOneObjSize = 3;
   }
@@ -40,6 +36,7 @@ namespace app { namespace scenes {
     this->addPlayer(me);
 
     auto g1 = std::make_shared<app::objects::Player>();
+    g1->setMark(2);
     this->addPlayer(g1);
   }
 
@@ -50,8 +47,8 @@ namespace app { namespace scenes {
 
   void PlayScene::quit()
   {
-    m_pGame->setScene(std::make_shared<app::scenes::IntroScene>(m_pGame));
-    // m_pGame->quit();
+    // m_pGame->setScene(std::make_shared<app::scenes::IntroScene>(m_pGame));
+    m_pGame->quit();
   }
 
   void PlayScene::update(const float dt)

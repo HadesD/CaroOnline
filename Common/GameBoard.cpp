@@ -26,13 +26,10 @@ namespace common {
   void GameBoard::setBoard(const GameBoard::Board &board)
   {
     this->m_board = board;
-    std::cout << toString() << std::endl;
   }
 
   void GameBoard::setBoard(const std::string &board)
   {
-    // GameBoard::Board b;
-
     std::vector< std::string > matBoard = std::move(Util::str_split(board, ':'));
 
     for (std::size_t x = 0; x < m_board.size(); x++)
@@ -69,3 +66,4 @@ namespace common {
   }
 
 }
+

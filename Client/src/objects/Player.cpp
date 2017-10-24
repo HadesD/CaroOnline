@@ -102,20 +102,24 @@ namespace app { namespace objects {
           }
           break;
       }
-      this->m_pScene->getGameBoard().setBoard(gb);
-
     }
   }
 
   void Player::onSetMove()
   {
-    common::GameBoard::Board gb = m_pScene->getGameBoard().getBoard();
-
     this->m_isTurn = false;
 
-    gb[m_cursor.x][m_cursor.y] = this->m_mark;
+    common::GameBoard::Board board = m_pScene->getGameBoard().getBoard();
 
-    m_pScene->getGameBoard().setBoard(gb);
+    board[m_cursor.x][m_cursor.y] = this->m_mark;
+
+    std::cout << board[m_cursor.x][m_cursor.y];
+
+    common::GameBoard gb = m_pScene->getGameBoard();
+
+    gb.setBoard(board);
+
+    m_pScene->setGameBoard(gb);
 
     m_pScene->checkFinish();
 
