@@ -54,7 +54,7 @@ namespace app { namespace scenes {
       common::GameBoard getGameBoard() const;
       void setGameBoard(const common::GameBoard &/* gb */);
       ListPlayer getListPlayer() const;
-      void setNextPlayer(const int nextPlayer);
+      void setNextPlayer(const unsigned int nextPlayer);
       int getCurrentPlayer() const;
       common::Point2D getCursor() const;
       void setCursor(const common::Point2D &c);
@@ -62,7 +62,7 @@ namespace app { namespace scenes {
     protected:
       common::GameBoard m_gameBoard;
       ListPlayer m_listPlayer;
-      int m_currentPlayer;
+      unsigned int m_currentPlayer;
       common::Point2D m_cursor;
       bool m_isFinish;
 

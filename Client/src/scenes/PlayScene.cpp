@@ -9,6 +9,7 @@
 #include "app/objects/Player.hpp"
 #include "app/objects/PlayerOnline.hpp"
 #include "../Common/Config.hpp"
+#include "../Common/Logger.hpp"
 
 namespace app { namespace scenes {
 
@@ -194,7 +195,7 @@ namespace app { namespace scenes {
     const std::shared_ptr<app::objects::Player> &player
     )
   {
-    for (auto &p : m_listPlayer)
+    for (const auto &p : m_listPlayer)
     {
       if (player == p)
       {
@@ -216,7 +217,7 @@ namespace app { namespace scenes {
     const std::shared_ptr<app::objects::Player> &player
     )
   {
-    for (auto &p : m_listPlayer)
+    for (const auto &p : m_listPlayer)
     {
       if (player == p)
       {
@@ -232,18 +233,30 @@ namespace app { namespace scenes {
     return m_listPlayer;
   }
 
-  void PlayScene::setNextPlayer(const int nextPlayer)
+  void PlayScene::setNextPlayer(const unsigned int nextPlayer)
   {
-    if (nextPlayer >= static_cast<int>(m_listPlayer.size()))
+    try
     {
-      this->m_currentPlayer = 0;
-    }
-    else
-    {
-      this->m_currentPlayer = nextPlayer;
-    }
+      if (nextPlayer >= m_listPlayer.size())
+      {
+        this->m_currentPlayer = 0;
+      }
+      else
+      {
+        this->m_currentPlayer = nextPlayer;
+      }
 
-    m_listPlayer.at(m_currentPlayer)->setIsTurn(true);
+      assert(m_currentPlayer <= m_listPlayer.size());
+      m_listPlayer.at(m_currentPlayer)->setIsTurn(true);
+    }
+    catch(std::out_of_range &e)
+    {
+      ERROR(e.what());
+    }
+    catch(...)
+    {
+      ERROR("Not found");
+    }
   }
 
   int PlayScene::getCurrentPlayer() const

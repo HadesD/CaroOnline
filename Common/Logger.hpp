@@ -34,6 +34,7 @@ namespace common {
 
 static const auto Logger = common::Logger::getInstance();
 // template <typename ...T>
+#include <iostream>
 class Log {
   private:
 
@@ -45,6 +46,12 @@ class Log {
 
     static void error(const std::string &s)
     {
+      Logger->error(s);
+    }
+
+    static void error(const char *file, const int line, const std::string &s)
+    {
+      std::cout << file << line << std::endl;
       Logger->error(s);
     }
 };

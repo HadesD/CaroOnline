@@ -3,6 +3,7 @@
 #define APP_CLIENT
 #include <memory>
 #include <vector>
+#define ERROR(MESSAGE) Log::error(__FILE__, __LINE__, MESSAGE)
 
 namespace app {
   class Scene;

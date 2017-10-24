@@ -19,11 +19,11 @@ namespace app { namespace scenes {
 
   void IntroScene::init()
   {
-    m_selection.emplace_back("Play Online",
-                             std::bind(&IntroScene::goToPlayOnline, this)
-                            );
     m_selection.emplace_back("Play With Computer",
                              std::bind(&IntroScene::goToPlayOffline, this)
+                            );
+    m_selection.emplace_back("Play Online",
+                             std::bind(&IntroScene::goToPlayOnline, this)
                             );
     m_selection.emplace_back("Quit", std::bind(&IntroScene::quit, this));
   }
@@ -38,7 +38,8 @@ namespace app { namespace scenes {
     for (std::size_t i = 0; i < m_selection.size(); i++)
     {
       std::cout << "[" << ((m_cursor == i) ? "x" : " ") << "]" << " ";
-      std::cout << m_selection.at(i).name << std::endl;
+      std::cout << m_selection.at(i).name;
+      std::cout << std::endl;
     }
   }
 
