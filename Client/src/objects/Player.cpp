@@ -40,7 +40,7 @@ namespace app { namespace objects {
     {
       int keyPushed = m_kbhit.getch();
 
-      common::GameBoard gb = m_pScene->getGameBoard();
+      common::GameBoard::Board gb = m_pScene->getGameBoard().getBoard();
 
       switch (keyPushed)
       {
@@ -55,7 +55,7 @@ namespace app { namespace objects {
         case 'e':
         case 'm':
           {
-            if (gb.getBoard().at(m_cursor.x).at(m_cursor.y) == 0)
+            if (gb.at(m_cursor.x).at(m_cursor.y) == 0)
             {
               this->onSetMove();
             }
@@ -75,7 +75,7 @@ namespace app { namespace objects {
         case 'j':
         case 's':
           {
-            if (m_cursor.x < (static_cast<int>(gb.getBoard().size()) - 1))
+            if (m_cursor.x < (static_cast<int>(gb.size()) - 1))
             {
               m_cursor.x++;
             }
@@ -95,26 +95,27 @@ namespace app { namespace objects {
         case 'd':
         case 'l':
           {
-            if (m_cursor.y < (static_cast<int>(gb.getBoard().at(m_cursor.x).size()) - 1))
+            if (m_cursor.y < (static_cast<int>(gb.at(m_cursor.x).size()) - 1))
             {
               m_cursor.y++;
             }
           }
           break;
       }
+      this->m_pScene->getGameBoard().setBoard(gb);
 
     }
   }
 
   void Player::onSetMove()
   {
-    common::GameBoard gb = m_pScene->getGameBoard();
+    common::GameBoard::Board gb = m_pScene->getGameBoard().getBoard();
 
     this->m_isTurn = false;
 
-    gb.getBoard()[m_cursor.x][m_cursor.y] = this->m_mark;
+    gb[m_cursor.x][m_cursor.y] = this->m_mark;
 
-    m_pScene->setGameBoard(gb);
+    m_pScene->getGameBoard().setBoard(gb);
 
     m_pScene->checkFinish();
 

@@ -16,7 +16,7 @@ namespace Util {
       internal.emplace_back(tok);
     }
 
-    return internal;
+    return std::move(internal);
   }
 
 }

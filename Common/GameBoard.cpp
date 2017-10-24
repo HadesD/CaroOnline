@@ -33,7 +33,7 @@ namespace common {
   {
     // GameBoard::Board b;
 
-    std::vector< std::string > matBoard = Util::str_split(board, ':');
+    std::vector< std::string > matBoard = std::move(Util::str_split(board, ':'));
 
     for (std::size_t x = 0; x < m_board.size(); x++)
     {

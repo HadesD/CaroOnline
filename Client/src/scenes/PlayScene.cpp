@@ -33,8 +33,10 @@ namespace app { namespace scenes {
 
   void PlayScene::init()
   {
-    auto me = std::make_shared<app::objects::PlayerOnline>();
+    //auto me = std::make_shared<app::objects::PlayerOnline>();
+    auto me = std::make_shared<app::objects::Player>();
     me->setIsTurn(true);
+    me->setMark(1);
     this->addPlayer(me);
 
     auto g1 = std::make_shared<app::objects::Player>();
@@ -76,7 +78,6 @@ namespace app { namespace scenes {
   void PlayScene::drawGameBoard()
   {
     assert((m_gameBoardOneObjSize % 2) != 0);
-    std::cout << m_gameBoard.toString() << std::endl;
     // Barrier
     std::cout << "Current Player: " << m_currentPlayer << std::endl;
     auto drawBarrier = [](const int len){

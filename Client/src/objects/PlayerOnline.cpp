@@ -25,7 +25,9 @@ namespace app { namespace objects {
 
     m_udpSocket.send(
       msg, m_udpServerEndpoint,
-      [](const std::error_code &, const std::size_t &){}
+      [this](const std::error_code &, const std::size_t &){
+        this->receive();
+      }
       );
 
   }
@@ -49,6 +51,9 @@ namespace app { namespace objects {
       msg, m_udpServerEndpoint,
       [this](const std::error_code &, const std::size_t &){
         this->receive();
+        Log::error("EEEEEE");
+        std::string s;
+        std::cin >> s;
       }
       );
 
@@ -109,9 +114,6 @@ namespace app { namespace objects {
       {
         return;
       }
-
-      std::string s;
-      std::cin >> s;
 
       switch (ms.msgType)
       {
