@@ -1,0 +1,37 @@
+version: 1.0.{build}
+
+##################
+# Settings
+##################
+
+environment:
+  matrix:
+    - compiler: msys2
+      ARCH: x64
+      MSYS2_ARCH: x86_64
+      MSYS2_DIR: msys64
+      MSYSTEM: MINGW64
+    - compiler: msys2
+      ARCH: x86
+      MSYS2_ARCH: i686
+      MSYS2_DIR: msys64
+      MSYSTEM: MINGW32
+
+skip_tags: true
+
+platform:
+  - x86
+  - x64
+
+clone_depth: 2
+
+build:
+  parallel: true
+  verbosity: minimal
+
+##################
+# Build
+##################
+
+build_script:
+  - make
