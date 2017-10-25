@@ -12,8 +12,8 @@ namespace app { namespace scenes {
       PlayOnlineScene(const std::shared_ptr<app::core::Game> &game);
       ~PlayOnlineScene();
 
-      // public:
-      //   void init();
+    public:
+      virtual void init() override;
       //   void update(const float dt);
       //   void draw();
       //

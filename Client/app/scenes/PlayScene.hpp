@@ -36,7 +36,7 @@ namespace app { namespace scenes {
       ~PlayScene();
 
     public:
-      void init();
+      virtual void init();
       void update(const float dt);
       void draw();
 

@@ -30,20 +30,26 @@ namespace app { namespace scenes {
         this->receive();
       }
       );
+
   }
 
   PlayOnlineScene::~PlayOnlineScene()
   {
   }
 
+  void PlayOnlineScene::init()
+  {
+    PlayScene::init();
+    m_udpSocket.open();
+  }
 
   void PlayOnlineScene::receive()
   {
-    // common::net::socket::Udp::EndPoint endp;
-    std::string s;
+    common::net::socket::Udp::EndPoint endp;
+    // std::string s;
     // m_udpSocket.sync_recv(s, endp);
     // this->onReceiveHandle(s);
-    std::cin >> s;
+    // std::cin >> s;
 
     // m_udpSocket.receive(
     //   m_buffers, endp,
