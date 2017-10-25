@@ -8,7 +8,7 @@ namespace app { namespace objects {
   class PlayerOnline : public Player
   {
     public:
-      PlayerOnline();
+      PlayerOnline(const Player::Type type);
 
     public:
       virtual void update(const float /* dt */);

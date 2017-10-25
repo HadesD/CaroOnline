@@ -4,7 +4,8 @@
 
 namespace app { namespace objects {
 
-  Player::Player()
+  Player::Player(const Type type) :
+    m_type(type)
   {
     m_isReady = false;
   }
@@ -26,7 +27,7 @@ namespace app { namespace objects {
 
   void Player::onKeyboardEvent()
   {
-    if (this->m_isTurn == false)
+    if (this->m_type != Type::SELF || this->m_isTurn == false)
     {
       return;
     }
@@ -176,6 +177,11 @@ namespace app { namespace objects {
   void Player::setScene(scenes::PlayScene *scene)
   {
     this->setScene(std::shared_ptr<scenes::PlayScene>(scene));
+  }
+
+  Player::Type Player::getType() const
+  {
+    return this->m_type;
   }
 
 } }

@@ -7,8 +7,8 @@
 
 namespace app { namespace objects {
 
-  PlayerOnline::PlayerOnline() :
-    Player()
+  PlayerOnline::PlayerOnline(const Player::Type type) :
+    Player(type)
     , m_udpSocket("0.0.0.0", 0)
     , m_udpServerEndpoint(
       asio::ip::address::from_string(app::config::serverIp),

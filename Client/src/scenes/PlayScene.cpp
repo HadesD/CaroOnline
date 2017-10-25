@@ -32,13 +32,15 @@ namespace app { namespace scenes {
   void PlayScene::init()
   {
     // auto me = std::make_shared<app::objects::PlayerOnline>();
-    auto me = std::make_shared<app::objects::Player>();
+    auto me = std::make_shared<app::objects::Player>(
+      app::objects::Player::Type::SELF
+      );
     me->setIsTurn(true);
-    // me->setMark(1);
     this->addPlayer(me);
 
-    auto g1 = std::make_shared<app::objects::Player>();
-    // g1->setMark(2);
+    auto g1 = std::make_shared<app::objects::Player>(
+      app::objects::Player::Type::COMPUTER
+      );
     this->addPlayer(g1);
   }
 
@@ -55,22 +57,24 @@ namespace app { namespace scenes {
 
   void PlayScene::update(const float dt)
   {
-    if (m_isFinish == true)
+    try
     {
-      std::cout << "Winner: " << m_currentPlayer << std::endl;
-      this->quit();
-      return;
-    }
-
-    if (m_listPlayer.size() > 0)
-    {
-      this->m_cursor = m_listPlayer.at(m_currentPlayer)->getCursor();
-
-      std::weak_ptr<app::objects::Player> p = m_listPlayer.at(m_currentPlayer);
-      if (auto pP = p.lock())
+      if (m_isFinish == true)
       {
-        pP->update(dt);
+        std::cout << "Winner: " << m_currentPlayer << std::endl;
+        this->quit();
+        return;
       }
+
+      for (const auto &p : m_listPlayer)
+      {
+        p->update(dt);
+      }
+    }
+    catch(...)
+    {
+      throw std::runtime_error("Player notfound");
+      ERROR("PlayerScene :: update()");
     }
   }
 

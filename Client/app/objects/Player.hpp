@@ -13,7 +13,15 @@ namespace app { namespace objects {
   class Player
   {
     public:
-      Player();
+      enum class Type
+      {
+        SELF,
+        COMPUTER,
+        PARTNER,
+      };
+
+    public:
+      Player(const Type type);
       ~Player();
 
     public:
@@ -38,6 +46,7 @@ namespace app { namespace objects {
       common::Point2D getCursor() const;
       void setCursor(const common::Point2D &c);
       void onConnect(const std::error_code &e);
+      Type getType() const;
 
     protected:
       virtual void onSetMove();
@@ -48,6 +57,7 @@ namespace app { namespace objects {
       bool m_isTurn;
       common::PlayerMark m_mark;
       bool m_isReady;
+      Type m_type;
 
     protected:
       common::Point2D m_cursor;
