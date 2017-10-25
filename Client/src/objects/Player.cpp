@@ -27,7 +27,7 @@ namespace app { namespace objects {
 
   void Player::onKeyboardEvent()
   {
-    if (this->m_type != Type::SELF || this->m_isTurn == false)
+    if (/* this->m_type != Type::SELF ||  */this->m_isTurn == false)
     {
       return;
     }

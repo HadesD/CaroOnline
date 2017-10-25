@@ -36,12 +36,12 @@ namespace app { namespace scenes {
       ~PlayScene();
 
     public:
-      virtual void init();
-      virtual void update(const float dt);
-      virtual void draw();
+      void init();
+      void update(const float dt);
+      void draw();
 
     public:
-      virtual void drawGameBoard();
+      void drawGameBoard();
       GameState checkMoveState(const common::Point2D &p);
       void checkFinish();
       void quit();
@@ -55,6 +55,7 @@ namespace app { namespace scenes {
       void setGameBoard(const common::GameBoard &/* gb */);
       ListPlayer getListPlayer() const;
       void setNextPlayer(const unsigned int nextPlayer);
+      void setNextPlayer(const std::shared_ptr<app::objects::Player> &player);
       int getCurrentPlayer() const;
       common::Point2D getCursor() const;
       void setCursor(const common::Point2D &c);

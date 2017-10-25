@@ -31,12 +31,12 @@ namespace app { namespace scenes {
 
   void PlayScene::init()
   {
-    // auto me = std::make_shared<app::objects::PlayerOnline>();
     auto me = std::make_shared<app::objects::Player>(
       app::objects::Player::Type::SELF
       );
     me->setIsTurn(true);
     this->addPlayer(me);
+    this->setNextPlayer(me);
 
     auto g1 = std::make_shared<app::objects::Player>(
       app::objects::Player::Type::COMPUTER
@@ -260,6 +260,21 @@ namespace app { namespace scenes {
     catch(...)
     {
       ERROR("Not found");
+    }
+  }
+
+  void PlayScene::setNextPlayer(
+    const std::shared_ptr<app::objects::Player> &player
+    )
+  {
+    unsigned int i = 0;
+    for (const auto &p : m_listPlayer)
+    {
+      i++;
+      if (p == player)
+      {
+        this->setNextPlayer(i);
+      }
     }
   }
 

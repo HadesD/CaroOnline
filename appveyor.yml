@@ -33,5 +33,8 @@ build:
 # Build
 ##################
 
+before_build:
+  - cmake ./Client
+
 build_script:
   - make

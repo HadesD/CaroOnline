@@ -46,11 +46,11 @@ set(APP_SRC
   src/core/Game.cpp
   src/input/Kbhit.cpp
   src/objects/Player.cpp
-  src/objects/PlayerOnline.cpp
   src/WindowManager.cpp
   src/Config.cpp
   src/Scene.cpp
   src/scenes/PlayScene.cpp
+  src/scenes/PlayOfflineScene.cpp
   src/scenes/IntroScene.cpp
   )
 
