@@ -51,6 +51,7 @@ set(APP_SRC
   src/Scene.cpp
   src/scenes/PlayScene.cpp
   src/scenes/PlayOfflineScene.cpp
+  src/scenes/PlayOnlineScene.cpp
   src/scenes/IntroScene.cpp
   )
 

@@ -57,14 +57,11 @@ namespace app { namespace scenes {
       void setNextPlayer(const unsigned int nextPlayer);
       void setNextPlayer(const std::shared_ptr<app::objects::Player> &player);
       int getCurrentPlayer() const;
-      common::Point2D getCursor() const;
-      void setCursor(const common::Point2D &c);
 
     protected:
       common::GameBoard m_gameBoard;
       ListPlayer m_listPlayer;
       unsigned int m_currentPlayer;
-      common::Point2D m_cursor;
       bool m_isFinish;
 
     private:

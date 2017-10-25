@@ -8,4 +8,8 @@ namespace app { namespace scenes {
   {
   }
 
+  PlayOfflineScene::~PlayOfflineScene()
+  {
+  }
+
 } }

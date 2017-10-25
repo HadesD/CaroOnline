@@ -144,7 +144,7 @@ namespace app { namespace scenes {
             break;
 
         }
-        if (m_cursor == common::Point2D(x, y))
+        if (m_listPlayer.at(m_currentPlayer)->getCursor() == common::Point2D(x, y))
         {
           color = "\e[48;5;255m";
         }
@@ -183,16 +183,6 @@ namespace app { namespace scenes {
   PlayScene::GameState PlayScene::checkMoveState(const common::Point2D &/* p */)
   {
     return PlayScene::GameState::WIN;
-  }
-
-  common::Point2D PlayScene::getCursor() const
-  {
-    return m_cursor;
-  }
-
-  void PlayScene::setCursor(const common::Point2D &c)
-  {
-    m_cursor = c;
   }
 
   void PlayScene::addPlayer(
