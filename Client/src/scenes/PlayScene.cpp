@@ -7,7 +7,7 @@
 #include "app/core/Game.hpp"
 #include "app/Config.hpp"
 #include "app/objects/Player.hpp"
-#include "app/objects/PlayerOnline.hpp"
+
 #include "../Common/Config.hpp"
 #include "../Common/Logger.hpp"
 

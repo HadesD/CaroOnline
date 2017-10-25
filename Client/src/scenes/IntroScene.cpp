@@ -4,6 +4,8 @@
 
 #include "app/core/Game.hpp"
 #include "app/scenes/PlayScene.hpp"
+#include "app/scenes/PlayOfflineScene.hpp"
+#include "app/scenes/PlayOnlineScene.hpp"
 
 namespace app { namespace scenes {
 
@@ -102,19 +104,19 @@ namespace app { namespace scenes {
   void IntroScene::goToPlayOffline()
   {
     m_pGame->setScene(
-      std::shared_ptr<app::scenes::PlayScene>(
-        new app::scenes::PlayScene(m_pGame)
+      std::shared_ptr<app::scenes::PlayOfflineScene>(
+        new app::scenes::PlayOfflineScene(m_pGame)
         )
       );
   }
 
   void IntroScene::goToPlayOnline()
   {
-    // m_pGame->setScene(
-    //   std::shared_ptr<app::scenes::PlayerOnlineScene>(
-    //     new app::scenes::PlayScene(m_pGame)
-    //     )
-    //   );
+    m_pGame->setScene(
+      std::shared_ptr<app::scenes::PlayOnlineScene>(
+        new app::scenes::PlayOnlineScene(m_pGame)
+        )
+      );
   }
 
   void IntroScene::quit()

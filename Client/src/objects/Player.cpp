@@ -27,14 +27,14 @@ namespace app { namespace objects {
 
   void Player::onKeyboardEvent()
   {
-    if (/* this->m_type != Type::SELF ||  */this->m_isTurn == false)
-    {
-      return;
-    }
-
     if (m_pScene == nullptr)
     {
       throw std::runtime_error("Not found scene");
+    }
+
+    if (/* this->m_type != Type::SELF ||  */this->m_isTurn == false)
+    {
+      return;
     }
 
     if (m_kbhit.kbhit())

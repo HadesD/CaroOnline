@@ -6,7 +6,6 @@
 #include "app/scenes/PlayScene.hpp"
 
 #include "app/input/Kbhit.hpp"
-#include "../Common/net/socket/Udp.hpp"
 
 namespace app { namespace objects {
 

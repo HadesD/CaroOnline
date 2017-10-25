@@ -1,34 +1,12 @@
 #include "app/objects/PlayerOnline.hpp"
 
-#include "app/Config.hpp"
-#include "../Common/MessageStruct.hpp"
 
-#include "../Common/Logger.hpp"
 
 namespace app { namespace objects {
 
   PlayerOnline::PlayerOnline(const Player::Type type) :
     Player(type)
-    , m_udpSocket("0.0.0.0", 0)
-    , m_udpServerEndpoint(
-      asio::ip::address::from_string(app::config::serverIp),
-        app::config::serverPort
-      )
   {
-    char cmd = static_cast<char>(common::MessageType::LOGIN);
-
-    std::string msg = std::string(sizeof(cmd), cmd)
-      + "Dark.Hades"
-      + ":"
-      + "password"
-      ;
-
-    m_udpSocket.send(
-      msg, m_udpServerEndpoint,
-      [this](const std::error_code &, const std::size_t &){
-        this->receive();
-      }
-      );
 
   }
 
