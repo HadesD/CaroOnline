@@ -44,7 +44,7 @@ namespace app { namespace scenes {
       void drawGameBoard();
       GameState checkMoveState(const common::Point2D &p);
       void checkFinish();
-      void quit();
+      virtual void quit();
 
     public:
       void addPlayer(const std::shared_ptr<app::objects::Player> &player);

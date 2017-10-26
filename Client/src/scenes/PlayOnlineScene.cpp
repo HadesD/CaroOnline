@@ -55,25 +55,21 @@ namespace app { namespace scenes {
       m_buffers, endp,
       [this, endp](const std::error_code &e, const std::size_t &bytes)
       {
-        std::string s;
-        // std::cin >> s;
         if (e)
         {
           Log::error(e.message());
         }
         else
         {
-          // if (endp == m_udpServerEndpoint)
+          if (endp == m_udpServerEndpoint)
           {
             std::string recv = std::string(m_buffers.data(), m_buffers.data() + bytes);
-            // Log::info(recv);
-            std::cout << "SDFSDF:";
-            std::string s;std::cin >> s;
+            Log::info(recv);
           }
 
           // this->onReceiveHandle(recv);
         }
-        //this->receive();
+        this->receive();
       }
       );
   }
@@ -94,9 +90,22 @@ namespace app { namespace scenes {
     }
   }
 
+  void PlayOnlineScene::quit()
+  {
+    char cmd = static_cast<char>(common::MessageType::QUIT_GAME);
+
+    std::string msg = std::string(sizeof(cmd), cmd);
+
+    m_udpSocket.send(
+      msg, m_udpServerEndpoint,
+      [](const std::error_code &, const std::size_t &){
+      }
+      );
+    PlayScene::quit();
+  }
+
   void PlayOnlineScene::onSetGameBoardMove(const common::Point2D &p)
   {
-
     char cmd = static_cast<char>(common::MessageType::SET_MOVE);
 
     std::string msg = std::string(sizeof(cmd), cmd)
@@ -107,11 +116,7 @@ namespace app { namespace scenes {
 
     m_udpSocket.send(
       msg, m_udpServerEndpoint,
-      [this](const std::error_code &, const std::size_t &){
-        this->receive();
-        Log::error("EEEEEE");
-        std::string s;
-        std::cin >> s;
+      [](const std::error_code &, const std::size_t &){
       }
       );
   }

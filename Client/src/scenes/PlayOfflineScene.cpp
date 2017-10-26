@@ -16,4 +16,9 @@ namespace app { namespace scenes {
   {
   }
 
+  void PlayOfflineScene::quit()
+  {
+    PlayScene::quit();
+  }
+
 } }

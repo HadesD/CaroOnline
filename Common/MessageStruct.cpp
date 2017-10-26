@@ -9,10 +9,10 @@ namespace common {
 
   MessageStruct::MessageStruct(const std::string &m) : data(m)
   {
-    auto &config_sum = common::config::networkCheckSum;
+    auto config_sum = common::config::networkCheckSum;
 
     // Must check received data has correct sum 's size
-    if (!data.empty() && (data.size() > config_sum.size()))
+    if (!data.empty() && (data.size() >= config_sum.size()))
     {
       // Sum
       sum = std::string(data.cbegin(), data.cbegin() + config_sum.size());
@@ -53,12 +53,11 @@ namespace common {
       Log::error("Error msg");
     }
 
-    if (msg.empty())
+    if (!msg.empty())
     {
-      return false;
+      Log::info("Message: " + msg);
     }
 
-    Log::info("Message: " + msg);
 
     return true;
   }

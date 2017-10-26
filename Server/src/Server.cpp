@@ -181,6 +181,16 @@ namespace app {
 
           }
           break;
+        case common::MessageType::QUIT_GAME:
+          {
+            Log::info("Server :: onReceiveHandle() :: QUIT_GAME");
+            this->m_gameBoard = common::GameBoard(
+              common::config::gameBoardRows,
+              common::config::gameBoardCols
+              );
+            this->removeClientId(this->getClientId(m_currentClient.second));
+          }
+          break;
         case common::MessageType::SET_MOVE:
           {
             Log::info("Server :: onReceiveHandle() :: SET_MOVE");

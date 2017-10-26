@@ -31,6 +31,7 @@ namespace app { namespace scenes {
       //   common::GameBoard getGameBoard() const;
       //   void setGameBoard(const common::GameBoard &#<{(| gb |)}>#);
       virtual void onSetGameBoardMove(const common::Point2D &p) override;
+      virtual void quit() override;
 
     private:
       void run_service();
