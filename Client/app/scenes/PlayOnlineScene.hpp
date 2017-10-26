@@ -46,6 +46,7 @@ namespace app { namespace scenes {
 
       // Server
       common::net::socket::Udp::EndPoint m_udpServerEndpoint;
+      common::net::socket::Udp::EndPoint m_udpCurrentEndpoint;
 
   };
 

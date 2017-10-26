@@ -55,11 +55,9 @@ namespace app { namespace scenes {
 
   void PlayOnlineScene::receive()
   {
-    common::net::socket::Udp::EndPoint endp;
-
     m_udpSocket.receive(
-      m_buffers, endp,
-      [this, endp](const std::error_code &e, const std::size_t &bytes)
+      m_buffers, m_udpCurrentEndpoint,
+      [this](const std::error_code &e, const std::size_t &bytes)
       {
         if (e)
         {
@@ -67,7 +65,15 @@ namespace app { namespace scenes {
         }
         else
         {
-          // if (endp == m_udpServerEndpoint)
+          // std::cout
+          //   << m_udpCurrentEndpoint.address().to_string() << ":"
+          //   << m_udpCurrentEndpoint.port();
+          // std::string s;
+          // if (
+          //   (m_udpCurrentEndpoint.address() == m_udpServerEndpoint.address())
+          //   &&
+          //   (m_udpCurrentEndpoint.port() == m_udpServerEndpoint.port())
+          //   )
           {
             std::string recv = std::string(m_buffers.data(), m_buffers.data() + bytes);
             Log::info(recv);
