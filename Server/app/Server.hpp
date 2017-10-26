@@ -29,6 +29,7 @@ namespace app {
 
     private:
       void init();
+      void run_service();
       void receive();
       void update(const float /* dt */);
       void onReceiveHandle(const std::string &/* data */);
@@ -49,6 +50,7 @@ namespace app {
       common::net::Socket::Buffer m_buffers;
       int m_seqNo;
       GameBoard m_gameBoard;
+      std::thread m_serviceThread;
 
   };
 

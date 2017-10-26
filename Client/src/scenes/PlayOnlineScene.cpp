@@ -35,12 +35,17 @@ namespace app { namespace scenes {
 
   PlayOnlineScene::~PlayOnlineScene()
   {
+    if (m_serviceThread.joinable())
+    {
+      m_serviceThread.join();
+    }
   }
 
   void PlayOnlineScene::init()
   {
     PlayScene::init();
-    m_udpSocket.open();
+
+    m_serviceThread = std::thread(&PlayOnlineScene::run_service, this);
   }
 
   void PlayOnlineScene::receive()
@@ -51,25 +56,45 @@ namespace app { namespace scenes {
     // this->onReceiveHandle(s);
     // std::cin >> s;
 
-    // m_udpSocket.receive(
-    //   m_buffers, endp,
-    //   [this](const std::error_code &e, const std::size_t &bytes)
-    //   {
-    //     std::string s;
-    //     std::cin >> s;
-    //     if (e)
-    //     {
-    //       Log::error(e.message());
-    //     }
-    //     else
-    //     {
-    //       std::string recv = std::string(m_buffers.data(), m_buffers.data() + bytes);
-    //
-    //       this->onReceiveHandle(recv);
-    //     }
-    //     this->receive();
-    //   }
-    //   );
+    m_udpSocket.receive(
+      m_buffers, endp,
+      [this, endp](const std::error_code &e, const std::size_t &bytes)
+      {
+        std::string s;
+        std::cin >> s;
+        if (e)
+        {
+          Log::error(e.message());
+        }
+        else
+        {
+          if (endp == m_udpServerEndpoint)
+          {
+            std::string recv = std::string(m_buffers.data(), m_buffers.data() + bytes);
+            Log::info(recv);
+          }
+
+          // this->onReceiveHandle(recv);
+        }
+        //this->receive();
+      }
+      );
+  }
+
+  void PlayOnlineScene::run_service()
+  {
+    try
+    {
+      m_udpSocket.open();
+    }
+    catch (const std::exception &e)
+    {
+      Log::error(e.what());
+    }
+    catch (...)
+    {
+      Log::error("Server :: run() :: openSocket()");
+    }
   }
 
 } }

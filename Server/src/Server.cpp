@@ -13,10 +13,16 @@ namespace app {
       common::config::gameBoardRows,
       common::config::gameBoardCols
       );
+
+    m_seqNo = 0;
   }
 
   Server::~Server()
   {
+    if (m_serviceThread.joinable())
+    {
+      m_serviceThread.join();
+    }
   }
 
   void Server::init()
@@ -31,23 +37,25 @@ namespace app {
     Log::info("Server :: run()");
 
     // http://giderosmobile.com/forum/discussion/2766/online-multiplayer-turn-based-game-with-udp/p1
-    m_seqNo = 0;
+    m_serviceThread = std::thread(&Server::run_service, this);
+    auto tnow = std::chrono::steady_clock::now();
+    // while (true)
+    {
+      std::chrono::duration<float> dt = std::chrono::steady_clock::now() -
+        tnow;
 
+      this->update(static_cast<float>(dt.count()));
+
+      tnow = std::chrono::steady_clock::now();
+    }
+
+  }
+
+  void Server::run_service()
+  {
     try
     {
-      auto tnow = std::chrono::steady_clock::now();
-
       this->receive();
-
-      // while (true)
-      {
-        std::chrono::duration<float> dt = std::chrono::steady_clock::now() -
-          tnow;
-
-        this->update(static_cast<float>(dt.count()));
-
-        tnow = std::chrono::steady_clock::now();
-      }
 
       m_udpSocket.open();
     }

@@ -31,12 +31,14 @@ namespace app { namespace scenes {
       //   common::GameBoard getGameBoard() const;
       //   void setGameBoard(const common::GameBoard &#<{(| gb |)}>#);
     private:
+      void run_service();
       void receive();
 
     private:
       // Network socket
       common::net::socket::Udp m_udpSocket;
       common::net::Socket::Buffer m_buffers;
+      std::thread m_serviceThread;
 
       // Server
       common::net::socket::Udp::EndPoint m_udpServerEndpoint;
