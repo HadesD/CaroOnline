@@ -29,21 +29,6 @@ namespace app { namespace scenes {
   {
   }
 
-  void PlayScene::init()
-  {
-    auto me = std::make_shared<app::objects::Player>(
-      app::objects::Player::Type::SELF
-      );
-    me->setIsTurn(true);
-    this->addPlayer(me);
-    this->setNextPlayer(me);
-
-    auto g1 = std::make_shared<app::objects::Player>(
-      app::objects::Player::Type::COMPUTER
-      );
-    this->addPlayer(g1);
-  }
-
   void PlayScene::draw()
   {
     this->drawGameBoard();

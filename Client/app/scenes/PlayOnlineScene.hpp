@@ -36,6 +36,7 @@ namespace app { namespace scenes {
     private:
       void run_service();
       void receive();
+      void onReceiveHandle(const std::string &data);
 
     private:
       // Network socket

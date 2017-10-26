@@ -13,9 +13,9 @@ namespace app { namespace scenes {
     public:
       virtual void onSetGameBoardMove(const common::Point2D &p) override;
       virtual void quit() override;
+      virtual void init() override;
 
     // public:
-    //   void init();
     //   void update(const float dt);
     //   void draw();
     //

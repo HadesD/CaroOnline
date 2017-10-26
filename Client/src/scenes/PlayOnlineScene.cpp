@@ -1,8 +1,11 @@
 #include "app/scenes/PlayOnlineScene.hpp"
 
 #include "app/Config.hpp"
+#include "app/objects/Player.hpp"
+
 #include "../Common/Logger.hpp"
 #include "../Common/MessageStruct.hpp"
+#include "../Common/Util.hpp"
 
 namespace app { namespace scenes {
 
@@ -25,11 +28,9 @@ namespace app { namespace scenes {
 
     m_udpSocket.send(
       msg, m_udpServerEndpoint,
-      [this](const std::error_code &, const std::size_t &){
-        this->receive();
+      [](const std::error_code &, const std::size_t &){
       }
       );
-
   }
 
   PlayOnlineScene::~PlayOnlineScene()
@@ -42,7 +43,12 @@ namespace app { namespace scenes {
 
   void PlayOnlineScene::init()
   {
-    PlayScene::init();
+    auto me = std::make_shared<app::objects::Player>(
+      app::objects::Player::Type::SELF
+      );
+    me->setIsTurn(true);
+    this->addPlayer(me);
+    this->setNextPlayer(me);
 
     m_serviceThread = std::thread(&PlayOnlineScene::run_service, this);
   }
@@ -61,13 +67,13 @@ namespace app { namespace scenes {
         }
         else
         {
-          if (endp == m_udpServerEndpoint)
+          // if (endp == m_udpServerEndpoint)
           {
             std::string recv = std::string(m_buffers.data(), m_buffers.data() + bytes);
             Log::info(recv);
+            this->onReceiveHandle(recv);
           }
 
-          // this->onReceiveHandle(recv);
         }
         this->receive();
       }
@@ -78,6 +84,7 @@ namespace app { namespace scenes {
   {
     try
     {
+      this->receive();
       m_udpSocket.open();
     }
     catch (const std::exception &e)
@@ -87,6 +94,54 @@ namespace app { namespace scenes {
     catch (...)
     {
       Log::error("Server :: run() :: openSocket()");
+    }
+  }
+
+  void PlayOnlineScene::onReceiveHandle(const std::string &data)
+  {
+    try
+    {
+      common::MessageStruct ms(data);
+
+      if (ms.isValidSum() == false)
+      {
+        return;
+      }
+
+      switch (ms.msgType)
+      {
+        case common::MessageType::LOGIN:
+          {
+          }
+          break;
+        case common::MessageType::UPDATE_GAME:
+          {
+            Log::info("PlayOnlineScene :: onReceiveHandle() :: SET_MOVE");
+
+            std::vector<std::string> board = Util::str_split(ms.msg, ':');
+
+            if (
+              board.size() !=
+              (common::config::gameBoardCols*common::config::gameBoardRows)
+              )
+            {
+              return;
+            }
+
+            this->m_gameBoard.setBoard(ms.msg);
+
+          }
+          break;
+        default:
+          {
+            Log::info("Server :: onReceiveHandle() :: NOTHING");
+          }
+          break;
+      }
+    }
+    catch(...)
+    {
+      Log::error("PlayOnlineScene :: onReceiveHandle() :: ERROR");
     }
   }
 
