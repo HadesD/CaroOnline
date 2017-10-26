@@ -57,6 +57,7 @@ namespace app { namespace scenes {
       void setNextPlayer(const unsigned int nextPlayer);
       void setNextPlayer(const std::shared_ptr<app::objects::Player> &player);
       int getCurrentPlayer() const;
+      // void onSetGameBoardMove();
 
     protected:
       common::GameBoard m_gameBoard;

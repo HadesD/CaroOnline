@@ -78,6 +78,7 @@ namespace app { namespace scenes {
         {
           if (m_cursor >= (m_selection.size() - 1))
           {
+            m_cursor = 0;
             return;
           }
           m_cursor++;
@@ -89,6 +90,7 @@ namespace app { namespace scenes {
         {
           if (m_cursor <= 0)
           {
+            m_cursor = m_selection.size() - 1;
             return;
           }
           m_cursor--;

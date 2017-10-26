@@ -9,7 +9,6 @@ namespace app { namespace scenes {
   PlayOnlineScene::PlayOnlineScene(
     const std::shared_ptr<app::core::Game> &game
     ) : PlayScene(game),
-
   m_udpSocket("0.0.0.0", 0),
   m_udpServerEndpoint(
     asio::ip::address::from_string(app::config::serverIp),
@@ -51,10 +50,6 @@ namespace app { namespace scenes {
   void PlayOnlineScene::receive()
   {
     common::net::socket::Udp::EndPoint endp;
-    // std::string s;
-    // m_udpSocket.sync_recv(s, endp);
-    // this->onReceiveHandle(s);
-    // std::cin >> s;
 
     m_udpSocket.receive(
       m_buffers, endp,
@@ -68,10 +63,12 @@ namespace app { namespace scenes {
         }
         else
         {
-          if (endp == m_udpServerEndpoint)
+          // if (endp == m_udpServerEndpoint)
           {
             std::string recv = std::string(m_buffers.data(), m_buffers.data() + bytes);
-            Log::info(recv);
+            // Log::info(recv);
+            std::cout << "SDFSDF:";
+            std::string s;std::cin >> s;
           }
 
           // this->onReceiveHandle(recv);
