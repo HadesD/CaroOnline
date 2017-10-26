@@ -12,4 +12,8 @@ namespace app { namespace scenes {
   {
   }
 
+  void PlayOfflineScene::onSetGameBoardMove(const common::Point2D &p)
+  {
+  }
+
 } }

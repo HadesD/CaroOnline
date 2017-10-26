@@ -120,6 +120,8 @@ namespace app { namespace objects {
 
     m_pScene->setGameBoard(gb);
 
+    this->m_pScene->onSetGameBoardMove(m_cursor);
+
     if (m_pScene->getGameBoard().isWinPoint(m_cursor, m_mark))
     {
       m_pScene->quit();

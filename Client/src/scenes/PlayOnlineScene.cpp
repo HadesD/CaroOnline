@@ -56,7 +56,7 @@ namespace app { namespace scenes {
       [this, endp](const std::error_code &e, const std::size_t &bytes)
       {
         std::string s;
-        std::cin >> s;
+        // std::cin >> s;
         if (e)
         {
           Log::error(e.message());
@@ -92,6 +92,28 @@ namespace app { namespace scenes {
     {
       Log::error("Server :: run() :: openSocket()");
     }
+  }
+
+  void PlayOnlineScene::onSetGameBoardMove(const common::Point2D &p)
+  {
+
+    char cmd = static_cast<char>(common::MessageType::SET_MOVE);
+
+    std::string msg = std::string(sizeof(cmd), cmd)
+      + std::to_string(p.x)
+      + ":"
+      + std::to_string(p.y)
+      ;
+
+    m_udpSocket.send(
+      msg, m_udpServerEndpoint,
+      [this](const std::error_code &, const std::size_t &){
+        this->receive();
+        Log::error("EEEEEE");
+        std::string s;
+        std::cin >> s;
+      }
+      );
   }
 
 } }

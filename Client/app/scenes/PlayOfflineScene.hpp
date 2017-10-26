@@ -10,6 +10,9 @@ namespace app { namespace scenes {
       PlayOfflineScene(const std::shared_ptr<app::core::Game> &game);
       ~PlayOfflineScene();
 
+    public:
+      virtual void onSetGameBoardMove(const common::Point2D &p) override;
+
     // public:
     //   void init();
     //   void update(const float dt);
