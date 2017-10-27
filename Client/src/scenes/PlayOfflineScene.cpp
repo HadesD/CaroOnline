@@ -29,7 +29,12 @@ namespace app { namespace scenes {
     this->addPlayer(g1);
   }
 
-  void PlayOfflineScene::onSetGameBoardMove(const common::Point2D &p)
+  void PlayOfflineScene::draw()
+  {
+    PlayScene::draw();
+  }
+
+  void PlayOfflineScene::onSetGameBoardMove(const common::Point2D &/* p */)
   {
   }
 

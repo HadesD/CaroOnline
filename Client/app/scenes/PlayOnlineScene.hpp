@@ -16,6 +16,7 @@ namespace app { namespace scenes {
       virtual void init() override;
       virtual void onSetGameBoardMove(const common::Point2D &p) override;
       virtual bool quit() override;
+      virtual void draw() override;
 
     private:
       void run_service();
@@ -31,6 +32,8 @@ namespace app { namespace scenes {
       // Server
       common::net::socket::Udp::EndPoint m_udpServerEndpoint;
       common::net::socket::Udp::EndPoint m_udpCurrentEndpoint;
+      unsigned int m_turn;
+      int m_seqNo;
 
   };
 

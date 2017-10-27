@@ -27,7 +27,7 @@ build:
 		-D__USE_W32_SOCKETS
 
 run:
-	cd bin && ./CaroServer
+	cd bin && ./CaroServer 8889
 
 clean:
 	$(RM) bin/*

@@ -39,6 +39,7 @@ namespace app { namespace scenes {
     std::string q;
     std::cout << "Do you want to quit? [y/n]: ";
     std::cin >> q;
+    std::cout << std::endl;
     if (q == "y")
     {
       m_pGame->quit();
@@ -75,7 +76,7 @@ namespace app { namespace scenes {
   {
     assert((m_gameBoardOneObjSize % 2) != 0);
     // Barrier
-    std::cout << "Current Player: " << m_currentPlayer << std::endl;
+    // std::cout << "Current Player: " << m_currentPlayer << std::endl;
     auto drawBarrier = [](const int len){
       for (std::size_t i = 0; i < common::config::gameBoardCols; i++)
       {

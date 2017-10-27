@@ -37,7 +37,7 @@ namespace app { namespace scenes {
     public:
       virtual void init() = 0;
       void update(const float dt);
-      void draw();
+      virtual void draw();
 
     public:
       void drawGameBoard();

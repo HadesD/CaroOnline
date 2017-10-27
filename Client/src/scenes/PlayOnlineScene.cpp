@@ -32,6 +32,7 @@ namespace app { namespace scenes {
       [](const std::error_code &, const std::size_t &){
       }
       );
+    m_seqNo = 0;
   }
 
   PlayOnlineScene::~PlayOnlineScene()
@@ -50,6 +51,19 @@ namespace app { namespace scenes {
     this->addPlayer(me);
 
     m_serviceThread = std::thread(&PlayOnlineScene::run_service, this);
+  }
+
+  void PlayOnlineScene::draw()
+  {
+    PlayScene::draw();
+
+    std::string pName = std::to_string(m_turn);
+    if (m_turn == m_listPlayer.front()->getId())
+    {
+      pName = "You";
+    }
+    std::cout << "Current player: " << pName << std::endl;
+    std::cout << "Sequence: " << m_seqNo << std::endl;
   }
 
   void PlayOnlineScene::receive()
@@ -142,6 +156,13 @@ namespace app { namespace scenes {
               return;
             }
 
+            int seqNo = std::stoi(game_data.at(0));
+
+            if (m_seqNo >= seqNo)
+            {
+              return;
+            }
+
             std::vector<std::string> board = Util::str_split(game_data.at(2), ':');
 
             if (
@@ -152,9 +173,12 @@ namespace app { namespace scenes {
               return;
             }
 
+            m_seqNo = seqNo;
+            m_turn = std::stoi(game_data.at(1));
+
             this->m_gameBoard.setBoard(game_data.at(2));
 
-            if (std::stoi(game_data.at(1)) == m_listPlayer.front()->getId())
+            if (m_turn == m_listPlayer.front()->getId())
             {
               this->setNextPlayer(m_listPlayer.front());
             }

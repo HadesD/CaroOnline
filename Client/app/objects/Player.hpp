@@ -31,8 +31,8 @@ namespace app { namespace objects {
       void onKeyboardEvent();
 
     public:
-      void setId(const int id);
-      int getId() const;
+      void setId(const unsigned int id);
+      unsigned int getId() const;
       void setName(const std::string &name);
       std::string getName() const;
       // [[deprecated("Not compatible with smart pointer")]]
@@ -51,7 +51,7 @@ namespace app { namespace objects {
       virtual void onSetMove();
 
     protected:
-      int m_id;
+      unsigned int m_id;
       std::string m_name;
       bool m_isTurn;
       common::PlayerMark m_mark;

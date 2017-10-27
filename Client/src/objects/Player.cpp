@@ -136,12 +136,12 @@ namespace app { namespace objects {
     }
   }
 
-  void Player::setId(const int id)
+  void Player::setId(const unsigned int id)
   {
     this->m_id = id;
   }
 
-  int Player::getId() const
+  unsigned int Player::getId() const
   {
     return this->m_id;
   }

@@ -2,7 +2,7 @@
 
 #include "app/Server.hpp"
 
-int main(/* int argc, char *argv[] */)
+int main(int argc, char *argv[])
 {
   /*
    * if (argc < 2)
@@ -15,7 +15,15 @@ int main(/* int argc, char *argv[] */)
 
   try
   {
-    app::Server server("0.0.0.0", 8889);
+    int port = 8889;
+
+    if (argc > 1)
+    {
+      std::string s = argv[1];
+      port = std::stoi(s);
+    }
+
+    app::Server server("0.0.0.0", port);
 
     server.run();
   }

@@ -202,6 +202,7 @@ namespace app {
             if (m_clients.size() == 1)
             {
               m_turn = from_client;
+              m_seqNo++;
             }
 
             Log::info("Turn of: " + std::to_string(m_turn));
@@ -210,11 +211,17 @@ namespace app {
         case common::MessageType::QUIT_GAME:
           {
             Log::info("Server :: onReceiveHandle() :: QUIT_GAME");
+
             this->m_gameBoard = common::GameBoard(
               common::config::gameBoardRows,
               common::config::gameBoardCols
               );
+
             this->removeClient(this->getClientIndex(m_workingClient.second));
+
+            m_clients.clear();
+
+            m_seqNo = 0;
           }
           break;
         case common::MessageType::SET_MOVE:
@@ -264,6 +271,7 @@ namespace app {
 
               this->m_gameBoard.setBoard(board);
 
+              m_seqNo++;
               this->sendGameDataToAllClients();
 
               if (m_gameBoard.isWinPoint(common::Point2D(x,y), m_turn))
@@ -276,9 +284,7 @@ namespace app {
                 m_clients.clear();
               }
 
-              m_seqNo++;
-
-              if ((++m_turn) > m_clients.size())
+              if ((++m_turn) > 2 /* m_clients.size() */)
               {
                 m_turn = m_clients.cbegin()->first;
               }
