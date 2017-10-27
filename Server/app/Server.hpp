@@ -15,7 +15,7 @@ namespace app {
   class Server
   {
     public:
-      typedef std::map<std::uint32_t, common::net::socket::Udp::EndPoint>
+      typedef std::map<unsigned int, common::net::socket::Udp::EndPoint>
         ListClient;
       typedef ListClient::value_type Client;
       typedef common::GameBoard GameBoard;
@@ -34,23 +34,26 @@ namespace app {
       void update(const float /* dt */);
       void onReceiveHandle(const std::string &/* data */);
       void sendGameDataToAllClients();
-      ListClient::key_type getClientId(
-        const ListClient::mapped_type &/* client */
-        ) const;
-      ListClient::key_type getOrCreateClientId(
-        const ListClient::mapped_type &/* client */
-        );
-      bool removeClientId(const ListClient::key_type /* id */);
       GameBoard getGameBoard() const;
+
+    private:
+      Client::first_type getClientIndex(
+        const Client::second_type &/* client */
+        ) const;
+      Client::first_type getOrCreateClientIndex(
+        const Client::second_type &/* client */
+        );
+      bool removeClient(const Client::first_type /* index */);
 
     private:
       common::net::socket::Udp m_udpSocket;
       ListClient m_clients;
-      Client m_currentClient;
+      Client m_workingClient;
       common::net::Socket::Buffer m_buffers;
-      int m_seqNo;
       GameBoard m_gameBoard;
       std::thread m_serviceThread;
+      int m_seqNo;
+      unsigned int m_turn;
 
   };
 

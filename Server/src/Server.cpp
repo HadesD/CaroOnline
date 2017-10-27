@@ -7,7 +7,8 @@
 namespace app {
 
   Server::Server(const std::string &ip, const short &port) :
-    m_udpSocket(ip, port)
+    m_udpSocket(ip, port),
+    m_turn(-1)
   {
     this->m_gameBoard = common::GameBoard(
       common::config::gameBoardRows,
@@ -122,7 +123,7 @@ namespace app {
   {
     m_udpSocket.receive(
       m_buffers,
-      m_currentClient.second,
+      m_workingClient.second,
       [this](const std::error_code &e, const std::size_t &bytes){
         if (e)
         {
@@ -140,9 +141,9 @@ namespace app {
           Log::info(
             data
             + " From: "
-            + this->m_currentClient.second.address().to_string()
+            + this->m_workingClient.second.address().to_string()
             + ":"
-            + std::to_string(this->m_currentClient.second.port())
+            + std::to_string(this->m_workingClient.second.port())
             );
         }
         this->receive();
@@ -177,8 +178,14 @@ namespace app {
 
             Log::info("Username:" + acc.at(0) + " - Pass:" + acc.at(1));
 
-            auto from_client = this->getOrCreateClientId(m_currentClient.second);
+            auto from_client = this->getOrCreateClientIndex(
+              m_workingClient.second
+              );
 
+            if (m_clients.size() == 1)
+            {
+              m_turn = from_client;
+            }
           }
           break;
         case common::MessageType::QUIT_GAME:
@@ -188,7 +195,7 @@ namespace app {
               common::config::gameBoardRows,
               common::config::gameBoardCols
               );
-            this->removeClientId(this->getClientId(m_currentClient.second));
+            this->removeClient(this->getClientIndex(m_workingClient.second));
           }
           break;
         case common::MessageType::SET_MOVE:
@@ -202,7 +209,7 @@ namespace app {
               return;
             }
 
-            if (auto cliId = this->getClientId(this->m_currentClient.second))
+            if (auto cliId = this->getClientIndex(this->m_workingClient.second))
             {
               int x = std::stoi(xy.at(0));
               int y = std::stoi(xy.at(1));
@@ -243,11 +250,11 @@ namespace app {
     }
   }
 
-  Server::ListClient::key_type Server::getOrCreateClientId(
+  Server::Client::first_type Server::getOrCreateClientIndex(
     const ListClient::mapped_type &endpoint
     )
   {
-    if (auto id = this->getClientId(endpoint))
+    if (auto id = this->getClientIndex(endpoint))
     {
       return id;
     }
@@ -258,8 +265,8 @@ namespace app {
     return id;
   }
 
-  Server::ListClient::key_type Server::getClientId(
-    const ListClient::mapped_type &endpoint
+  Server::Client::first_type Server::getClientIndex(
+    const Client::second_type &endpoint
     ) const
   {
     for (const auto &client : this->m_clients)
@@ -273,10 +280,14 @@ namespace app {
     return 0;
   }
 
-  bool Server::removeClientId(
-    const ListClient::key_type id
+  bool Server::removeClient(
+    const Client::first_type id
     )
   {
+    if (m_turn == id)
+    {
+      m_turn = -1;
+    }
     this->m_clients.erase(id);
 
     return true;

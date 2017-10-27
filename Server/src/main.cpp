@@ -19,12 +19,12 @@ int main(int argc, char *argv[])
 
     server.run();
 
-    std::cout << "Server shutdown" << std::endl;
   }
   catch(const std::exception &e)
   {
     std::cerr << "Exeption: " << e.what() << std::endl;
   }
 
+  std::cout << "Server shutdown" << std::endl;
   return 0;
 }
