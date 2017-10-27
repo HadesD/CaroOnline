@@ -33,9 +33,14 @@ namespace app { namespace scenes {
   {
   }
 
-  void PlayOfflineScene::quit()
+  bool PlayOfflineScene::quit()
   {
-    PlayScene::quit();
+    if (PlayScene::quit())
+    {
+      return true;
+    }
+
+    return false;
   }
 
 } }

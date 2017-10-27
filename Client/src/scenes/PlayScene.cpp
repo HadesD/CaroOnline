@@ -34,10 +34,18 @@ namespace app { namespace scenes {
     this->drawGameBoard();
   }
 
-  void PlayScene::quit()
+  bool PlayScene::quit()
   {
-    // m_pGame->setScene(std::make_shared<app::scenes::IntroScene>(m_pGame));
-    m_pGame->quit();
+    std::string q;
+    std::cout << "Do you want to quit? [y/n]: ";
+    std::cin >> q;
+    if (q == "y")
+    {
+      m_pGame->quit();
+      return true;
+    }
+
+    return false;
   }
 
   void PlayScene::update(const float dt)

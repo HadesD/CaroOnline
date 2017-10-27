@@ -10,7 +10,6 @@ namespace common {
 
   Logger::Logger()
   {
-    // m_pLogAPI = std::make_shared<spdlog::logger>();
   }
 
   std::shared_ptr<Logger> Logger::getInstance()
@@ -25,24 +24,25 @@ namespace common {
 
   void Logger::info(const std::string &s)
   {
+#ifdef DEBUG
     console->info(s);
+#endif
   }
 
   void Logger::error(const std::string &s)
   {
+#ifdef DEBUG
     console->error(s);
+#endif
   }
 
   std::shared_ptr<Logger> Logger::operator<<(const std::string &message)
   {
-    // m_pLogAPI-> << message;
-    // SPDLOGk
-
+#ifdef DEBUG
     console->info(message);
+#endif
 
     return nullptr;
-
-    // return this->shared_from_this();
   }
 
 }

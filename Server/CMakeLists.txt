@@ -54,7 +54,7 @@ set(APP_SRC
 #
 #############################################################################
 
-set(CXX_FLAGS "-std=c++11")
+set(CXX_FLAGS "-std=c++11 -D DEBUG")
 
 # if(IS_WINDOWS OR CYGWIN OR MINGW OR WIN32 OR ("$ENV{OSTYPE}" STREQUAL "msys"))
 if (MSYS)

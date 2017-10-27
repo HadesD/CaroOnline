@@ -39,17 +39,6 @@ namespace app {
 
     // http://giderosmobile.com/forum/discussion/2766/online-multiplayer-turn-based-game-with-udp/p1
     m_serviceThread = std::thread(&Server::run_service, this);
-    // auto tnow = std::chrono::steady_clock::now();
-    // while (true)
-    // {
-    //   std::chrono::duration<float> dt = std::chrono::steady_clock::now() -
-    //     tnow;
-    //
-    //   this->update(static_cast<float>(dt.count()));
-    //
-    //   tnow = std::chrono::steady_clock::now();
-    // }
-
   }
 
   void Server::run_service()
@@ -69,10 +58,6 @@ namespace app {
       Log::error("Server :: run() :: openSocket()");
     }
   }
-
-  // void Server::update(const float dt)
-  // {
-  // }
 
   void Server::sendGameDataToAllClients()
   {
@@ -191,10 +176,35 @@ namespace app {
               m_workingClient.second
               );
 
+            char cmd = static_cast<char>(common::MessageType::LOGIN);
+
+            std::string msg = std::string(sizeof(cmd), cmd)
+              + std::to_string(from_client)
+              ;
+
+            m_udpSocket.send(
+              msg, m_workingClient.second,
+              [=](const std::error_code &e, const std::size_t &/* bytes */){
+                if (e)
+                {
+                  Log::error(e.message());
+                }
+                else
+                {
+                  Log::info(
+                    "Send ID to: "
+                    + std::to_string(from_client)
+                    );
+                }
+              }
+              );
+
             if (m_clients.size() == 1)
             {
               m_turn = from_client;
             }
+
+            Log::info("Turn of: " + std::to_string(m_turn));
           }
           break;
         case common::MessageType::QUIT_GAME:
@@ -210,6 +220,18 @@ namespace app {
         case common::MessageType::SET_MOVE:
           {
             Log::info("Server :: onReceiveHandle() :: SET_MOVE");
+
+            if (m_clients.size() < 2)
+            {
+              return;
+            }
+
+            auto senderIndex = this->getClientIndex(m_workingClient.second);
+            if (senderIndex != m_turn)
+            {
+              Log::error("Server :: onReceiveHandle() :: ERROR TURN");
+              return;
+            }
 
             std::vector<std::string> xy = Util::str_split(ms.msg, ':');
 
@@ -244,7 +266,22 @@ namespace app {
 
               this->sendGameDataToAllClients();
 
+              if (m_gameBoard.isWinPoint(common::Point2D(x,y), m_turn))
+              {
+                this->m_gameBoard = common::GameBoard(
+                  common::config::gameBoardRows,
+                  common::config::gameBoardCols
+                  );
+                m_seqNo = 0;
+                m_clients.clear();
+              }
+
               m_seqNo++;
+
+              if ((++m_turn) > m_clients.size())
+              {
+                m_turn = m_clients.cbegin()->first;
+              }
             }
           }
           break;

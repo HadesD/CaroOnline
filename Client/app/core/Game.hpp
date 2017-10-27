@@ -1,6 +1,6 @@
 #ifndef APP_GAME_HPP
 #define APP_GAME_HPP
-#define APP_CLIENT
+// #define DEBUG
 #include <memory>
 #include <vector>
 #define ERROR(MESSAGE) Log::error(__FILE__, __LINE__, MESSAGE)

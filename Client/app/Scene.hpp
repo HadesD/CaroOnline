@@ -19,7 +19,6 @@ namespace app {
       virtual void init() = 0;
       virtual void update(const float dt) = 0;
       virtual void draw() = 0;
-      // virtual void load() = 0;
 
     protected:
       std::shared_ptr<app::core::Game> m_pGame;

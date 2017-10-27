@@ -22,7 +22,6 @@ namespace app { namespace scenes {
   class PlayScene : public app::Scene
   {
     public:
-      // typedef common::GameBoard GameBoard;
       typedef std::vector< std::shared_ptr< app::objects::Player > > ListPlayer;
       enum class GameState
       {
@@ -44,7 +43,7 @@ namespace app { namespace scenes {
       void drawGameBoard();
       GameState checkMoveState(const common::Point2D &p);
       void checkFinish();
-      virtual void quit();
+      virtual bool quit();
 
     public:
       void addPlayer(const std::shared_ptr<app::objects::Player> &player);

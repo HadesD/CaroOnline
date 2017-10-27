@@ -14,24 +14,8 @@ namespace app { namespace scenes {
 
     public:
       virtual void init() override;
-      //   void update(const float dt);
-      //   void draw();
-      //
-      // public:
-      //   void drawGameBoard();
-      //   GameState checkMoveState(const common::Point2D &p);
-      //   void checkFinish();
-      //   void quit();
-
-      // public:
-      //   void addPlayer(const std::shared_ptr<app::objects::Player> &player);
-      //   void removePlayer(const std::shared_ptr<app::objects::Player> &player);
-
-      // public:
-      //   common::GameBoard getGameBoard() const;
-      //   void setGameBoard(const common::GameBoard &#<{(| gb |)}>#);
       virtual void onSetGameBoardMove(const common::Point2D &p) override;
-      virtual void quit() override;
+      virtual bool quit() override;
 
     private:
       void run_service();

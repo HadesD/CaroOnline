@@ -2,6 +2,7 @@
 
 #include "app/Config.hpp"
 #include "app/objects/Player.hpp"
+#include "app/core/Game.hpp"
 
 #include "../Common/Logger.hpp"
 #include "../Common/MessageStruct.hpp"
@@ -46,9 +47,7 @@ namespace app { namespace scenes {
     auto me = std::make_shared<app::objects::Player>(
       app::objects::Player::Type::SELF
       );
-    me->setIsTurn(true);
     this->addPlayer(me);
-    this->setNextPlayer(me);
 
     m_serviceThread = std::thread(&PlayOnlineScene::run_service, this);
   }
@@ -118,6 +117,18 @@ namespace app { namespace scenes {
       {
         case common::MessageType::LOGIN:
           {
+            Log::info("PlayOnlineScene :: onReceiveHandle() :: RECV_ID");
+            auto id = std::stoi(ms.msg);
+            if (id)
+            {
+              m_listPlayer.front()->setId(id);
+              m_listPlayer.front()->setMark(id);
+            }
+            else
+            {
+              std::cout << "Error set ID" << std::endl;
+              m_pGame->quit();
+            }
           }
           break;
         case common::MessageType::UPDATE_GAME:
@@ -141,8 +152,12 @@ namespace app { namespace scenes {
               return;
             }
 
-            this->m_gameBoard.setBoard(ms.msg);
+            this->m_gameBoard.setBoard(game_data.at(2));
 
+            if (std::stoi(game_data.at(1)) == m_listPlayer.front()->getId())
+            {
+              this->setNextPlayer(m_listPlayer.front());
+            }
           }
           break;
         default:
@@ -158,18 +173,23 @@ namespace app { namespace scenes {
     }
   }
 
-  void PlayOnlineScene::quit()
+  bool PlayOnlineScene::quit()
   {
-    char cmd = static_cast<char>(common::MessageType::QUIT_GAME);
+    if (PlayScene::quit())
+    {
+      char cmd = static_cast<char>(common::MessageType::QUIT_GAME);
 
-    std::string msg = std::string(sizeof(cmd), cmd);
+      std::string msg = std::string(sizeof(cmd), cmd);
 
-    m_udpSocket.send(
-      msg, m_udpServerEndpoint,
-      [](const std::error_code &, const std::size_t &){
-      }
-      );
-    PlayScene::quit();
+      m_udpSocket.send(
+        msg, m_udpServerEndpoint,
+        [](const std::error_code &, const std::size_t &){
+        }
+        );
+      return true;
+    }
+
+    return false;
   }
 
   void PlayOnlineScene::onSetGameBoardMove(const common::Point2D &p)

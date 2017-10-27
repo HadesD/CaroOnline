@@ -9,7 +9,7 @@ namespace spdlog {
 
 namespace common {
 
-  class Logger//  : std::enable_shared_from_this<Logger>
+  class Logger
   {
     public:
       static std::shared_ptr<Logger> /* Logger * */getInstance();
@@ -20,9 +20,7 @@ namespace common {
       void error(const std::string &s);
 
     private:
-    // public:
       Logger();
-      // ~Logger();
 
     private:
       static std::weak_ptr<Logger> /* Logger * */m_pLogger;
@@ -33,7 +31,6 @@ namespace common {
 }
 
 static const auto Logger = common::Logger::getInstance();
-// template <typename ...T>
 #include <iostream>
 class Log {
   private:
@@ -57,3 +54,4 @@ class Log {
 };
 
 #endif
+

@@ -8,6 +8,7 @@ namespace app { namespace objects {
     m_type(type)
   {
     m_isReady = false;
+    this->m_isTurn = false;
   }
 
   Player::~Player()
@@ -32,7 +33,7 @@ namespace app { namespace objects {
       throw std::runtime_error("Not found scene");
     }
 
-    if (/* this->m_type != Type::SELF ||  */this->m_isTurn == false)
+    if ((this->m_isTurn == false) && (m_pScene->getListPlayer().size() > 1))
     {
       return;
     }
@@ -56,7 +57,7 @@ namespace app { namespace objects {
         case 'e':
         case 'm':
           {
-            if (gb.at(m_cursor.x).at(m_cursor.y) == 0)
+            if (m_isTurn &&(gb.at(m_cursor.x).at(m_cursor.y) == 0))
             {
               this->onSetMove();
             }
@@ -124,11 +125,15 @@ namespace app { namespace objects {
 
     if (m_pScene->getGameBoard().isWinPoint(m_cursor, m_mark))
     {
+      std::cout << "You won!!!" << std::endl;
       m_pScene->quit();
       return;
     }
 
-    m_pScene->setNextPlayer(m_pScene->getCurrentPlayer() + 1);
+    if (this->m_pScene->getListPlayer().size() > 1)
+    {
+      m_pScene->setNextPlayer(m_pScene->getCurrentPlayer() + 1);
+    }
   }
 
   void Player::setId(const int id)
