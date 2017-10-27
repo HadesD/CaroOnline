@@ -39,16 +39,16 @@ namespace app {
 
     // http://giderosmobile.com/forum/discussion/2766/online-multiplayer-turn-based-game-with-udp/p1
     m_serviceThread = std::thread(&Server::run_service, this);
-    auto tnow = std::chrono::steady_clock::now();
+    // auto tnow = std::chrono::steady_clock::now();
     // while (true)
-    {
-      std::chrono::duration<float> dt = std::chrono::steady_clock::now() -
-        tnow;
-
-      this->update(static_cast<float>(dt.count()));
-
-      tnow = std::chrono::steady_clock::now();
-    }
+    // {
+    //   std::chrono::duration<float> dt = std::chrono::steady_clock::now() -
+    //     tnow;
+    //
+    //   this->update(static_cast<float>(dt.count()));
+    //
+    //   tnow = std::chrono::steady_clock::now();
+    // }
 
   }
 
@@ -70,19 +70,28 @@ namespace app {
     }
   }
 
-  void Server::update(const float dt)
-  {
-  }
+  // void Server::update(const float dt)
+  // {
+  // }
 
   void Server::sendGameDataToAllClients()
   {
     try
     {
+      if (m_clients.size() <= 0)
+      {
+        return;
+      }
+
       Log::info("Start send to " + std::to_string(m_clients.size()) + " clients");
 
       char cmd = static_cast<char>(common::MessageType::UPDATE_GAME);
 
-      std::string msg = std::string(sizeof(cmd), cmd) + m_gameBoard.toString();
+      std::string msg = std::string(sizeof(cmd), cmd)
+        + std::to_string(m_seqNo) + "|"
+        + std::to_string(m_turn) + "|"
+        + m_gameBoard.toString()
+        ;
 
       for (const auto &client : m_clients)
       {
@@ -211,8 +220,8 @@ namespace app {
 
             if (auto cliId = this->getClientIndex(this->m_workingClient.second))
             {
-              int x = std::stoi(xy.at(0));
-              int y = std::stoi(xy.at(1));
+              auto x = std::stoi(xy.at(0));
+              auto y = std::stoi(xy.at(1));
 
               if (m_gameBoard.getBoard().at(x).at(y) != 0)
               {
@@ -234,6 +243,8 @@ namespace app {
               this->m_gameBoard.setBoard(board);
 
               this->sendGameDataToAllClients();
+
+              m_seqNo++;
             }
           }
           break;

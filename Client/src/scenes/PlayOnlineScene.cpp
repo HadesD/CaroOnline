@@ -124,7 +124,14 @@ namespace app { namespace scenes {
           {
             Log::info("PlayOnlineScene :: onReceiveHandle() :: SET_MOVE");
 
-            std::vector<std::string> board = Util::str_split(ms.msg, ':');
+            std::vector<std::string> game_data = Util::str_split(ms.msg, '|');
+
+            if (game_data.size() != 3)
+            {
+              return;
+            }
+
+            std::vector<std::string> board = Util::str_split(game_data.at(2), ':');
 
             if (
               board.size() !=

@@ -31,7 +31,7 @@ namespace app {
       void init();
       void run_service();
       void receive();
-      void update(const float /* dt */);
+      // void update(const float #<{(| dt |)}>#);
       void onReceiveHandle(const std::string &/* data */);
       void sendGameDataToAllClients();
       GameBoard getGameBoard() const;

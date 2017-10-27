@@ -2,7 +2,7 @@
 
 #include "app/Server.hpp"
 
-int main(int argc, char *argv[])
+int main(/* int argc, char *argv[] */)
 {
   /*
    * if (argc < 2)
@@ -18,7 +18,6 @@ int main(int argc, char *argv[])
     app::Server server("0.0.0.0", 8889);
 
     server.run();
-
   }
   catch(const std::exception &e)
   {
@@ -26,5 +25,6 @@ int main(int argc, char *argv[])
   }
 
   std::cout << "Server shutdown" << std::endl;
+
   return 0;
 }
