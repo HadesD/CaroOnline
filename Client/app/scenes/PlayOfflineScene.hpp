@@ -7,7 +7,7 @@ namespace app { namespace scenes {
   class PlayOfflineScene : public app::scenes::PlayScene
   {
     public:
-      PlayOfflineScene(const std::shared_ptr<app::core::Game> &game);
+      PlayOfflineScene(std::shared_ptr<app::core::Game> game);
       ~PlayOfflineScene();
 
     public:

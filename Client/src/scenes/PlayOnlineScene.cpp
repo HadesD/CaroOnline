@@ -11,7 +11,7 @@
 namespace app { namespace scenes {
 
   PlayOnlineScene::PlayOnlineScene(
-    const std::shared_ptr<app::core::Game> &game
+    std::shared_ptr<app::core::Game> game
     ) : PlayScene(game),
   m_udpSocket("0.0.0.0", 0),
   m_udpServerEndpoint(
@@ -58,9 +58,9 @@ namespace app { namespace scenes {
     PlayScene::draw();
 
     std::string pName = std::to_string(m_turn);
-    if (m_turn == m_listPlayer.front()->getId())
+    if (m_listPlayer.front()->getIsTurn())
     {
-      pName = "You";
+      // pName = "You";
     }
     std::cout << "Current player: " << pName << std::endl;
     std::cout << "Sequence: " << m_seqNo << std::endl;
@@ -178,10 +178,7 @@ namespace app { namespace scenes {
 
             this->m_gameBoard.setBoard(game_data.at(2));
 
-            if (m_turn == m_listPlayer.front()->getId())
-            {
-              this->setNextPlayer(m_listPlayer.front());
-            }
+            this->setNextPlayer(m_turn);
           }
           break;
         default:

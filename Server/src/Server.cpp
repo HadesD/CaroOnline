@@ -68,6 +68,8 @@ namespace app {
         return;
       }
 
+      Log::info("Turn of: " + std::to_string(m_turn));
+      Log::info("Sequence: " + std::to_string(m_seqNo));
       Log::info("Start send to " + std::to_string(m_clients.size()) + " clients");
 
       char cmd = static_cast<char>(common::MessageType::UPDATE_GAME);
@@ -99,8 +101,6 @@ namespace app {
           }
           );
       }
-
-      Log::info(msg);
     }
     catch (...)
     {
@@ -205,7 +205,6 @@ namespace app {
               m_seqNo++;
             }
 
-            Log::info("Turn of: " + std::to_string(m_turn));
           }
           break;
         case common::MessageType::QUIT_GAME:

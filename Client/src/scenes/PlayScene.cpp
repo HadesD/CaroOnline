@@ -13,7 +13,7 @@
 
 namespace app { namespace scenes {
 
-  PlayScene::PlayScene(const std::shared_ptr<app::core::Game> &game) :
+  PlayScene::PlayScene(std::shared_ptr<app::core::Game> game) :
     app::Scene(game)
   {
     m_gameBoard = common::GameBoard(
@@ -95,7 +95,7 @@ namespace app { namespace scenes {
       std::cout << std::string(m_gameBoardOneObjSize / 2, ' ');
     };
 
-    for (size_t x = 0; x < m_gameBoard.getBoard().size(); x++)
+    for (std::size_t x = 0; x < m_gameBoard.getBoard().size(); x++)
     {
       drawBarrier(m_gameBoardOneObjSize);
       // for (size_t y = 0; y < m_gameBoard.at(x).size(); y++)
@@ -104,7 +104,7 @@ namespace app { namespace scenes {
       // }
       // std::cout << '|';
       // std::cout << std::endl;
-      for (size_t y = 0; y < m_gameBoard.getBoard().at(x).size(); y++)
+      for (std::size_t y = 0; y < m_gameBoard.getBoard().at(x).size(); y++)
       {
         std::string curr;
         std::string color;
@@ -180,7 +180,7 @@ namespace app { namespace scenes {
   }
 
   void PlayScene::addPlayer(
-    const std::shared_ptr<app::objects::Player> &player
+    std::shared_ptr<app::objects::Player> player
     )
   {
     for (const auto &p : m_listPlayer)
@@ -202,7 +202,7 @@ namespace app { namespace scenes {
   }
 
   void PlayScene::removePlayer(
-    const std::shared_ptr<app::objects::Player> &player
+    std::shared_ptr<app::objects::Player> player
     )
   {
     for (const auto &p : m_listPlayer)
@@ -223,48 +223,43 @@ namespace app { namespace scenes {
 
   void PlayScene::setNextPlayer(const unsigned int nextPlayer)
   {
-    try
+    for (auto &p : m_listPlayer)
     {
-      if (nextPlayer >= m_listPlayer.size())
+      if (p->getId() == nextPlayer)
       {
-        this->m_currentPlayer = 0;
+        p->setIsTurn(true);
       }
       else
       {
-        this->m_currentPlayer = nextPlayer;
+        p->setIsTurn(false);
       }
-
-      assert(m_currentPlayer <= m_listPlayer.size());
-      m_listPlayer.at(m_currentPlayer)->setIsTurn(true);
-    }
-    catch(std::out_of_range &e)
-    {
-      ERROR(e.what());
-    }
-    catch(...)
-    {
-      ERROR("Not found");
     }
   }
 
   void PlayScene::setNextPlayer(
-    const std::shared_ptr<app::objects::Player> &player
+    std::shared_ptr<app::objects::Player> player
     )
   {
-    unsigned int i = 0;
     for (const auto &p : m_listPlayer)
     {
-      i++;
       if (p == player)
       {
-        this->setNextPlayer(i);
+        this->setNextPlayer(p->getId());
       }
     }
   }
 
-  int PlayScene::getCurrentPlayer() const
+  std::shared_ptr<app::objects::Player> PlayScene::getCurrentPlayer() const
   {
-    return m_currentPlayer;
+    for (auto &p : m_listPlayer)
+    {
+      if (p->getIsTurn())
+      {
+        return p;
+      }
+    }
+
+    return nullptr;
   }
 
 } }

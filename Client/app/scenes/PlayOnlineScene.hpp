@@ -9,7 +9,7 @@ namespace app { namespace scenes {
   class PlayOnlineScene : public app::scenes::PlayScene
   {
     public:
-      PlayOnlineScene(const std::shared_ptr<app::core::Game> &game);
+      PlayOnlineScene(std::shared_ptr<app::core::Game> game);
       ~PlayOnlineScene();
 
     public:

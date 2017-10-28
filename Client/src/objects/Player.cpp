@@ -19,6 +19,7 @@ namespace app { namespace objects {
   void Player::update(const float /* dt */)
   {
     this->waitKeyboardEvent();
+    std::cout << "Your Id: " << m_id << std::endl;
   }
 
   void Player::waitKeyboardEvent()
@@ -132,7 +133,7 @@ namespace app { namespace objects {
 
     if (this->m_pScene->getListPlayer().size() > 1)
     {
-      m_pScene->setNextPlayer(m_pScene->getCurrentPlayer() + 1);
+      // m_pScene->setNextPlayer(m_pScene->getCurrentPlayer() + 1);
     }
   }
 

@@ -31,7 +31,7 @@ namespace app { namespace scenes {
       };
 
     public:
-      PlayScene(const std::shared_ptr<app::core::Game> &game);
+      PlayScene(std::shared_ptr<app::core::Game> game);
       ~PlayScene();
 
     public:
@@ -46,16 +46,16 @@ namespace app { namespace scenes {
       virtual bool quit();
 
     public:
-      void addPlayer(const std::shared_ptr<app::objects::Player> &player);
-      void removePlayer(const std::shared_ptr<app::objects::Player> &player);
+      void addPlayer(std::shared_ptr<app::objects::Player> player);
+      void removePlayer(std::shared_ptr<app::objects::Player> player);
 
     public:
       common::GameBoard getGameBoard() const;
       void setGameBoard(const common::GameBoard &/* gb */);
       ListPlayer getListPlayer() const;
       void setNextPlayer(const unsigned int nextPlayer);
-      void setNextPlayer(const std::shared_ptr<app::objects::Player> &player);
-      int getCurrentPlayer() const;
+      void setNextPlayer(std::shared_ptr<app::objects::Player> player);
+      std::shared_ptr<app::objects::Player> getCurrentPlayer() const;
       virtual void onSetGameBoardMove(const common::Point2D &p) = 0;
 
     protected:

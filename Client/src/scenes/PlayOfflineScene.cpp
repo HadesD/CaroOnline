@@ -5,7 +5,7 @@
 namespace app { namespace scenes {
 
   PlayOfflineScene::PlayOfflineScene(
-    const std::shared_ptr<app::core::Game> &game
+    std::shared_ptr<app::core::Game> game
     ) : PlayScene(game)
   {
   }
