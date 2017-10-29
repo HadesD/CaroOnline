@@ -202,8 +202,8 @@ namespace app {
             if (m_clients.size() == 1)
             {
               m_turn = from_client;
-              m_seqNo++;
             }
+            m_seqNo++;
 
           }
           break;

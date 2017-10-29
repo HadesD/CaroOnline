@@ -89,7 +89,7 @@ namespace app { namespace scenes {
           //   )
           {
             std::string recv = std::string(m_buffers.data(), m_buffers.data() + bytes);
-            Log::info(recv);
+            Log::info("Received DATA: " + recv);
             this->onReceiveHandle(recv);
           }
 
@@ -121,6 +121,7 @@ namespace app { namespace scenes {
     try
     {
       common::MessageStruct ms(data);
+      Log::info("Current Seq: " + std::to_string(m_seqNo));
 
       if (ms.isValidSum() == false)
       {
@@ -147,9 +148,11 @@ namespace app { namespace scenes {
           break;
         case common::MessageType::UPDATE_GAME:
           {
-            Log::info("PlayOnlineScene :: onReceiveHandle() :: SET_MOVE");
+            Log::info("PlayOnlineScene :: onReceiveHandle() :: UPDATE_GAME");
 
             std::vector<std::string> game_data = Util::str_split(ms.msg, '|');
+
+            Log::info("game_data size: " + std::to_string(game_data.size()));
 
             if (game_data.size() != 3)
             {
@@ -158,10 +161,14 @@ namespace app { namespace scenes {
 
             int seqNo = std::stoi(game_data.at(0));
 
+            Log::info("Received Seq: " + std::to_string(seqNo));
+
             if (m_seqNo >= seqNo)
             {
               return;
             }
+
+            m_seqNo = seqNo;
 
             std::vector<std::string> board = Util::str_split(game_data.at(2), ':');
 
@@ -173,8 +180,10 @@ namespace app { namespace scenes {
               return;
             }
 
-            m_seqNo = seqNo;
+            Log::info("Current Turn: " + std::to_string(m_turn));
             m_turn = std::stoi(game_data.at(1));
+
+            Log::info("Received turn: " + std::to_string(m_turn));
 
             this->m_gameBoard.setBoard(game_data.at(2));
 

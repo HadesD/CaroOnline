@@ -5,6 +5,7 @@
 namespace common {
 
   static auto console = spdlog::stdout_color_mt("");
+  static auto file = spdlog::basic_logger_mt("file", "logs/all.log");
 
   std::weak_ptr<Logger> Logger::m_pLogger;
 
@@ -27,6 +28,7 @@ namespace common {
 #ifdef DEBUG
     console->info(s);
 #endif
+    file->info(s);
   }
 
   void Logger::error(const std::string &s)
