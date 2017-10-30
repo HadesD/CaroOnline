@@ -199,11 +199,11 @@ namespace app {
               }
               );
 
+            m_seqNo++;
             if (m_clients.size() == 1)
             {
               m_turn = from_client;
             }
-            m_seqNo++;
 
           }
           break;
@@ -302,7 +302,7 @@ namespace app {
     }
   }
 
-  Server::Client::first_type Server::getOrCreateClientIndex(
+  Client::first_type Server::getOrCreateClientIndex(
     const ListClient::mapped_type &endpoint
     )
   {
@@ -317,7 +317,7 @@ namespace app {
     return id;
   }
 
-  Server::Client::first_type Server::getClientIndex(
+  Client::first_type Server::getClientIndex(
     const Client::second_type &endpoint
     ) const
   {

@@ -3,21 +3,18 @@
 #include <iostream>
 #include <memory>
 #include <map>
+#include <set>
 
-#include "../Common/Config.hpp"
-#include "../Common/net/socket/Udp.hpp"
 #include "../Common/GameBoard.hpp"
 
-namespace app {
+#include "Type.hpp"
+#include "Room.hpp"
 
-  // class Room;
+namespace app {
 
   class Server
   {
     public:
-      typedef std::map<unsigned int, common::net::socket::Udp::EndPoint>
-        ListClient;
-      typedef ListClient::value_type Client;
       typedef common::GameBoard GameBoard;
 
     public:
@@ -54,6 +51,8 @@ namespace app {
       std::thread m_serviceThread;
       int m_seqNo;
       unsigned int m_turn;
+
+      std::set<Room> m_rooms;
 
   };
 

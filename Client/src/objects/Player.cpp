@@ -122,7 +122,7 @@ namespace app { namespace objects {
 
   void Player::onSetMove()
   {
-    // this->m_isTurn = false;
+    this->m_isTurn = false;
 
     common::GameBoard::Board board = m_pScene->getGameBoard().getBoard();
 

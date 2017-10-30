@@ -75,7 +75,7 @@ namespace app { namespace core {
 
     // WindowManager wm;
 
-    const int fixed_fps = 15;
+    const int fixed_fps = 10;
 
     auto now_time = std::chrono::steady_clock::now();
 
