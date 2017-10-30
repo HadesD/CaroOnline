@@ -61,17 +61,6 @@ namespace app { namespace scenes {
     if (m_listPlayer.front()->getIsTurn())
     {
       pName = "You";
-      switch(m_listPlayer.front()->getId())
-      {
-        case 1:
-          pName += " <x>";
-          break;
-        case 2:
-          pName += " <o>";
-          break;
-        default:
-          break;
-      }
     }
     std::cout << "Current player: " << pName << std::endl;
     std::cout << "Sequence: " << m_seqNo << std::endl;

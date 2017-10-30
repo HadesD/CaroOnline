@@ -19,7 +19,19 @@ namespace app { namespace objects {
   void Player::update(const float /* dt */)
   {
     this->waitKeyboardEvent();
-    std::cout << "Your Id: " << m_id << std::endl;
+    std::cout << "Your Id: " << m_id << " - Mark: ";
+    switch(this->m_mark)
+    {
+      case 1:
+        std::cout << " <x>";
+        break;
+      case 2:
+        std::cout << " <o>";
+        break;
+      default:
+        break;
+    }
+    std::cout << std::endl;
   }
 
   void Player::waitKeyboardEvent()
@@ -110,7 +122,7 @@ namespace app { namespace objects {
 
   void Player::onSetMove()
   {
-    this->m_isTurn = false;
+    // this->m_isTurn = false;
 
     common::GameBoard::Board board = m_pScene->getGameBoard().getBoard();
 

@@ -129,7 +129,6 @@ namespace app {
             this->m_buffers.data(),
             this->m_buffers.data() + bytes
             );
-          m_seqNo++;
 
           this->onReceiveHandle(data);
 
@@ -272,7 +271,6 @@ namespace app {
               this->m_gameBoard.setBoard(board);
 
               m_seqNo++;
-              this->sendGameDataToAllClients();
 
               if (m_gameBoard.isWinPoint(common::Point2D(x,y), m_turn))
               {
