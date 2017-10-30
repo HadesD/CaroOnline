@@ -60,7 +60,18 @@ namespace app { namespace scenes {
     std::string pName = std::to_string(m_turn);
     if (m_listPlayer.front()->getIsTurn())
     {
-      // pName = "You";
+      pName = "You";
+      switch(m_listPlayer.front()->getId())
+      {
+        case 1:
+          pName += " <x>";
+          break;
+        case 2:
+          pName += " <o>";
+          break;
+        default:
+          break;
+      }
     }
     std::cout << "Current player: " << pName << std::endl;
     std::cout << "Sequence: " << m_seqNo << std::endl;
@@ -89,7 +100,10 @@ namespace app { namespace scenes {
           //   )
           {
             std::string recv = std::string(m_buffers.data(), m_buffers.data() + bytes);
-            Log::info("Received DATA: " + recv);
+            Log::info("Player ID: "
+                      + std::to_string(m_listPlayer.front()->getId())
+                      + " :: receive :: started"
+                      );
             this->onReceiveHandle(recv);
           }
 

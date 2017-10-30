@@ -48,6 +48,7 @@ namespace common { namespace net { namespace socket {
     )
   {
     Log::info("UdpSocket :: send()");
+    Log::info("Send Message: " + s);
     std::string send_buff = common::config::networkCheckSum + s;
     m_socket.async_send_to(asio::buffer(send_buff), endpoint, handle);
   }

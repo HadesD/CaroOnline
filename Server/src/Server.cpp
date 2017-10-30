@@ -129,6 +129,7 @@ namespace app {
             this->m_buffers.data(),
             this->m_buffers.data() + bytes
             );
+          m_seqNo++;
 
           this->onReceiveHandle(data);
 
