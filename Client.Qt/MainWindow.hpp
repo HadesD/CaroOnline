@@ -29,11 +29,13 @@ class MainWindow : public QMainWindow
   private:
     void drawGameBoard();
 
-  public:
+  private:
     void onGbBtnClicked(QPushButton *obj = 0);
 
   private:
     std::size_t getGbBtnIndex(const common::Point2D &/* p */) const;
+    common::Point2D getGbPointOfGbBtn(std::size_t /* index */) const;
+    common::Point2D getGbPointOfGbBtn(QPushButton * /* index */) const;
 
   private:
     Ui::MainWindow *ui;
