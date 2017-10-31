@@ -8,6 +8,10 @@ namespace common {
 
   GameBoard::GameBoard()
   {
+    this->m_board.assign(
+      common::config::gameBoardRows,
+      Board::value_type(common::config::gameBoardCols, 0)
+      );
   }
 
   GameBoard::GameBoard(const std::size_t rows, const std::size_t cols)
@@ -30,7 +34,7 @@ namespace common {
 
   void GameBoard::setBoard(const std::string &board)
   {
-    std::vector< std::string > matBoard = std::move(Util::str_split(board, ':'));
+    std::vector< std::string > matBoard = Util::str_split(board, ':');
 
     for (std::size_t x = 0; x < m_board.size(); x++)
     {

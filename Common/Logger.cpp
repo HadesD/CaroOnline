@@ -5,7 +5,7 @@
 namespace common {
 
   static auto console = spdlog::stdout_color_mt("");
-  static auto file = spdlog::basic_logger_mt("file", "logs/all.log");
+  static auto file = spdlog::basic_logger_mt("file", "all.log");
 
   std::weak_ptr<Logger> Logger::m_pLogger;
 

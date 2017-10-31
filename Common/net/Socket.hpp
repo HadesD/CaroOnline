@@ -6,7 +6,7 @@
 #if defined(_WIN32) || defined(_WIN64)
 #define _WIN32_WINDOWS
 #endif
-#include <asio.hpp>
+#include "../Common/third_party/asio/asio/include/asio.hpp"
 #include <array>
 
 #include "../Config.hpp"
