@@ -32,6 +32,7 @@ namespace app {
       void onReceiveHandle(const std::string &/* data */);
       void sendGameDataToAllClients();
       GameBoard getGameBoard() const;
+      void onGameOver();
 
     private:
       Client::first_type getClientIndex(
@@ -51,6 +52,7 @@ namespace app {
       std::thread m_serviceThread;
       int m_seqNo;
       unsigned int m_turn;
+      bool m_isGameOver;
 
       std::set<Room> m_rooms;
 

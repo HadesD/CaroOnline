@@ -16,6 +16,7 @@ namespace app {
       );
 
     m_seqNo = 0;
+    m_isGameOver = false;
   }
 
   Server::~Server()
@@ -63,6 +64,12 @@ namespace app {
   {
     try
     {
+      if (m_isGameOver)
+      {
+        this->onGameOver();
+        return;
+      }
+
       if (m_clients.size() <= 0)
       {
         return;
@@ -300,6 +307,10 @@ namespace app {
     {
       Log::error("Server :: onReceiveHandle() :: ERROR");
     }
+  }
+
+  void Server::onGameOver()
+  {
   }
 
   Client::first_type Server::getOrCreateClientIndex(
