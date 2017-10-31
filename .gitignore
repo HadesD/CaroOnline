@@ -33,3 +33,7 @@
 
 .editorconfig
 .ycm_extra_conf.py
+
+# Qt
+/build-*_Qt_*
+CMakeLists.txt.user
