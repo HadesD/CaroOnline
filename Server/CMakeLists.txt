@@ -18,7 +18,7 @@ project(${APP_NAME})
 set(APP_REQUIRED_LIB
   ${CMAKE_THREAD_LIBS_INIT}
   pthread
-  WS2_32
+  # WS2_32
   )
 
 set(INCLUDE_DIR
