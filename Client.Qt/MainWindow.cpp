@@ -32,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent) :
   );
   m_seqNo = 0;
 
-
   this->init();
 }
 
@@ -48,11 +47,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
+  this->initEvents();
+
   for (std::size_t x = 0; x < m_gameBoard.getBoard().size(); x++)
   {
     for (std::size_t y = 0; y < m_gameBoard.getBoard().at(x).size(); y++)
     {
       QPushButton *btn = new QPushButton(this);
+      btn->setDisabled(true);
       QObject::connect(btn, &QPushButton::clicked, [this,btn](){
         this->onGbBtnClicked(btn);
       });
@@ -65,48 +67,94 @@ void MainWindow::init()
   this->drawGameBoard();
 }
 
+void MainWindow::initEvents()
+{
+  // Login
+  QObject::connect(ui->loginButton, &QPushButton::clicked, [this](){
+    if (ui->serverAdrInput->text().isEmpty())
+    {
+      QMessageBox::warning(ui->serverAdrInput, "Error", "Server Address is empty");
+      return;
+    }
+    if (ui->userNameInput->text().isEmpty())
+    {
+      QMessageBox::warning(ui->userNameInput, "Error", "User Name is empty");
+      return;
+    }
+    if (ui->passwordInput->text().isEmpty())
+    {
+      QMessageBox::warning(ui->passwordInput, "Error", "Password is empty");
+      return;
+    }
+    // Game Board
+    for (auto &b : m_gameBoardButtonList)
+    {
+      b->setDisabled(false);
+    }
+
+    // Login form
+    this->disableLoginForm(true);
+  });
+
+  // Logout
+  QObject::connect(ui->logoutButton, &QPushButton::clicked, [this](){
+    this->disableLoginForm(false);
+  });
+
+  //
+}
+
+void MainWindow::disableLoginForm(const bool disable)
+{
+  ui->serverAdrInput->setDisabled(disable);
+  ui->userNameInput->setDisabled(disable);
+  ui->passwordInput->setDisabled(disable);
+  ui->loginButton->setDisabled(disable);
+  ui->logoutButton->setDisabled(!disable);
+}
+
 void MainWindow::drawGameBoard()
 {
-  for (std::size_t x = 0; x < m_gameBoard.getBoard().size(); x++)
-  {
-    for (std::size_t y = 0; y < m_gameBoard.getBoard().at(x).size(); y++)
+    for (std::size_t x = 0; x < m_gameBoard.getBoard().size(); x++)
     {
-      QPushButton *btn = m_gameBoardButtonList.at(
-                                       this->getGbBtnIndex(common::Point2D(x, y))
-                                       );
-      ui->gameBoardLayout->addWidget(btn, x, y);
+        for (std::size_t y = 0; y < m_gameBoard.getBoard().at(x).size(); y++)
+        {
+            QPushButton *btn = m_gameBoardButtonList.at(
+                                    this->getGbBtnIndex(common::Point2D(x, y))
+                                    );
+            ui->gameBoardLayout->addWidget(btn, x, y);
+        }
     }
-  }
 }
 
 void MainWindow::onGbBtnClicked(QPushButton *obj)
 {
-  obj->setText("x");
+    obj->setText("x");
 }
 
 std::size_t MainWindow::getGbBtnIndex(const common::Point2D &p) const
 {
-  return (p.x * m_gameBoard.getBoard().size() + p.y);
+    return (p.x * m_gameBoard.getBoard().size() + p.y);
 }
 
 common::Point2D MainWindow::getGbPointOfGbBtn(std::size_t index) const
 {
-  int x = index % m_gameBoard.getBoard().size();
-  int y = index - m_gameBoard.getBoard().size() * x;
-  return common::Point2D(x, y);
+    int x = index % m_gameBoard.getBoard().size();
+    int y = index - m_gameBoard.getBoard().size() * x;
+    return common::Point2D(x, y);
 }
 
 common::Point2D MainWindow::getGbPointOfGbBtn(QPushButton *btn) const
 {
-  std::size_t index = 0;
-  for (auto &b : m_gameBoardButtonList)
-  {
-    if (b == btn)
+    std::size_t index = 0;
+    for (auto &b : m_gameBoardButtonList)
     {
-      return this->getGbPointOfGbBtn(index);
+        if (b == btn)
+        {
+            return this->getGbPointOfGbBtn(index);
+        }
+        index++;
     }
-    index++;
-  }
 
-  return common::Point2D();
+    return common::Point2D();
 }

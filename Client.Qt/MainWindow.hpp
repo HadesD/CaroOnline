@@ -27,10 +27,12 @@ class MainWindow : public QMainWindow
     void init();
 
   private:
+    void initEvents();
     void drawGameBoard();
 
   private:
     void onGbBtnClicked(QPushButton *obj = 0);
+    void disableLoginForm(const bool disable);
 
   private:
     std::size_t getGbBtnIndex(const common::Point2D &/* p */) const;
