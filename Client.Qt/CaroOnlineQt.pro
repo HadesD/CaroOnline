@@ -22,14 +22,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+win32: LIBS += $$PWD/../Lfs/libs/WS2_32.Lib
+
 INCLUDEPATH += ../Common/third_party/asio/asio/include \
             ../Common/third_party/spdlog/include \
             .
 
 SOURCES += \
-        ../Common/*.cpp \
-        ../Common/net/*.cpp \
-        ../Common/net/socket/*.cpp \
+        ../Common/Util.cpp \
+        ../Common/Point2D.cpp \
+        ../Common/Config.cpp \
+        ../Common/GameBoard.cpp \
+        ../Common/Logger.cpp \
+        ../Common/MessageStruct.cpp \
+        ../Common/net/Socket.cpp \
+        ../Common/net/socket/Udp.cpp \
         main.cpp \
         MainWindow.cpp \
     AppConfig.cpp

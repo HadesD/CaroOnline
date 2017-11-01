@@ -59,6 +59,7 @@ set(CXX_FLAGS "-std=c++11 -D DEBUG")
 # if(IS_WINDOWS OR CYGWIN OR MINGW OR WIN32 OR ("$ENV{OSTYPE}" STREQUAL "msys"))
 if (MSYS)
   add_compile_options(-D__USE_W32_SOCKETS)
+  add_compile_options(-lws2_32)
 endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS} -Wall")

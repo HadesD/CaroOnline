@@ -37,3 +37,6 @@
 # Qt
 /build-*_Qt_*
 CMakeLists.txt.user
+
+# Lfs
+!/Lfs/libs/*.lib
