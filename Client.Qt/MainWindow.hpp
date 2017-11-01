@@ -27,8 +27,8 @@ class MainWindow : public QMainWindow
     void init();
 
   private:
-    void initEvents();
     void drawGameBoard();
+    void run_service();
 
   private:
     void onGbBtnClicked(QPushButton *obj = 0);
@@ -36,8 +36,8 @@ class MainWindow : public QMainWindow
 
   private:
     std::size_t getGbBtnIndex(const common::Point2D &/* p */) const;
-    common::Point2D getGbPointOfGbBtn(std::size_t /* index */) const;
-    common::Point2D getGbPointOfGbBtn(QPushButton * /* index */) const;
+    common::Point2D getGbPointOfGbBtn(const std::size_t /* index */) const;
+    common::Point2D getGbPointOfGbBtn(const QPushButton * /* index */) const;
 
   private:
     Ui::MainWindow *ui;

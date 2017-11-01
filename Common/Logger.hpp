@@ -3,6 +3,10 @@
 #include <memory>
 #include <string>
 
+#ifdef IS_QT_CLIENT
+# include <QTextEdit>
+#endif
+
 namespace spdlog {
   class logger;
 }
@@ -30,28 +34,46 @@ namespace common {
 
 }
 
-static const auto Logger = common::Logger::getInstance();
+#ifdef IS_QT_CLIENT
+  static QTextEdit *logQTextEdit;
+#endif
+
+static const std::shared_ptr<common::Logger> logger = common::Logger::getInstance();
 #include <iostream>
 class Log {
-  private:
-
   public:
     static void info(const std::string &s)
     {
-      Logger->info(s);
+      logger->info(s);
+#ifdef IS_QT_CLIENT
+      if (logQTextEdit)
+      {
+        logQTextEdit->append(s.c_str());
+      }
+#endif
     }
 
     static void error(const std::string &s)
     {
-      Logger->error(s);
+      logger->error(s);
+#ifdef IS_QT_CLIENT
+      if (logQTextEdit)
+      {
+        logQTextEdit->append(s.c_str());
+      }
+#endif
     }
 
     static void error(const char *file, const int line, const std::string &s)
     {
-      std::cout << file << line << std::endl;
-      Logger->error(s);
+      logger->error(s);
+#ifdef IS_QT_CLIENT
+      if (logQTextEdit)
+      {
+        logQTextEdit->append(s.c_str());
+      }
+#endif
     }
 };
 
 #endif
-

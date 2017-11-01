@@ -2,6 +2,7 @@
 #define COMMON_NET_SOCKET_UDP_HPP
 
 #include "../Socket.hpp"
+#include "../../MessageStruct.hpp"
 
 namespace common { namespace net { namespace socket {
 
@@ -19,6 +20,11 @@ namespace common { namespace net { namespace socket {
       void open();
       void send(
         const std::string &/* data */,
+        const EndPoint &/* endpoint */,
+        const onSendHandle &/* handle */
+        );
+      void send(
+        const MessageStruct &/* data */,
         const EndPoint &/* endpoint */,
         const onSendHandle &/* handle */
         );

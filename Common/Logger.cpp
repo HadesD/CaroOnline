@@ -1,11 +1,20 @@
 #include "Logger.hpp"
 
+#ifdef USE_SPDLOG
 #include "spdlog/spdlog.h"
+#endif
+
+#ifdef IS_QT_CLIENT
+//#include <Q>
+#endif
+
 
 namespace common {
 
+#ifdef USE_SPDLOG
   static auto console = spdlog::stdout_color_mt("");
   static auto file = spdlog::basic_logger_mt("file", "all.log");
+#endif
 
   std::weak_ptr<Logger> Logger::m_pLogger;
 
@@ -26,25 +35,20 @@ namespace common {
   void Logger::info(const std::string &s)
   {
 #ifdef DEBUG
+#  ifdef USE_SPDLOG
     console->info(s);
-#endif
+#  endif
     file->info(s);
+#endif
   }
 
   void Logger::error(const std::string &s)
   {
 #ifdef DEBUG
+#  ifdef USE_SPDLOG
     console->error(s);
+#  endif
 #endif
-  }
-
-  std::shared_ptr<Logger> Logger::operator<<(const std::string &message)
-  {
-#ifdef DEBUG
-    console->info(message);
-#endif
-
-    return nullptr;
   }
 
 }

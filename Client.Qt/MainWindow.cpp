@@ -1,161 +1,231 @@
 #include <QMessageBox>
+#include <functional>
 
 #include "MainWindow.hpp"
 #include "ui_MainWindow.h"
 
 #include "../Common/MessageStruct.hpp"
+#include "../Common/Logger.hpp"
 
 MainWindow::MainWindow(QWidget *parent) :
-        QMainWindow(parent),
-        ui(new Ui::MainWindow),
-        m_gameBoard(),
-        m_udpSocket("0.0.0.0", 0)
+  QMainWindow(parent),
+  ui(new Ui::MainWindow),
+  m_udpSocket("0.0.0.0", 0)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 
+  logQTextEdit = ui->logEdit;
+
+  // Login
+  m_udpServerEndpoint = common::net::socket::Udp::EndPoint(
+        asio::ip::address::from_string(app::config::serverIp),
+        app::config::serverPort
+        );
+  QObject::connect(ui->loginButton, &QPushButton::clicked, [this](){
+    if (ui->userNameInput->text().isEmpty())
+    {
+      QMessageBox::warning(ui->userNameInput, "Error", "User Name is empty");
+      return;
+    }
+    if (ui->passwordInput->text().isEmpty())
+    {
+      QMessageBox::warning(ui->passwordInput, "Error", "Password is empty");
+      return;
+    }
+    // Game Board
+    for (auto &b : m_gameBoardButtonList)
+    {
+      b->setDisabled(false);
+    }
+
+    // Login form
+    this->disableLoginForm(true);
     char cmd = static_cast<char>(common::MessageType::LOGIN);
 
     std::string msg = std::string(sizeof(cmd), cmd)
-                    + "Dark.Hades"
-                    + ":"
-                    + "password"
-                    ;
+        + ui->userNameInput->text().toStdString()
+        + ":"
+        + ui->passwordInput->text().toStdString()
+        ;
 
     m_udpSocket.send(
-                            msg, m_udpServerEndpoint,
-                            [](const std::error_code &, const std::size_t &){
-    }
-    );
-    m_seqNo = 0;
+          msg, m_udpServerEndpoint,
+          [this](const std::error_code &, const std::size_t &){
+      ui->logEdit->append("Sent data");
 
+      QMessageBox::warning(ui->passwordInput, "Error", "Password is empty");
+    });
+  });
+
+  // Logout
+  QObject::connect(ui->logoutButton, &QPushButton::clicked, [this](){
+    auto reply = QMessageBox::question(ui->loginButton, "Logout", "Do you want to logout?");
+    if (reply == QMessageBox::No)
+    {
+      return;
+    }
+    char cmd = static_cast<char>(common::MessageType::QUIT_GAME);
+
+    std::string msg = std::string(sizeof(cmd), cmd);
+
+    m_udpSocket.send(
+          msg, m_udpServerEndpoint,
+          [](const std::error_code &, const std::size_t &){
+    });
+
+    this->disableLoginForm(false);
     this->init();
+  });
+
+  //
+  this->init();
+
+  m_serviceThread = std::thread(&MainWindow::run_service, this);
 }
 
 MainWindow::~MainWindow()
 {
-    for (auto &b : m_gameBoardButtonList)
-    {
-        delete b;
-    }
+  for (auto &b : m_gameBoardButtonList)
+  {
+    delete b;
+  }
 
-    delete ui;
+  if (m_serviceThread.joinable())
+  {
+    m_serviceThread.join();
+  }
+
+  delete ui;
 }
 
 void MainWindow::init()
 {
-    this->initEvents();
+  m_seqNo = 0;
+  m_gameBoard = common::GameBoard();
 
-    for (std::size_t x = 0; x < m_gameBoard.getBoard().size(); x++)
+  m_gameBoardButtonList.clear();
+
+  for (std::size_t x = 0; x < m_gameBoard.getBoard().size(); x++)
+  {
+    for (std::size_t y = 0; y < m_gameBoard.getBoard().at(x).size(); y++)
     {
-        for (std::size_t y = 0; y < m_gameBoard.getBoard().at(x).size(); y++)
-        {
-            QPushButton *btn = new QPushButton(this);
-            btn->setDisabled(true);
-            QObject::connect(btn, &QPushButton::clicked, [this,btn](){
-                this->onGbBtnClicked(btn);
-            });
-            //      btn->setObjectName(QString(std::to_string(this->getGbBtnIndex(common::Point2D(x, y))).c_str()));
+      QPushButton *btn = new QPushButton(this);
+      btn->setDisabled(true);
+      //      btn->setBackgroundRole(QPalette::Dark);
+      QObject::connect(btn, &QPushButton::clicked, [this,btn](){
+        this->onGbBtnClicked(btn);
+      });
 
-            m_gameBoardButtonList.emplace_back(btn);
-        }
+      m_gameBoardButtonList.emplace_back(btn);
     }
+  }
 
-    this->drawGameBoard();
+  this->drawGameBoard();
 }
 
-void MainWindow::initEvents()
+void MainWindow::run_service()
 {
-    // Login
-    QObject::connect(ui->loginButton, &QPushButton::clicked, [this](){
-        if (ui->serverAdrInput->text().isEmpty())
+  try
+  {
+    std::function<void()> receive = [&](){
+      m_udpSocket.receive(
+            m_buffers, m_udpCurrentEndpoint,
+            [this,receive](const std::error_code &e, const std::size_t &bytes)
+      {
+        if (e)
         {
-            QMessageBox::warning(ui->serverAdrInput, "Error", "Server Address is empty");
-            return;
+          Log::error(e.message());
         }
-        if (ui->userNameInput->text().isEmpty())
+        else
         {
-            QMessageBox::warning(ui->userNameInput, "Error", "User Name is empty");
-            return;
+          {
+            std::string recv = std::string(m_buffers.data(), m_buffers.data() + bytes);
+            Log::info("Player ID: "
+                      //                      + std::to_string(m_listPlayer.front()->getId())
+                      //                      + " :: receive :: started"
+                      );
+            //            this->onReceiveHandle(recv);
+          }
         }
-        if (ui->passwordInput->text().isEmpty())
-        {
-            QMessageBox::warning(ui->passwordInput, "Error", "Password is empty");
-            return;
-        }
-        // Game Board
-        for (auto &b : m_gameBoardButtonList)
-        {
-            b->setDisabled(false);
-        }
+        receive();
+      }
+      );
+    };
 
-        // Login form
-        this->disableLoginForm(true);
-        m_udpServerEndpoint = common::net::socket::Udp::EndPoint(
-                                asio::ip::address::from_string(ui->serverAdrInput->text().toStdString()),
-                                ui->serverPortInput->text().toInt()
-                                );
-    });
-
-    // Logout
-    QObject::connect(ui->logoutButton, &QPushButton::clicked, [this](){
-        this->disableLoginForm(false);
-    });
-
-    //
+    m_udpSocket.open();
+  }
+  catch (const std::exception &e)
+  {
+    Log::error(e.what());
+  }
+  catch (...)
+  {
+    Log::error("Server :: run() :: openSocket()");
+  }
 }
 
 void MainWindow::disableLoginForm(const bool disable)
 {
-    ui->serverAdrInput->setDisabled(disable);
-    ui->serverPortInput->setDisabled(disable);
-    ui->userNameInput->setDisabled(disable);
-    ui->passwordInput->setDisabled(disable);
-    ui->loginButton->setDisabled(disable);
-    ui->logoutButton->setDisabled(!disable);
+  ui->userNameInput->setDisabled(disable);
+  ui->passwordInput->setDisabled(disable);
+  ui->loginButton->setDisabled(disable);
+  ui->logoutButton->setDisabled(!disable);
 }
 
 void MainWindow::drawGameBoard()
 {
-    for (std::size_t x = 0; x < m_gameBoard.getBoard().size(); x++)
+  for (std::size_t x = 0; x < m_gameBoard.getBoard().size(); x++)
+  {
+    for (std::size_t y = 0; y < m_gameBoard.getBoard().at(x).size(); y++)
     {
-        for (std::size_t y = 0; y < m_gameBoard.getBoard().at(x).size(); y++)
-        {
-            QPushButton *btn = m_gameBoardButtonList.at(
-                                    this->getGbBtnIndex(common::Point2D(x, y))
-                                    );
-            ui->gameBoardLayout->addWidget(btn, x, y);
-        }
+      QPushButton *btn = m_gameBoardButtonList.at(
+            this->getGbBtnIndex(common::Point2D(x, y))
+            );
+      ui->gameBoardLayout->addWidget(btn, x, y);
     }
+  }
 }
 
 void MainWindow::onGbBtnClicked(QPushButton *obj)
 {
-    obj->setText("x");
+  common::Point2D pos = this->getGbPointOfGbBtn(obj);
+  char cmd = static_cast<char>(common::MessageType::SET_MOVE);
+
+  std::string msg = std::string(sizeof(cmd), cmd)
+      + std::to_string(pos.x)
+      + ":"
+      + std::to_string(pos.y)
+      ;
+
+  m_udpSocket.send(
+        msg, m_udpServerEndpoint,
+        [](const std::error_code &, const std::size_t &){
+  });
 }
 
 std::size_t MainWindow::getGbBtnIndex(const common::Point2D &p) const
 {
-    return (p.x * m_gameBoard.getBoard().size() + p.y);
+  return (p.x * m_gameBoard.getBoard().size() + p.y);
 }
 
-common::Point2D MainWindow::getGbPointOfGbBtn(std::size_t index) const
+common::Point2D MainWindow::getGbPointOfGbBtn(const std::size_t index) const
 {
-    int x = index % m_gameBoard.getBoard().size();
-    int y = index - m_gameBoard.getBoard().size() * x;
-    return common::Point2D(x, y);
+  int x = index % m_gameBoard.getBoard().size();
+  int y = index - m_gameBoard.getBoard().size() * x;
+  return common::Point2D(x, y);
 }
 
-common::Point2D MainWindow::getGbPointOfGbBtn(QPushButton *btn) const
+common::Point2D MainWindow::getGbPointOfGbBtn(const QPushButton *btn) const
 {
-    std::size_t index = 0;
-    for (auto &b : m_gameBoardButtonList)
+  std::size_t index = 0;
+  for (const auto b : m_gameBoardButtonList)
+  {
+    if (b == btn)
     {
-        if (b == btn)
-        {
-            return this->getGbPointOfGbBtn(index);
-        }
-        index++;
+      return this->getGbPointOfGbBtn(index);
     }
+    index++;
+  }
 
-    return common::Point2D();
+  return common::Point2D();
 }
