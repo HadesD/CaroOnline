@@ -18,6 +18,7 @@ project(${APP_NAME})
 set(APP_REQUIRED_LIB
   ${CMAKE_THREAD_LIBS_INIT}
   pthread
+  WS2_32
   )
 
 set(INCLUDE_DIR
@@ -59,8 +60,8 @@ set(CXX_FLAGS "-std=c++11 -D DEBUG")
 # if(IS_WINDOWS OR CYGWIN OR MINGW OR WIN32 OR ("$ENV{OSTYPE}" STREQUAL "msys"))
 if (MSYS)
   add_compile_options(-D__USE_W32_SOCKETS)
-  add_compile_options(-lws2_32)
 endif()
+  #add_compile_options(${CMAKE_CURRENT_SOURCE_DIR}/../Lfs/libs/lWS2_32)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS} -Wall")
 # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_FLAGS}")
@@ -68,6 +69,8 @@ include_directories(${INCLUDE_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../Lfs/libs)
 
 #############################################################################
 #
