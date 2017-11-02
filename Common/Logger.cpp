@@ -5,7 +5,7 @@
 #endif
 
 #ifdef IS_QT_CLIENT
-//#include <Q>
+#include <QDebug>
 #endif
 
 
@@ -41,6 +41,9 @@ namespace common {
 #  ifdef USE_SPDLOG
       console->info(s);
 #  endif
+#endif
+#ifdef IS_QT_CLIENT
+      qDebug() << s.c_str();
 #endif
   }
 

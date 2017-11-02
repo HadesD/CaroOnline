@@ -34,10 +34,6 @@ namespace common {
 
 }
 
-#ifdef IS_QT_CLIENT
-  static QTextEdit *logQTextEdit;
-#endif
-
 static const std::shared_ptr<common::Logger> logger = common::Logger::getInstance();
 #include <iostream>
 class Log {
@@ -45,34 +41,16 @@ class Log {
     static void info(const std::string &s)
     {
       logger->info(s);
-#ifdef IS_QT_CLIENT
-      if (logQTextEdit)
-      {
-        logQTextEdit->append(s.c_str());
-      }
-#endif
     }
 
     static void error(const std::string &s)
     {
       logger->error(s);
-#ifdef IS_QT_CLIENT
-      if (logQTextEdit)
-      {
-        logQTextEdit->append(s.c_str());
-      }
-#endif
     }
 
     static void error(const char *file, const int line, const std::string &s)
     {
       logger->error(s);
-#ifdef IS_QT_CLIENT
-      if (logQTextEdit)
-      {
-        logQTextEdit->append(s.c_str());
-      }
-#endif
     }
 };
 

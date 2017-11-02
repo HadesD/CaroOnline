@@ -33,6 +33,7 @@ class MainWindow : public QMainWindow
 
   private:
     void onGbBtnClicked(GbButton *obj = 0);
+    void onReceiveHandle(const std::string &/* data */);
     void disableLoginForm(const bool disable);
 
   private:
