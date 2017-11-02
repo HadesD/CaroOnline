@@ -37,8 +37,8 @@ namespace common {
 #ifdef DEBUG
 #  ifdef USE_SPDLOG
     console->info(s);
-#  endif
     file->info(s);
+#  endif
 #endif
   }
 

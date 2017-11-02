@@ -4,11 +4,11 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+#QT       += core
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+#greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = CaroOnlineQt
+TARGET = Server
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -21,8 +21,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
-
-DEFINES += IS_QT_CLIENT
 
 win32: LIBS += $$PWD/../Lfs/libs/WS2_32.Lib
 
@@ -46,17 +44,15 @@ SOURCES += \
         ../Common/MessageStruct.cpp \
         ../Common/net/Socket.cpp \
         ../Common/net/socket/Udp.cpp \
-        main.cpp \
-        MainWindow.cpp \
-        AppConfig.cpp
+        src/main.cpp \
+        src/Room.cpp \
+        src/Server.cpp \
 
 HEADERS += \
-        ../Common/Logger.hpp \
-        MainWindow.hpp \
-        AppConfig.hpp
+        app/App.hpp \
+        app/Config.hpp \
+        app/Server.hpp \
+        app/Type.hpp \
 
-FORMS += \
-        MainWindow.ui
 
-DISTFILES += \
-    styles.qml
+#FORMS += \
