@@ -26,7 +26,7 @@
       <x>10</x>
       <y>10</y>
       <width>681</width>
-      <height>561</height>
+      <height>601</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gameBoardLayout"/>
@@ -35,7 +35,7 @@
     <property name="geometry">
      <rect>
       <x>700</x>
-      <y>410</y>
+      <y>450</y>
       <width>261</width>
       <height>161</height>
      </rect>
@@ -56,6 +56,9 @@
        <property name="locale">
         <locale language="English" country="UnitedStates"/>
        </property>
+       <property name="placeholderText">
+        <string>Your login name</string>
+       </property>
       </widget>
      </item>
      <item row="5" column="0">
@@ -75,6 +78,9 @@
        </property>
        <property name="echoMode">
         <enum>QLineEdit::Password</enum>
+       </property>
+       <property name="placeholderText">
+        <string>Your password</string>
        </property>
       </widget>
      </item>
@@ -129,6 +135,9 @@
        <property name="text">
         <string>127.0.0.1</string>
        </property>
+       <property name="placeholderText">
+        <string>Server Address/IP</string>
+       </property>
       </widget>
      </item>
      <item row="2" column="0">
@@ -143,6 +152,9 @@
        <property name="text">
         <string>8889</string>
        </property>
+       <property name="placeholderText">
+        <string>Server 's Port</string>
+       </property>
       </widget>
      </item>
     </layout>
@@ -151,9 +163,9 @@
     <property name="geometry">
      <rect>
       <x>700</x>
-      <y>180</y>
+      <y>220</y>
       <width>261</width>
-      <height>231</height>
+      <height>221</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="logLayout">
@@ -168,6 +180,124 @@
       <widget class="QTextEdit" name="logEdit">
        <property name="readOnly">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>10</y>
+      <width>261</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="gameStatusLayout">
+     <item row="1" column="0">
+      <widget class="QLabel" name="playerTurnLabel">
+       <property name="text">
+        <string>Player 's turn</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="timeLeftLabel">
+       <property name="text">
+        <string>Time left</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="playerTurnShowLabel">
+       <property name="text">
+        <string>No one</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QProgressBar" name="timeLeftProgressBar">
+       <property name="value">
+        <number>0</number>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0" colspan="2">
+      <widget class="QLabel" name="label_2">
+       <property name="locale">
+        <locale language="English" country="UnitedStates"/>
+       </property>
+       <property name="text">
+        <string>Game Infomation</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Viewer count</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLabel" name="viewerCountShowLabel">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>130</y>
+      <width>261</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="playerInfoLayout">
+     <item row="0" column="0" colspan="2">
+      <widget class="QLabel" name="label">
+       <property name="locale">
+        <locale language="English" country="UnitedStates"/>
+       </property>
+       <property name="text">
+        <string>Your Infomation</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Mark</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="playerInfoMarkButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="locale">
+        <locale language="English" country="UnitedStates"/>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>
@@ -201,15 +331,6 @@
    <addaction name="menuMenu"/>
    <addaction name="menuAbout"/>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew_Game">
    <property name="text">
     <string>New Game</string>
