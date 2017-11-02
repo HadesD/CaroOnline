@@ -84,6 +84,7 @@ namespace app {
       std::string msg = std::string(sizeof(cmd), cmd)
         + std::to_string(m_seqNo) + "|"
         + std::to_string(m_turn) + "|"
+        + std::to_string(m_clients.size()) + "|"
         + m_gameBoard.toString()
         ;
 

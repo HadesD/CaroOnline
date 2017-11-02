@@ -22,4 +22,24 @@ namespace Util {
     return v;
   }
 
+  char getMark(const int markNum)
+  {
+    char m = '-';
+    switch (markNum)
+    {
+      case 0:
+        m = ' ';
+        break;
+      case 1:
+        m = 'x';
+        break;
+      case 2:
+        m = 'o';
+        break;
+      default:
+        break;
+    }
+
+    return m;
+  }
 }

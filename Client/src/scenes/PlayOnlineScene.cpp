@@ -173,7 +173,7 @@ namespace app { namespace scenes {
 
             m_seqNo = seqNo;
 
-            std::vector<std::string> board = Util::split(game_data.at(2), ':');
+            std::vector<std::string> board = Util::split(game_data.at(3), ':');
 
             if (
               board.size() !=
@@ -188,7 +188,7 @@ namespace app { namespace scenes {
 
             Log::info("Received turn: " + std::to_string(m_turn));
 
-            this->m_gameBoard.setBoard(game_data.at(2));
+            this->m_gameBoard.setBoard(game_data.at(3));
 
             this->setNextPlayer(m_turn);
           }

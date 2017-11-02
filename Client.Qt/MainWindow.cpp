@@ -146,6 +146,8 @@ MainWindow::~MainWindow()
 void MainWindow::init()
 {
   m_seqNo = 0;
+  m_turn = 0;
+  m_playerId = 0;
   m_gameBoard = common::GameBoard();
 
   m_gameBoardButtonList.clear();
@@ -231,19 +233,18 @@ void MainWindow::drawGameBoard()
     for (std::size_t y = 0; y < m_gameBoard.getBoard().at(x).size(); y++)
     {
       std::size_t b_pos = this->getGbBtnIndex(common::Point2D(x, y));
-      switch (m_gameBoard.getBoard().at(x).at(y))
+
+      QString mark = QChar(Util::getMark(m_gameBoard.getBoard().at(x).at(y)));
+
+      m_gameBoardButtonList.at(b_pos)->setText(mark);
+
+      if ((m_turn == m_playerId) && (m_turn != 0))
       {
-        case 0:
-          m_gameBoardButtonList.at(b_pos)->setText("");
-          break;
-        case 1:
-          m_gameBoardButtonList.at(b_pos)->setText("x");
-          break;
-        case 2:
-          m_gameBoardButtonList.at(b_pos)->setText("o");
-          break;
-        default:
-          break;
+        m_gameBoardButtonList.at(b_pos)->setDisabled(false);
+      }
+      else
+      {
+        m_gameBoardButtonList.at(b_pos)->setDisabled(true);
       }
     }
   }
@@ -252,6 +253,11 @@ void MainWindow::drawGameBoard()
 void MainWindow::onGbBtnClicked(GbButton *obj)
 {
   common::Point2D pos = this->getGbPointOfGbBtn(obj);
+  if (m_gameBoard.getBoard().at(pos.x).at(pos.y) != 0)
+  {
+    return;
+  }
+
   char cmd = static_cast<char>(common::MessageType::SET_MOVE);
 
   std::string msg = std::string(sizeof(cmd), cmd)
@@ -281,71 +287,73 @@ void MainWindow::onReceiveHandle(const std::string &data)
     switch (ms.msgType)
     {
       case common::MessageType::LOGIN:
+      {
+        Log::info("PlayOnlineScene :: onReceiveHandle() :: RECV_ID");
+        auto id = std::stoi(ms.msg);
+        if (id)
         {
-          Log::info("PlayOnlineScene :: onReceiveHandle() :: RECV_ID");
-          auto id = std::stoi(ms.msg);
-          if (id)
-          {
-//            m_listPlayer.front()->setId(id);
-//            m_listPlayer.front()->setMark(id);
-            ui->playerInfoShowId->setText(std::to_string(id).c_str());
-          }
-//          else
-//          {
-//            std::cout << "Error set ID" << std::endl;
-//            m_pGame->quit();
-//          }
+          m_playerId = id;
+          ui->playerInfoShowId->setText(QString::number(m_playerId));
+          ui->playerInfoMarkButton->setText(QString(QChar(Util::getMark(m_playerId))));
         }
+        else
+        {
+          this->disableLoginForm(false);
+        }
+      }
         break;
       case common::MessageType::UPDATE_GAME:
+      {
+        Log::info("PlayOnlineScene :: onReceiveHandle() :: UPDATE_GAME");
+
+        std::vector<std::string> game_data = Util::split(ms.msg, '|');
+
+        Log::info("game_data size: " + std::to_string(game_data.size()));
+
+        if (game_data.size() != 4)
         {
-          Log::info("PlayOnlineScene :: onReceiveHandle() :: UPDATE_GAME");
+          return;
+        }
 
-          std::vector<std::string> game_data = Util::split(ms.msg, '|');
+        int seqNo = std::stoi(game_data.at(0));
 
-          Log::info("game_data size: " + std::to_string(game_data.size()));
+        Log::info("Received Seq: " + std::to_string(seqNo));
 
-          if (game_data.size() != 3)
-          {
-            return;
-          }
+        if (m_seqNo >= seqNo)
+        {
+          return;
+        }
 
-          int seqNo = std::stoi(game_data.at(0));
+        m_seqNo = seqNo;
+        ui->gameInfoShowSequence->setText(QString::number(m_seqNo));
 
-          Log::info("Received Seq: " + std::to_string(seqNo));
+        std::vector<std::string> board = Util::split(game_data.at(3), ':');
 
-          if (m_seqNo >= seqNo)
-          {
-            return;
-          }
-
-          m_seqNo = seqNo;
-
-          std::vector<std::string> board = Util::split(game_data.at(2), ':');
-
-          if (
+        if (
             board.size() !=
             (common::config::gameBoardCols*common::config::gameBoardRows)
             )
-          {
-            return;
-          }
-
-          Log::info("Current Turn: " + std::to_string(m_turn));
-          m_turn = std::stoi(game_data.at(1));
-
-          Log::info("Received turn: " + std::to_string(m_turn));
-
-          this->m_gameBoard.setBoard(game_data.at(2));
-
-//          this->setNextPlayer(m_turn);
-          this->drawGameBoard();
+        {
+          return;
         }
+
+        Log::info("Current Turn: " + std::to_string(m_turn));
+        m_turn = std::stoi(game_data.at(1));
+
+        Log::info("Received turn: " + std::to_string(m_turn));
+
+        this->m_gameBoard.setBoard(game_data.at(3));
+
+        this->setNextPlayer(m_turn);
+        this->drawGameBoard();
+
+        ui->gameInfoShowViewerCount->setText(game_data.at(2).c_str());
+      }
         break;
       default:
-        {
-          Log::info("Server :: onReceiveHandle() :: NOTHING");
-        }
+      {
+        Log::info("Server :: onReceiveHandle() :: NOTHING");
+      }
         break;
     }
   }
@@ -363,4 +371,16 @@ std::size_t MainWindow::getGbBtnIndex(const common::Point2D &p) const
 common::Point2D MainWindow::getGbPointOfGbBtn(const GbButton *btn) const
 {
   return btn->getPoint();
+}
+
+void MainWindow::setNextPlayer(const int p)
+{
+  QString playerName = QString::number(p);
+
+  if (p == m_playerId)
+  {
+    playerName = "You";
+  }
+
+  ui->gameInfoShowTurn->setText(playerName);
 }

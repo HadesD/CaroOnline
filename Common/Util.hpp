@@ -7,7 +7,7 @@
 namespace Util {
 
   std::vector<std::string> split(const std::string &s, const char delim);
-
+  char getMark(const int markNum);
 }
 
 #endif

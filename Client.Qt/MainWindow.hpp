@@ -39,6 +39,7 @@ class MainWindow : public QMainWindow
   private:
     std::size_t getGbBtnIndex(const common::Point2D &/* p */) const;
     common::Point2D getGbPointOfGbBtn(const GbButton * /* index */) const;
+    void setNextPlayer(const int p);
 
   private:
     Ui::MainWindow *ui;
@@ -56,6 +57,7 @@ class MainWindow : public QMainWindow
     common::net::socket::Udp::EndPoint m_udpCurrentEndpoint;
     unsigned int m_turn;
     int m_seqNo;
+    int m_playerId;
 
 };
 
