@@ -42,7 +42,7 @@ namespace common {
       {
         std::string val = matBoard.at(x * common::config::gameBoardRows + y);
 
-        m_board[x][y] = std::stoi(val.empty() ? 0 : val);
+        m_board[x][y] = std::stoi(val.empty() ? std::string("0") : val);
       }
     }
   }
