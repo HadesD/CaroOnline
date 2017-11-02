@@ -109,9 +109,10 @@ void MainWindow::init()
   {
     for (std::size_t y = 0; y < m_gameBoard.getBoard().at(x).size(); y++)
     {
-      QPushButton *btn = new QPushButton(this);
+      GbButton *btn = new GbButton(this);
       btn->setDisabled(true);
       //      btn->setBackgroundRole(QPalette::Dark);
+      btn->setPoint(common::Point2D(x, y));
       QObject::connect(btn, &QPushButton::clicked, [this,btn](){
         this->onGbBtnClicked(btn);
       });
@@ -178,7 +179,7 @@ void MainWindow::drawGameBoard()
   {
     for (std::size_t y = 0; y < m_gameBoard.getBoard().at(x).size(); y++)
     {
-      QPushButton *btn = m_gameBoardButtonList.at(
+      GbButton *btn = m_gameBoardButtonList.at(
             this->getGbBtnIndex(common::Point2D(x, y))
             );
       ui->gameBoardLayout->addWidget(btn, x, y);
@@ -186,7 +187,7 @@ void MainWindow::drawGameBoard()
   }
 }
 
-void MainWindow::onGbBtnClicked(QPushButton *obj)
+void MainWindow::onGbBtnClicked(GbButton *obj)
 {
   common::Point2D pos = this->getGbPointOfGbBtn(obj);
   char cmd = static_cast<char>(common::MessageType::SET_MOVE);
@@ -208,24 +209,7 @@ std::size_t MainWindow::getGbBtnIndex(const common::Point2D &p) const
   return (p.x * m_gameBoard.getBoard().size() + p.y);
 }
 
-common::Point2D MainWindow::getGbPointOfGbBtn(const std::size_t index) const
+common::Point2D MainWindow::getGbPointOfGbBtn(const GbButton *btn) const
 {
-  int x = index % m_gameBoard.getBoard().size();
-  int y = index - m_gameBoard.getBoard().size() * x;
-  return common::Point2D(x, y);
-}
-
-common::Point2D MainWindow::getGbPointOfGbBtn(const QPushButton *btn) const
-{
-  std::size_t index = 0;
-  for (const auto b : m_gameBoardButtonList)
-  {
-    if (b == btn)
-    {
-      return this->getGbPointOfGbBtn(index);
-    }
-    index++;
-  }
-
-  return common::Point2D();
+  return btn->getPoint();
 }

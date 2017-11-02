@@ -48,12 +48,14 @@ SOURCES += \
         ../Common/net/socket/Udp.cpp \
         main.cpp \
         MainWindow.cpp \
-        AppConfig.cpp
+        AppConfig.cpp \
+        GbButton.cpp
 
 HEADERS += \
         ../Common/Logger.hpp \
         MainWindow.hpp \
-        AppConfig.hpp
+        AppConfig.hpp \
+        GbButton.hpp
 
 FORMS += \
         MainWindow.ui

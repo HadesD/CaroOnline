@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "AppConfig.hpp"
+#include "GbButton.hpp"
 
 #include "../Common/GameBoard.hpp"
 #include "../Common/net/socket/Udp.hpp"
@@ -31,18 +32,17 @@ class MainWindow : public QMainWindow
     void run_service();
 
   private:
-    void onGbBtnClicked(QPushButton *obj = 0);
+    void onGbBtnClicked(GbButton *obj = 0);
     void disableLoginForm(const bool disable);
 
   private:
     std::size_t getGbBtnIndex(const common::Point2D &/* p */) const;
-    common::Point2D getGbPointOfGbBtn(const std::size_t /* index */) const;
-    common::Point2D getGbPointOfGbBtn(const QPushButton * /* index */) const;
+    common::Point2D getGbPointOfGbBtn(const GbButton * /* index */) const;
 
   private:
     Ui::MainWindow *ui;
     common::GameBoard m_gameBoard;
-    std::vector< QPushButton* > m_gameBoardButtonList;
+    std::vector< GbButton* > m_gameBoardButtonList;
 
   private:
     // Network socket
