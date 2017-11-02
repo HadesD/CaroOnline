@@ -40,9 +40,9 @@ namespace common {
     {
       for (std::size_t y = 0; y < m_board.at(x).size(); y++)
       {
-        m_board[x][y] = std::stoi(matBoard.at(
-            x * common::config::gameBoardRows + y
-            ));
+        std::string val = matBoard.at(x * common::config::gameBoardRows + y);
+
+        m_board[x][y] = std::stoi(val.empty() ? 0 : val);
       }
     }
   }
@@ -55,7 +55,10 @@ namespace common {
     {
       for (std::size_t y = 0; y < m_board.at(x).size(); y++)
       {
-        gb += std::to_string(m_board.at(x).at(y));
+        if (m_board.at(x).at(y) != 0)
+        {
+          gb += std::to_string(m_board.at(x).at(y));
+        }
 
         gb += ":";
       }

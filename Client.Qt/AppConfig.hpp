@@ -4,8 +4,6 @@
 
 namespace app { namespace config {
 
-  extern const std::string serverIp;
-  extern const short serverPort;
 
 } }
 

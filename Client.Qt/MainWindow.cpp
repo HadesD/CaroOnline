@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     short serverPort;
     if (ui->serverAddrEdit->text().isEmpty())
     {
-      serverAddr = app::config::serverIp;
+      serverAddr = common::config::serverAddr;
     }
     else
     {
@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     if (ui->serverPortEdit->text().isEmpty())
     {
-      serverPort = app::config::serverPort;
+      serverPort = common::config::serverPort;
     }
     else
     {

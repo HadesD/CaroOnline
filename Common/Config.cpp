@@ -12,4 +12,7 @@ namespace common { namespace config {
 
   // const char networkCheckSum[] = "CARO";
 
+  const std::string serverAddr = "0.0.0.0";
+  const short serverPort = 8889;
+
 } }

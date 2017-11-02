@@ -55,7 +55,7 @@ set(APP_SRC
 #
 #############################################################################
 
-set(CXX_FLAGS "-std=c++11 -D DEBUG")
+set(CXX_FLAGS "-std=c++11 -D DEBUG -D USE_SPDLOG")
 
 # if(IS_WINDOWS OR CYGWIN OR MINGW OR WIN32 OR ("$ENV{OSTYPE}" STREQUAL "msys"))
 if (MSYS)

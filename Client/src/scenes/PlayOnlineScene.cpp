@@ -15,8 +15,8 @@ namespace app { namespace scenes {
     ) : PlayScene(game),
   m_udpSocket("0.0.0.0", 0),
   m_udpServerEndpoint(
-    asio::ip::address::from_string(app::config::serverIp),
-    app::config::serverPort
+    asio::ip::address::from_string(common::config::serverAddr),
+    common::config::serverPort
     )
   {
     char cmd = static_cast<char>(common::MessageType::LOGIN);

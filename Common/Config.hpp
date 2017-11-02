@@ -16,6 +16,9 @@ namespace common { namespace config {
   // extern const char networkCheckSum[];
   const std::string networkCheckSum = "CARO";
 
+  extern const std::string serverAddr;
+  extern const short serverPort;
+
 } }
 
 #endif

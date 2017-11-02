@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    int port = 8889;
+    short port = common::config::serverPort;
 
     if (argc > 1)
     {
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     }
     std::cout << "Choosen port: " <<  port << std::endl;
 
-    app::Server server("192.168.0.158", port);
+    app::Server server(common::config::serverAddr, port);
 
     server.run();
   }
