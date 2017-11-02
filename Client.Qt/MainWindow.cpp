@@ -16,11 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
   logQTextEdit = ui->logEdit;
 
+  ui->serverAddrEdit->setText(app::config::serverIp.c_str());
+  ui->serverPortEdit->setText(std::to_string(app::config::serverPort).c_str());
+
   // Login
-  m_udpServerEndpoint = common::net::socket::Udp::EndPoint(
-        asio::ip::address::from_string(app::config::serverIp),
-        app::config::serverPort
-        );
   QObject::connect(ui->loginButton, &QPushButton::clicked, [this](){
     if (ui->userNameInput->text().isEmpty())
     {
@@ -32,6 +31,29 @@ MainWindow::MainWindow(QWidget *parent) :
       QMessageBox::warning(ui->passwordInput, "Error", "Password is empty");
       return;
     }
+
+    std::string serverAddr;
+    short serverPort;
+    if (ui->serverAddrEdit->text().isEmpty())
+    {
+      serverAddr = app::config::serverIp;
+    }
+    else
+    {
+      serverAddr = ui->serverAddrEdit->text().toStdString();
+    }
+    if (ui->serverPortEdit->text().isEmpty())
+    {
+      serverPort = app::config::serverPort;
+    }
+    else
+    {
+      serverPort = ui->serverPortEdit->text().toShort();
+    }
+    m_udpServerEndpoint = common::net::socket::Udp::EndPoint(
+          asio::ip::address::from_string(serverAddr),
+          serverPort
+          );
     // Game Board
     for (auto &b : m_gameBoardButtonList)
     {
@@ -167,6 +189,8 @@ void MainWindow::run_service()
 
 void MainWindow::disableLoginForm(const bool disable)
 {
+  ui->serverAddrEdit->setDisabled(disable);
+  ui->serverPortEdit->setDisabled(disable);
   ui->userNameInput->setDisabled(disable);
   ui->passwordInput->setDisabled(disable);
   ui->loginButton->setDisabled(disable);

@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     }
     std::cout << "Choosen port: " <<  port << std::endl;
 
-    app::Server server("0.0.0.0", port);
+    app::Server server("192.168.0.158", port);
 
     server.run();
   }
