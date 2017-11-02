@@ -48,10 +48,10 @@ MainWindow::MainWindow(QWidget *parent) :
         + ui->passwordInput->text().toStdString()
         ;
 
+    ui->logEdit->append("Sent data");
     m_udpSocket.send(
           msg, m_udpServerEndpoint,
           [this](const std::error_code &, const std::size_t &){
-      ui->logEdit->append("Sent data");
 
       QMessageBox::warning(ui->passwordInput, "Error", "Password is empty");
     });

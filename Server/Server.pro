@@ -26,10 +26,16 @@ win32: LIBS += $$PWD/../Lfs/libs/WS2_32.Lib
 
 CONFIG(debug, debug|release) {
     DESTDIR = build/debug
+    DEFINES += DEBUG
 } else {
     DESTDIR = build/release
     CONFIG += static
 }
+
+CONFIG += console c++14
+CONFIG -= app_bundle
+CONFIG -= qt
+DEFINES += USE_SPDLOG
 
 INCLUDEPATH += ../Common/third_party/asio/asio/include \
             ../Common/third_party/spdlog/include \
@@ -46,13 +52,10 @@ SOURCES += \
         ../Common/net/socket/Udp.cpp \
         src/main.cpp \
         src/Room.cpp \
-        src/Server.cpp \
+        src/Server.cpp
 
 HEADERS += \
         app/App.hpp \
         app/Config.hpp \
         app/Server.hpp \
-        app/Type.hpp \
-
-
-#FORMS += \
+        app/Type.hpp

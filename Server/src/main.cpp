@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
       std::string s = argv[1];
       port = std::stoi(s);
     }
+    std::cout << "Choosen port: " <<  port << std::endl;
 
     app::Server server("0.0.0.0", port);
 

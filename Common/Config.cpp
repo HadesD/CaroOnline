@@ -3,8 +3,8 @@
 
 namespace common { namespace config {
 
-  const std::size_t gameBoardRows = 21;
-  const std::size_t gameBoardCols = 21;
+  const std::size_t gameBoardRows = 20;
+  const std::size_t gameBoardCols = 20;
 
   const int maxCoupleCount = 4;
 

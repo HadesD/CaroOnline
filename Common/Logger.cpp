@@ -34,19 +34,24 @@ namespace common {
 
   void Logger::info(const std::string &s)
   {
+#ifdef USE_SPDLOG
+      file->info(s);
+#endif
 #ifdef DEBUG
 #  ifdef USE_SPDLOG
-    console->info(s);
-    file->info(s);
+      console->info(s);
 #  endif
 #endif
   }
 
   void Logger::error(const std::string &s)
   {
+#ifdef USE_SPDLOG
+      file->info(s);
+#endif
 #ifdef DEBUG
 #  ifdef USE_SPDLOG
-    console->error(s);
+      console->error(s);
 #  endif
 #endif
   }
