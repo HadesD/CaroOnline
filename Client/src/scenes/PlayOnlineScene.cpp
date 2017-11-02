@@ -153,7 +153,7 @@ namespace app { namespace scenes {
           {
             Log::info("PlayOnlineScene :: onReceiveHandle() :: UPDATE_GAME");
 
-            std::vector<std::string> game_data = Util::str_split(ms.msg, '|');
+            std::vector<std::string> game_data = Util::split(ms.msg, '|');
 
             Log::info("game_data size: " + std::to_string(game_data.size()));
 
@@ -173,7 +173,7 @@ namespace app { namespace scenes {
 
             m_seqNo = seqNo;
 
-            std::vector<std::string> board = Util::str_split(game_data.at(2), ':');
+            std::vector<std::string> board = Util::split(game_data.at(2), ':');
 
             if (
               board.size() !=

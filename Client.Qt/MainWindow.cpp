@@ -16,8 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
   logQTextEdit = ui->logEdit;
 
-  ui->serverAddrEdit->setText(app::config::serverIp.c_str());
-  ui->serverPortEdit->setText(std::to_string(app::config::serverPort).c_str());
+  ui->serverAddrEdit->setText(common::config::serverAddr.c_str());
+  ui->serverPortEdit->setText(std::to_string(common::config::serverPort).c_str());
 
   // Login
   QObject::connect(ui->loginButton, &QPushButton::clicked, [this](){
@@ -70,13 +70,15 @@ MainWindow::MainWindow(QWidget *parent) :
         + ui->passwordInput->text().toStdString()
         ;
 
-    ui->logEdit->append("Sent data");
     m_udpSocket.send(
           msg, m_udpServerEndpoint,
           [this](const std::error_code &, const std::size_t &){
+//      QDebug() << "F";
+//      qDebug() << "Sent Login data";
 
-      QMessageBox::warning(ui->passwordInput, "Error", "Password is empty");
+//      QMessageBox::warning(ui->passwordInput, "Error", "Password is empty");
     });
+    ui->logEdit->append("Sent");
   });
 
   // Logout

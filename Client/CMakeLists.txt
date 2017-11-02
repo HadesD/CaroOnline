@@ -60,6 +60,7 @@ set(APP_SRC
 # Setup various build flags for different supported compilers and systems
 #
 #############################################################################
+set(CXX_FLAGS "${CXX_FLAGS} -D USE_SPDLOG")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS} -Wall -std=c++11 -g")
 # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_FLAGS}")

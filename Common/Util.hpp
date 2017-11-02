@@ -6,10 +6,7 @@
 
 namespace Util {
 
-  std::vector<std::string> str_split(
-    const std::string &str,
-    const char delimiter
-    );
+  std::vector<std::string> split(const std::string &s, const char delim);
 
 }
 

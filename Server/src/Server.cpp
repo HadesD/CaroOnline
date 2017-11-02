@@ -170,7 +170,7 @@ namespace app {
         case common::MessageType::LOGIN:
           {
             Log::info("Server :: onReceiveHandle() :: LOGIN");
-            std::vector<std::string> acc = Util::str_split(ms.msg, ':');
+            std::vector<std::string> acc = Util::split(ms.msg, ':');
 
             if (acc.size() != 2)
             {
@@ -246,7 +246,7 @@ namespace app {
               return;
             }
 
-            std::vector<std::string> xy = Util::str_split(ms.msg, ':');
+            std::vector<std::string> xy = Util::split(ms.msg, ':');
 
             if (xy.size() != 2)
             {

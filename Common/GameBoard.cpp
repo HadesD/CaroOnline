@@ -34,7 +34,7 @@ namespace common {
 
   void GameBoard::setBoard(const std::string &board)
   {
-    std::vector< std::string > matBoard = Util::str_split(board, ':');
+    std::vector< std::string > matBoard = Util::split(board, ':');
 
     for (std::size_t x = 0; x < m_board.size(); x++)
     {

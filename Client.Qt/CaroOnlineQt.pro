@@ -52,6 +52,7 @@ SOURCES += \
         GbButton.cpp
 
 HEADERS += \
+        ../Common/Util.hpp \
         ../Common/Logger.hpp \
         MainWindow.hpp \
         AppConfig.hpp \
