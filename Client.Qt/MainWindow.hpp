@@ -61,7 +61,7 @@ class MainWindow : public QMainWindow
     unsigned int m_turn;
     int m_seqNo;
     int m_playerId;
-
+    bool m_isGameOver;
 };
 
 #endif // MAINWINDOW_HPP

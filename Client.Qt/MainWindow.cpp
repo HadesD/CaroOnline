@@ -33,6 +33,10 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->serverPortEdit->setText(std::to_string(common::config::serverPort).c_str());
 
   // Login
+  ui->userNameInput->setHidden(true);
+  ui->passwordInput->setHidden(true);
+  ui->userNameLabel->setHidden(true);
+  ui->passwordLabel->setHidden(true);
   QObject::connect(ui->loginButton, &QPushButton::clicked, [this](){
     if (ui->userNameInput->text().isEmpty())
     {
@@ -125,6 +129,7 @@ void MainWindow::init()
   m_turn = 0;
   m_playerId = 0;
   m_gameBoard = common::GameBoard();
+  m_isGameOver = false;
   ui->gameInfoShowSequence->setText("0");
   if (ui->logoutButton->isEnabled())
   {
@@ -241,6 +246,11 @@ void MainWindow::drawGameBoard()
 
 void MainWindow::onGbBtnClicked(GbButton *obj)
 {
+  if (m_isGameOver)
+  {
+    QMessageBox::warning(this, "Game Over!", "You must logout from this game to create a new game!");
+    return;
+  }
   common::Point2D pos = this->getGbPointOfGbBtn(obj);
   if (m_gameBoard.getBoard().at(pos.x).at(pos.y) != 0)
   {
@@ -341,9 +351,9 @@ void MainWindow::onReceiveHandle(const std::string &data)
         break;
       case common::MessageType::GAME_OVER:
       {
-        auto id = std::stoi(ms.msg);
-        QString name = "Player " + QString::number(id);
-        if (id == m_playerId)
+        m_isGameOver = true;
+        QString name = "Player " + QString::number(m_turn);
+        if (m_turn == m_playerId)
         {
           name = "You";
         }
