@@ -48,10 +48,10 @@ class Log {
       logger->error(s);
     }
 
-    static void error(const char *file, const int line, const std::string &s)
-    {
-      logger->error(s);
-    }
+//    static void error(const char *file, const int line, const std::string &s)
+//    {
+//      logger->error(s);
+//    }
 };
 
 #endif

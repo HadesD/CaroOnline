@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QCloseEvent>
 #include <QPushButton>
+#include <QTimer>
 #include <vector>
 #include <memory>
 
@@ -39,15 +40,19 @@ class MainWindow : public QMainWindow
     void closeEvent(QCloseEvent *event);
     void onLogoutClicked();
 
+  private slots:
+    void onTimerProgressBar();
+    void setNextPlayer(const int p);
+
   private:
     std::size_t getGbBtnIndex(const common::Point2D &/* p */) const;
     common::Point2D getGbPointOfGbBtn(const GbButton * /* index */) const;
-    void setNextPlayer(const int p);
 
   private:
     Ui::MainWindow *ui;
     common::GameBoard m_gameBoard;
     std::vector< GbButton* > m_gameBoardButtonList;
+    QTimer *m_timer;
 
   private:
     // Network socket
@@ -62,6 +67,8 @@ class MainWindow : public QMainWindow
     int m_seqNo;
     int m_playerId;
     bool m_isGameOver;
+    int m_timeLeft;
+    int m_peopleCount;
 };
 
 #endif // MAINWINDOW_HPP

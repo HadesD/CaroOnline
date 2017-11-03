@@ -1,5 +1,6 @@
-#include <QMessageBox>
 #include <functional>
+#include <QMessageBox>
+#include <QThread>
 #include <QDebug>
 
 #include "MainWindow.hpp"
@@ -16,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
+  m_timer = new QTimer();
   // Actions
   QObject::connect(ui->actionNew_Game, &QAction::triggered, [this](){
     this->init();
@@ -120,6 +122,7 @@ MainWindow::~MainWindow()
     m_serviceThread.join();
   }
 
+  delete m_timer;
   delete ui;
 }
 
@@ -128,21 +131,22 @@ void MainWindow::init()
   m_seqNo = 0;
   m_turn = 0;
   m_playerId = 0;
+  m_peopleCount = 0;
   m_gameBoard = common::GameBoard();
   m_isGameOver = false;
   ui->gameInfoShowSequence->setText("0");
-  if (ui->logoutButton->isEnabled())
-  {
-    ui->gameInfoShowTurn->setText("Waiting for player...");
-  }
-  else
-  {
-    ui->gameInfoShowTurn->setText("You must login first");
-  }
+  ui->gameInfoShowTurn->setText("You must login first");
   ui->gameInfoShowViewerCount->setText("0");
   ui->playerInfoMarkButton->setText("");
+  QPalette pal;
+  pal.setColor(QPalette::Button, QColor(Qt::white));
+  ui->playerInfoMarkButton->setPalette(pal);
   ui->playerInfoShowId->setText("");
   ui->gameInfotimeLeftProgressBar->setValue(0);
+  if (m_timer != nullptr)
+  {
+    m_timer->stop();
+  }
 
   m_gameBoardButtonList.clear();
 
@@ -228,17 +232,42 @@ void MainWindow::drawGameBoard()
     {
       std::size_t b_pos = this->getGbBtnIndex(common::Point2D(x, y));
 
-      QString mark = QChar(Util::getMark(m_gameBoard.getBoard().at(x).at(y)));
+      auto mark_id = m_gameBoard.getBoard().at(x).at(y);
+      QString mark = QChar(Util::getMark(mark_id));
 
-      m_gameBoardButtonList.at(b_pos)->setText(mark);
+      QPushButton *btn = m_gameBoardButtonList.at(b_pos);
+
+      btn->setText(mark);
+      QPalette pal = btn->palette();
+      QColor bcolor;
+      switch (mark_id)
+      {
+        case 1:
+        {
+          bcolor = Qt::red;
+        }
+          break;
+        case 2:
+        {
+          bcolor = Qt::blue;
+        }
+          break;
+        default:
+        {
+          bcolor = Qt::white;
+        }
+          break;
+      }
+      pal.setColor(QPalette::Button, bcolor);
+      btn->setPalette(pal);
 
       if ((m_turn == static_cast<unsigned int>(m_playerId)) && (m_turn != 0))
       {
-        m_gameBoardButtonList.at(b_pos)->setDisabled(false);
+        btn->setDisabled(false);
       }
       else
       {
-        m_gameBoardButtonList.at(b_pos)->setDisabled(true);
+        btn->setDisabled(true);
       }
     }
   }
@@ -269,6 +298,7 @@ void MainWindow::onGbBtnClicked(GbButton *obj)
         msg, m_udpServerEndpoint,
         [](const std::error_code &, const std::size_t &){
   });
+  m_timer->stop();
 }
 
 void MainWindow::onReceiveHandle(const std::string &data)
@@ -294,6 +324,21 @@ void MainWindow::onReceiveHandle(const std::string &data)
           m_playerId = id;
           ui->playerInfoShowId->setText(QString::number(m_playerId));
           ui->playerInfoMarkButton->setText(QString(QChar(Util::getMark(m_playerId))));
+          QPalette pal;
+          switch (m_playerId)
+          {
+            case 1:
+              pal.setColor(QPalette::Button, QColor(Qt::red));
+              break;
+            case 2:
+              pal.setColor(QPalette::Button, QColor(Qt::blue));
+              break;
+            default:
+              pal.setColor(QPalette::Button, QColor(Qt::white));
+              break;
+          }
+          ui->playerInfoMarkButton->setPalette(pal);
+          ui->gameInfoShowTurn->setText("Waiting for player...");
         }
         else
         {
@@ -337,27 +382,42 @@ void MainWindow::onReceiveHandle(const std::string &data)
         }
 
         Log::info("Current Turn: " + std::to_string(m_turn));
-        m_turn = std::stoi(game_data.at(1));
 
-        Log::info("Received turn: " + std::to_string(m_turn));
+        int recv_turn = std::stoi(game_data.at(1));
+        Log::info("Received turn: " + std::to_string(recv_turn));
 
         this->m_gameBoard.setBoard(game_data.at(3));
 
-        this->setNextPlayer(m_turn);
+        m_peopleCount = std::stoi(game_data.at(2));
+
+        this->setNextPlayer(recv_turn);
         this->drawGameBoard();
 
-        ui->gameInfoShowViewerCount->setText(game_data.at(2).c_str());
+        Log::info("People Count: " + std::to_string(m_peopleCount));
+
+        ui->gameInfoShowViewerCount->setText(QString::number(m_peopleCount));
       }
         break;
       case common::MessageType::GAME_OVER:
       {
+        if (ui->loginButton->isEnabled())
+        {
+          return;
+        }
         m_isGameOver = true;
         QString name = "Player " + QString::number(m_turn);
-        if (m_turn == m_playerId)
+        if (m_turn == static_cast<unsigned int>(m_playerId))
         {
           name = "You";
         }
-        QMessageBox::information(this, "Found a winner", name + " was won the game!\nClick Logout and Login again to create new game!");
+        QMessageBox::information(nullptr, "Found a winner", name + " was won the game!\nClick Logout and Login again to create new game!");
+//        if (thread() == QThread::currentThread())
+        {
+          if (m_timer != nullptr)
+          {
+            m_timer->stop();
+          }
+        }
       }
         break;
       default:
@@ -420,12 +480,62 @@ common::Point2D MainWindow::getGbPointOfGbBtn(const GbButton *btn) const
 
 void MainWindow::setNextPlayer(const int p)
 {
-  QString playerName = QString::number(p);
-
-  if (p == m_playerId)
+  if (m_peopleCount < 2)
   {
-    playerName = "You";
+    return;
   }
+  if (thread() == QThread::currentThread())
+  {
+    QString playerName = "Player " + QString::number(p);
 
-  ui->gameInfoShowTurn->setText(playerName);
+    if (p == m_playerId)
+    {
+      playerName = "You";
+
+      if (static_cast<unsigned int>(m_playerId) != m_turn)
+      {
+        qDebug() << "IN THREAD";
+        m_timer = new QTimer();
+        QObject::connect(m_timer, SIGNAL(timeout()), this, SLOT(onTimerProgressBar()));
+        m_timeLeft = common::config::maxWaitTime;
+        ui->gameInfotimeLeftProgressBar->setValue(ui->gameInfotimeLeftProgressBar->maximum());
+        m_timer->start(1000);
+      }
+    }
+    else
+    {
+      m_timeLeft = 0;
+    }
+
+    m_turn = p;
+
+    ui->gameInfoShowTurn->setText(playerName);
+  }
+  else
+  {
+    qDebug() << "NOT IN THREAD";
+    QMetaObject::invokeMethod(this, "setNextPlayer", Qt::QueuedConnection, Q_ARG(int, p));
+    return;
+  }
+}
+
+void MainWindow::onTimerProgressBar()
+{
+  qDebug() << "onTimerProgressBar :: running()";
+  int minValue = ui->gameInfotimeLeftProgressBar->minimum();
+  int maxValue = ui->gameInfotimeLeftProgressBar->maximum();
+  qDebug() << "m_timeLeft: " << m_timeLeft;
+  m_timeLeft--;
+  qDebug() << "m_timeLeft: " << m_timeLeft;
+  float per = static_cast<float>(m_timeLeft) /
+      static_cast<float>(common::config::maxWaitTime);
+  qDebug() << per;
+  int nextValue = (per * maxValue);
+  qDebug() << "nextValue: " << nextValue;
+  ui->gameInfotimeLeftProgressBar->setValue(nextValue);
+
+  if (nextValue <= minValue)
+  {
+    m_timer->stop();
+  }
 }
