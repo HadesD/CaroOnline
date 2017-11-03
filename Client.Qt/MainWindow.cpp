@@ -126,7 +126,14 @@ void MainWindow::init()
   m_playerId = 0;
   m_gameBoard = common::GameBoard();
   ui->gameInfoShowSequence->setText("0");
-  ui->gameInfoShowTurn->setText("No one");
+  if (ui->logoutButton->isEnabled())
+  {
+    ui->gameInfoShowTurn->setText("Waiting for player...");
+  }
+  else
+  {
+    ui->gameInfoShowTurn->setText("You must login first");
+  }
   ui->gameInfoShowViewerCount->setText("0");
   ui->playerInfoMarkButton->setText("");
   ui->playerInfoShowId->setText("");
@@ -330,6 +337,17 @@ void MainWindow::onReceiveHandle(const std::string &data)
         this->drawGameBoard();
 
         ui->gameInfoShowViewerCount->setText(game_data.at(2).c_str());
+      }
+        break;
+      case common::MessageType::GAME_OVER:
+      {
+        auto id = std::stoi(ms.msg);
+        QString name = "Player " + QString::number(id);
+        if (id == m_playerId)
+        {
+          name = "You";
+        }
+        QMessageBox::information(this, "Found a winner", name + " was won the game!\nClick Logout and Login again to create new game!");
       }
         break;
       default:

@@ -14,5 +14,6 @@ namespace common { namespace config {
 
   const std::string serverAddr = "0.0.0.0";
   const short serverPort = 8889;
+  const short maxWaitTime = 30; // Second
 
 } }

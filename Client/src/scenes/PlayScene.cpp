@@ -10,6 +10,7 @@
 
 #include "../Common/Config.hpp"
 #include "../Common/Logger.hpp"
+#include "../Common/Util.hpp"
 
 namespace app { namespace scenes {
 
@@ -106,7 +107,7 @@ namespace app { namespace scenes {
       // std::cout << std::endl;
       for (std::size_t y = 0; y < m_gameBoard.getBoard().at(x).size(); y++)
       {
-        std::string curr;
+        char curr = Util::getMark(m_gameBoard.getBoard().at(x).at(y));
         std::string color;
 
         switch (m_gameBoard.getBoard().at(x).at(y))
@@ -115,25 +116,21 @@ namespace app { namespace scenes {
           case 0:
             {
               color.clear();
-              curr = " ";
             }
             break;
           case 1:
             {
               color = "\e[38;5;196m";
-              curr = "x";
             }
             break;
           case 2:
             {
               color = "\e[38;5;37m";
-              curr = "o";
             }
             break;
           case 3:
             {
               color = "\e[38;5;50m";
-              curr = "z";
             }
             break;
 
@@ -142,9 +139,8 @@ namespace app { namespace scenes {
         {
           color = "\e[48;5;255m";
         }
-        curr += "\e[0m";
 
-        drawLine(color + curr);
+        drawLine(color + curr + "\e[0m");
       }
       std::cout << '|';
       std::cout << std::endl;

@@ -45,6 +45,8 @@ namespace app { namespace scenes {
 
   void PlayOnlineScene::init()
   {
+    m_peopleCount = 0;
+    m_isGameOver = false;
     auto me = std::make_shared<app::objects::Player>(
       app::objects::Player::Type::SELF
       );
@@ -74,8 +76,18 @@ namespace app { namespace scenes {
     {
       pName = "You";
     }
-    std::cout << "Current player: " << pName << std::endl;
+    else
+    {
+      pName = "Player " + pName;
+    }
+    std::cout << "Turn: " << pName << std::endl;
     std::cout << "Sequence: " << m_seqNo << std::endl;
+
+    if (m_isGameOver)
+    {
+      std::cout << "Found winner: " << pName << std::endl;
+      std::cout << "Press [q] to quit game" << std::endl;
+    }
   }
 
   void PlayOnlineScene::receive()
@@ -104,7 +116,7 @@ namespace app { namespace scenes {
             Log::info("Player ID: "
                       + std::to_string(m_listPlayer.front()->getId())
                       + " :: receive :: started"
-                      );
+                     );
             this->onReceiveHandle(recv);
           }
 
@@ -169,7 +181,7 @@ namespace app { namespace scenes {
 
             Log::info("game_data size: " + std::to_string(game_data.size()));
 
-            if (game_data.size() != 3)
+            if (game_data.size() != 4)
             {
               return;
             }
@@ -203,6 +215,15 @@ namespace app { namespace scenes {
             this->m_gameBoard.setBoard(game_data.at(3));
 
             this->setNextPlayer(m_turn);
+
+            m_peopleCount = std::stoi(game_data.at(2));
+          }
+          break;
+        case common::MessageType::GAME_OVER:
+          {
+            Log::info("Server :: onReceiveHandle() :: GAME_OVER");
+            m_isGameOver = true;
+            m_peopleCount = 0;
           }
           break;
         default:
@@ -239,6 +260,11 @@ namespace app { namespace scenes {
 
   void PlayOnlineScene::onSetGameBoardMove(const common::Point2D &p)
   {
+    if (m_peopleCount < 2)
+    {
+      return;
+    }
+
     char cmd = static_cast<char>(common::MessageType::SET_MOVE);
 
     std::string msg = std::string(sizeof(cmd), cmd)

@@ -19,6 +19,8 @@ namespace common { namespace config {
   extern const std::string serverAddr;
   extern const short serverPort;
 
+  extern const short maxWaitTime;
+
 } }
 
 #endif

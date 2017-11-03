@@ -241,7 +241,7 @@ namespace app {
             }
 
             auto senderIndex = this->getClientIndex(m_workingClient.second);
-            if (senderIndex != m_turn)
+            if ((senderIndex != m_turn) || (senderIndex == 0))
             {
               Log::error("Server :: onReceiveHandle() :: ERROR TURN");
               return;
@@ -254,7 +254,6 @@ namespace app {
               return;
             }
 
-            if (auto cliId = this->getClientIndex(this->m_workingClient.second))
             {
               auto x = std::stoi(xy.at(0));
               auto y = std::stoi(xy.at(1));
@@ -274,7 +273,7 @@ namespace app {
               Log::info("X:" + std::to_string(x) + " - Y:" + std::to_string(y));
 
               common::GameBoard::Board board = this->m_gameBoard.getBoard();
-              board[x][y] = cliId;
+              board[x][y] = senderIndex;
 
               this->m_gameBoard.setBoard(board);
 
@@ -310,6 +309,13 @@ namespace app {
 
   void Server::onGameOver()
   {
+    m_turn = 0;
+    m_seqNo = 0;
+    m_isGameOver = false;
+    if (m_clients.size() < 2)
+    {
+      return;
+    }
     char cmd = static_cast<char>(common::MessageType::GAME_OVER);
 
     std::string msg = std::string(sizeof(cmd), cmd) + std::to_string(m_turn);

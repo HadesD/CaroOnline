@@ -2,6 +2,8 @@
 
 #include "app/objects/Player.hpp"
 
+#include "../Common/Util.hpp"
+
 namespace app { namespace objects {
 
   Player::Player(const Type type) :
@@ -20,18 +22,7 @@ namespace app { namespace objects {
   {
     this->waitKeyboardEvent();
     std::cout << "Your Id: " << m_id << " - Mark: ";
-    switch(this->m_mark)
-    {
-      case 1:
-        std::cout << " <x>";
-        break;
-      case 2:
-        std::cout << " <o>";
-        break;
-      default:
-        break;
-    }
-    std::cout << std::endl;
+    std::cout << "<" << Util::getMark(m_id) << ">" << std::endl;
   }
 
   void Player::waitKeyboardEvent()

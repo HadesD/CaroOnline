@@ -40,6 +40,8 @@ namespace app { namespace scenes {
       int m_seqNo;
 
       std::queue< std::function<void()> > m_taskQueue;
+      bool m_isGameOver;
+      unsigned int m_peopleCount;
 
   };
 
