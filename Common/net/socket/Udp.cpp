@@ -73,4 +73,14 @@ namespace common { namespace net { namespace socket {
     m_socket.receive_from(asio::buffer(send_buff), endpoint);
   }
 
+  Udp::EndPoint Udp::resolver(const std::string &from_adr, const short port)
+  {
+    asio::ip::udp::resolver resolv(m_ioService);
+    asio::ip::udp::resolver::query q(
+      asio::ip::udp::v4(), from_adr,
+      std::to_string(port)
+      );
+    return *resolv.resolve(q);
+  }
+
 } } }

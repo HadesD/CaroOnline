@@ -13,12 +13,19 @@ namespace app { namespace scenes {
   PlayOnlineScene::PlayOnlineScene(
     std::shared_ptr<app::core::Game> game
     ) : PlayScene(game),
-  m_udpSocket("0.0.0.0", 0),
-  m_udpServerEndpoint(
-    asio::ip::address::from_string(common::config::serverAddr),
-    common::config::serverPort
-    )
+  m_udpSocket("0.0.0.0", 0)
   {
+    // Server resolver
+    m_udpServerEndpoint = m_udpSocket.resolver(
+      common::config::serverAddr,
+      common::config::serverPort
+      );
+      // common::net::socket::Udp::EndPoint(
+      // asio::ip::address::from_string(common::config::serverAddr),
+      // common::config::serverPort
+      // );
+
+
     char cmd = static_cast<char>(common::MessageType::LOGIN);
 
     std::string msg = std::string(sizeof(cmd), cmd)

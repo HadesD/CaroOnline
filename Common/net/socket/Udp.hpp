@@ -37,6 +37,7 @@ namespace common { namespace net { namespace socket {
         const std::string &s,
         EndPoint &/* endpoint */
         );
+      EndPoint resolver(const std::string &from_adr, const short port);
 
     private:
       asio::ip::udp::socket m_socket;

@@ -51,21 +51,14 @@ MainWindow::MainWindow(QWidget *parent) :
       return;
     }
 
-    std::string serverAddr;
-    short serverPort;
-    if (ui->serverAddrEdit->text().isEmpty())
-    {
-      serverAddr = common::config::serverAddr;
-    }
-    else
+    std::string serverAddr = common::config::serverAddr;
+    short serverPort = common::config::serverPort;
+    if (!ui->serverAddrEdit->text().isEmpty())
     {
       serverAddr = ui->serverAddrEdit->text().toStdString();
     }
-    if (ui->serverPortEdit->text().isEmpty())
-    {
-      serverPort = common::config::serverPort;
-    }
-    else
+
+    if (!ui->serverPortEdit->text().isEmpty())
     {
       serverPort = ui->serverPortEdit->text().toShort();
     }
