@@ -64,12 +64,6 @@ namespace app {
   {
     try
     {
-      if (m_isGameOver)
-      {
-        this->onGameOver();
-        return;
-      }
-
       if (m_clients.size() <= 0)
       {
         return;
@@ -109,6 +103,12 @@ namespace app {
           }
           );
       }
+
+      if (m_isGameOver)
+      {
+        this->onGameOver();
+      }
+
     }
     catch (...)
     {
@@ -219,16 +219,16 @@ namespace app {
           {
             Log::info("Server :: onReceiveHandle() :: QUIT_GAME");
 
-            this->m_gameBoard = common::GameBoard(
-              common::config::gameBoardRows,
-              common::config::gameBoardCols
-              );
+            auto id = this->getClientIndex(m_workingClient.second);
 
-            this->removeClient(this->getClientIndex(m_workingClient.second));
-
-            m_clients.clear();
-
-            m_seqNo = 0;
+            if ((id > 0) && id <= 2)
+            {
+              this->onGameOver();
+            }
+            else
+            {
+              this->removeClient(this->getClientIndex(m_workingClient.second));
+            }
           }
           break;
         case common::MessageType::SET_MOVE:
@@ -282,18 +282,16 @@ namespace app {
 
               if (m_gameBoard.isWinPoint(common::Point2D(x,y), m_turn))
               {
-                this->m_gameBoard = common::GameBoard(
-                  common::config::gameBoardRows,
-                  common::config::gameBoardCols
-                  );
-                m_seqNo = 0;
-                m_clients.clear();
+                m_isGameOver = true;
+              }
+              else
+              {
+                if ((++m_turn) > 2 /* m_clients.size() */)
+                {
+                  m_turn = m_clients.cbegin()->first;
+                }
               }
 
-              if ((++m_turn) > 2 /* m_clients.size() */)
-              {
-                m_turn = m_clients.cbegin()->first;
-              }
             }
           }
           break;
@@ -312,6 +310,32 @@ namespace app {
 
   void Server::onGameOver()
   {
+    char cmd = static_cast<char>(common::MessageType::GAME_OVER);
+
+    std::string msg = std::string(sizeof(cmd), cmd) + std::to_string(m_turn);
+
+    for (const auto &c : m_clients)
+    {
+      m_udpSocket.send(
+        msg, c.second,
+        [=](const std::error_code &e, const std::size_t &/* bytes */){
+          if (e)
+          {
+            Log::error(e.message());
+          }
+          else
+          {
+            Log::info("Sent GAME_OVER message to: " + std::to_string(c.first));
+          }
+        }
+        );
+    }
+
+    // Reset game
+    m_turn = 0;
+    m_seqNo = 0;
+    m_clients.clear();
+    m_gameBoard = common::GameBoard();
   }
 
   Client::first_type Server::getOrCreateClientIndex(

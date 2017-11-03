@@ -1,5 +1,7 @@
 #ifndef APP_SCENES_PLAY_ONLINE_SCENE_HPP
 #define APP_SCENES_PLAY_ONLINE_SCENE_HPP
+#include <functional>
+#include <queue>
 
 #include "PlayScene.hpp"
 #include "../Common/net/socket/Udp.hpp"
@@ -17,6 +19,8 @@ namespace app { namespace scenes {
       virtual void onSetGameBoardMove(const common::Point2D &p) override;
       virtual bool quit() override;
       virtual void draw() override;
+      // using PlayScene::update;
+      virtual void update(const float dt) override;
 
     private:
       void run_service();
@@ -34,6 +38,8 @@ namespace app { namespace scenes {
       common::net::socket::Udp::EndPoint m_udpCurrentEndpoint;
       unsigned int m_turn;
       int m_seqNo;
+
+      std::queue< std::function<void()> > m_taskQueue;
 
   };
 

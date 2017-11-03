@@ -53,6 +53,18 @@ namespace app { namespace scenes {
     m_serviceThread = std::thread(&PlayOnlineScene::run_service, this);
   }
 
+  void PlayOnlineScene::update(const float dt)
+  {
+    PlayScene::update(dt);
+
+    while (m_taskQueue.size())
+    {
+      auto do_task = m_taskQueue.front();
+      do_task();
+      m_taskQueue.pop();
+    }
+  }
+
   void PlayOnlineScene::draw()
   {
     PlayScene::draw();

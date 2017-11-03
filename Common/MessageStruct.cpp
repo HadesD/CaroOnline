@@ -58,7 +58,6 @@ namespace common {
       Log::info("Message: " + msg);
     }
 
-
     return true;
   }
 

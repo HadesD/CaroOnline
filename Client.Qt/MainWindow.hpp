@@ -2,6 +2,7 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
+#include <QCloseEvent>
 #include <QPushButton>
 #include <vector>
 #include <memory>
@@ -35,6 +36,8 @@ class MainWindow : public QMainWindow
     void onGbBtnClicked(GbButton *obj = 0);
     void onReceiveHandle(const std::string &/* data */);
     void disableLoginForm(const bool disable);
+    void closeEvent(QCloseEvent *event);
+    void onLogoutClicked();
 
   private:
     std::size_t getGbBtnIndex(const common::Point2D &/* p */) const;

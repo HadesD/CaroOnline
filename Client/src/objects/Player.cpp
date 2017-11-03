@@ -136,17 +136,16 @@ namespace app { namespace objects {
 
     this->m_pScene->onSetGameBoardMove(m_cursor);
 
-    if (m_pScene->getGameBoard().isWinPoint(m_cursor, m_mark))
+    if (m_pScene->getListPlayer().size() > 1)
     {
-      std::cout << "You won!!!" << std::endl;
-      m_pScene->quit();
-      return;
+      if (m_pScene->getGameBoard().isWinPoint(m_cursor, m_mark))
+      {
+        std::cout << "You won!!!" << std::endl;
+        m_pScene->quit();
+        return;
+      }
     }
 
-    if (this->m_pScene->getListPlayer().size() > 1)
-    {
-      // m_pScene->setNextPlayer(m_pScene->getCurrentPlayer() + 1);
-    }
   }
 
   void Player::setId(const unsigned int id)

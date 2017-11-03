@@ -15,6 +15,7 @@ namespace app { namespace scenes {
       virtual void init() override;
       virtual bool quit() override;
       virtual void draw() override;
+      // virtual void update() override;
 
   };
 

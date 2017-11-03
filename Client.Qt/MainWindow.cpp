@@ -21,27 +21,12 @@ MainWindow::MainWindow(QWidget *parent) :
     this->init();
   });
 
-  auto sendLogout = [this](){
-    char cmd = static_cast<char>(common::MessageType::QUIT_GAME);
-
-    std::string msg = std::string(sizeof(cmd), cmd);
-
-    m_udpSocket.send(
-          msg, m_udpServerEndpoint,
-          [](const std::error_code &, const std::size_t &){
-    });
-  };
-  QObject::connect(ui->actionQuit, &QAction::triggered, [this, sendLogout](){
-    if (ui->logoutButton->isEnabled())
+  QObject::connect(ui->actionQuit, &QAction::triggered, [this](){
+    this->onLogoutClicked();
+    if (!ui->logoutButton->isEnabled())
     {
-      auto reply = QMessageBox::question(ui->loginButton, "Logout", "Do you want to logout?");
-      if (reply == QMessageBox::No)
-      {
-        return;
-      }
-      sendLogout();
+      this->close();
     }
-    this->close();
   });
 
   ui->serverAddrEdit->setText(common::config::serverAddr.c_str());
@@ -109,17 +94,8 @@ MainWindow::MainWindow(QWidget *parent) :
   });
 
   // Logout
-  QObject::connect(ui->logoutButton, &QPushButton::clicked, [this, sendLogout](){
-    auto reply = QMessageBox::question(ui->loginButton, "Logout", "Do you want to logout?");
-    if (reply == QMessageBox::No)
-    {
-      return;
-    }
-
-    sendLogout();
-
-    this->disableLoginForm(false);
-    this->init();
+  QObject::connect(ui->logoutButton, &QPushButton::clicked, [this](){
+    this->onLogoutClicked();
   });
 
   //
@@ -149,6 +125,12 @@ void MainWindow::init()
   m_turn = 0;
   m_playerId = 0;
   m_gameBoard = common::GameBoard();
+  ui->gameInfoShowSequence->setText("0");
+  ui->gameInfoShowTurn->setText("No one");
+  ui->gameInfoShowViewerCount->setText("0");
+  ui->playerInfoMarkButton->setText("");
+  ui->playerInfoShowId->setText("");
+  ui->gameInfotimeLeftProgressBar->setValue(0);
 
   m_gameBoardButtonList.clear();
 
@@ -238,7 +220,7 @@ void MainWindow::drawGameBoard()
 
       m_gameBoardButtonList.at(b_pos)->setText(mark);
 
-      if ((m_turn == m_playerId) && (m_turn != 0))
+      if ((m_turn == static_cast<unsigned int>(m_playerId)) && (m_turn != 0))
       {
         m_gameBoardButtonList.at(b_pos)->setDisabled(false);
       }
@@ -360,6 +342,41 @@ void MainWindow::onReceiveHandle(const std::string &data)
   catch(...)
   {
     Log::error("PlayOnlineScene :: onReceiveHandle() :: ERROR");
+  }
+}
+
+void MainWindow::onLogoutClicked()
+{
+  if (!ui->logoutButton->isEnabled())
+  {
+    return;
+  }
+
+  auto reply = QMessageBox::question(ui->loginButton, "Logout", "Do you want to logout?");
+  if (reply == QMessageBox::No)
+  {
+    return;
+  }
+
+  // Send to Server
+  char cmd = static_cast<char>(common::MessageType::QUIT_GAME);
+  std::string msg = std::string(sizeof(cmd), cmd);
+  m_udpSocket.send(
+        msg, m_udpServerEndpoint,
+        [](const std::error_code &, const std::size_t &){
+  });
+
+  this->disableLoginForm(false);
+  this->init();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+  this->onLogoutClicked();
+
+  if (!ui->loginButton->isEnabled())
+  {
+    event->ignore();
   }
 }
 

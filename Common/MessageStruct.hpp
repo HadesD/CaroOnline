@@ -13,6 +13,7 @@ namespace common {
     LOGIN = 'a',
     SET_MOVE,
     UPDATE_GAME,
+    GAME_OVER,
     QUIT_GAME,
   };
 
