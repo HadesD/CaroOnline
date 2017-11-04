@@ -12,8 +12,11 @@ namespace common { namespace config {
 
   // const char networkCheckSum[] = "CARO";
 
-  const std::string serverAddr = "0.0.0.0";
-  const short serverPort = 8889;
+  // const std::string serverAddr = "0.0.0.0";
+  // const std::string serverAddr = "localhost";
+  const std::string serverAddr = "gomoku-caro.herokuapp.com";
+  // const int serverPort = 8889;
+  const int serverPort = 19882;
   const short maxWaitTime = 30; // Second
 
 } }

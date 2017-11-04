@@ -15,18 +15,49 @@ int main(int argc, char *argv[])
 
   try
   {
-    short port = common::config::serverPort;
+    int port = common::config::serverPort;
 
     if (argc > 1)
     {
       std::string s = argv[1];
       port = std::stoi(s);
     }
-    std::cout << "Choosen port: " <<  port << std::endl;
 
-    app::Server server(common::config::serverAddr, port);
+    // TCP
+    asio::io_service io_service;
 
-    server.run();
+    asio::ip::tcp::endpoint endpoint(asio::ip::tcp::v4(), port);
+    asio::ip::tcp::acceptor acceptor(io_service, endpoint);
+
+    int i = 1;
+    while (true)
+    {
+      if (i == 1)
+      {
+        i = 0;
+
+        std::cout << "Choosen port: " <<  port << std::endl;
+
+        app::Server server("0.0.0.0", port);
+
+        server.run();
+      }
+      asio::ip::tcp::iostream stream;
+      std::error_code ec;
+      acceptor.accept(*stream.rdbuf(), ec);
+      if (!ec)
+      {
+        stream <<
+          "HTTP/1.1 502 Error\r\n"
+          "Accept-Ranges: bytes\r\n"
+          "Server: Apache/2.2.14 (Win32)\r\n"
+          "Connection: close\r\n"
+          "Content-Length: 0\r\n"
+          ;
+      }
+    }
+    // TCP
+
   }
   catch(const std::exception &e)
   {

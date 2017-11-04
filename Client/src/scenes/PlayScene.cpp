@@ -68,7 +68,6 @@ namespace app { namespace scenes {
     }
     catch(...)
     {
-      ERROR("PlayerScene :: update()");
       throw std::runtime_error("Player notfound");
     }
   }

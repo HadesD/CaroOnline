@@ -17,7 +17,7 @@ namespace common { namespace config {
   const std::string networkCheckSum = "CARO";
 
   extern const std::string serverAddr;
-  extern const short serverPort;
+  extern const int serverPort;
 
   extern const short maxWaitTime;
 

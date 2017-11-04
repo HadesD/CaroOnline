@@ -6,7 +6,7 @@
 
 namespace app {
 
-  Server::Server(const std::string &ip, const short &port) :
+  Server::Server(const std::string &ip, const int port) :
     m_udpSocket(ip, port),
     m_turn(-1)
   {

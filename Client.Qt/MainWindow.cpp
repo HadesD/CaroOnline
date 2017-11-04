@@ -60,12 +60,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     if (!ui->serverPortEdit->text().isEmpty())
     {
-      serverPort = ui->serverPortEdit->text().toShort();
+      serverPort = ui->serverPortEdit->text().toInt();
     }
-    m_udpServerEndpoint = common::net::socket::Udp::EndPoint(
-          asio::ip::address::from_string(serverAddr),
-          serverPort
-          );
+    m_udpServerEndpoint = m_udpSocket.resolver(serverAddr, serverPort);
     // Game Board
     for (auto &b : m_gameBoardButtonList)
     {

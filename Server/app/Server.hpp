@@ -18,7 +18,7 @@ namespace app {
       typedef common::GameBoard GameBoard;
 
     public:
-      Server(const std::string &/* ip */, const short &/* port */);
+      Server(const std::string &/* ip */, const int /* port */);
       ~Server();
 
     public:

@@ -4,11 +4,15 @@
 
 namespace common { namespace net { namespace socket {
 
-  Udp::Udp(const std::string &ip, const short &port) :
+  Udp::Udp(const std::string &ip, const int &port) :
     Socket()
     , m_socket(
       m_ioService,
-      asio::ip::udp::endpoint(asio::ip::address::from_string(ip), port)
+      asio::ip::udp::endpoint(
+        asio::ip::udp::v4(),
+        // asio::ip::address::from_string(ip),
+        port
+        )
       )
   {
     Log::info("UdpSocket will use " + ip + ":" + std::to_string(port));
@@ -73,7 +77,7 @@ namespace common { namespace net { namespace socket {
     m_socket.receive_from(asio::buffer(send_buff), endpoint);
   }
 
-  Udp::EndPoint Udp::resolver(const std::string &from_adr, const short port)
+  Udp::EndPoint Udp::resolver(const std::string &from_adr, const int port)
   {
     asio::ip::udp::resolver resolv(m_ioService);
     asio::ip::udp::resolver::query q(
