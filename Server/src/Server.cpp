@@ -103,8 +103,7 @@ namespace app {
     {
       if (m_roomList.size() <= 0)
       {
-        auto room = std::make_shared<Room>(this->shared_from_this());
-        m_roomList.emplace_back(room);
+        m_roomList.emplace_back(std::make_shared<Room>(this));
       }
 
       Log::info(
@@ -115,7 +114,7 @@ namespace app {
 
       for (auto &room : m_roomList)
       {
-        // room->onReceiveHandle(m_workingClient, data);
+        room->onReceiveHandle(m_workingClient, data);
         return;
       }
 

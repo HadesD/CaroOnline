@@ -7,7 +7,7 @@
 
 namespace app {
 
-  Room::Room(const std::shared_ptr<Server> &sv) :
+  Room::Room(Server *sv) :
     m_pServer(sv)
   {
     m_turn = 0;
@@ -17,6 +17,22 @@ namespace app {
       );
     m_seqNo = 0;
     m_isGameOver = false;
+  }
+
+  // Room::Room(const std::shared_ptr<Server> &sv) :
+  //   m_pServer(sv)
+  // {
+  //   m_turn = 0;
+  //   this->m_gameBoard = common::GameBoard(
+  //     common::config::gameBoardRows,
+  //     common::config::gameBoardCols
+  //     );
+  //   m_seqNo = 0;
+  //   m_isGameOver = false;
+  // }
+
+  Room::~Room()
+  {
   }
 
   void Room::onReceiveHandle(const Client &cli, const std::string &data)
@@ -295,25 +311,48 @@ namespace app {
     return m_playerList;
   }
 
-  std::size_t Room::getOrCreatePlayer(const app::Client &client) const
+  std::size_t Room::getOrCreatePlayer(const app::Client &client)
   {
+    {
+      std::size_t id = this->getPlayer(client);
+      if (id != m_playerList.size())
+      {
+        return id;
+      }
+    }
+    auto p = std::make_shared<Player>(
+        client,
+        "fsdfsdf",
+        (m_playerList.size() > 0) ? (m_playerList.back()->mark + 1) : 1
+        );
 
-    return 0;
+    m_playerList.emplace_back(p);
+
+    return m_playerList.size() - 1;
   }
 
   std::size_t Room::getPlayer(const app::Client &client) const
   {
+    std::size_t i = 0;
 
-    return 0;
+    for (const auto &c : m_playerList)
+    {
+      if (c->client == client)
+      {
+        return i;
+      }
+      i++;
+    }
+    return m_playerList.size();
   }
 
   void Room::removePlayer(const std::shared_ptr<Player> &player)
   {
-
   }
 
   void Room::removePlayer(const std::size_t player)
   {
+    m_playerList.erase(m_playerList.cbegin() + player);
   }
 
 }
