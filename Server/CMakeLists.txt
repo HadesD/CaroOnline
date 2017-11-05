@@ -47,6 +47,7 @@ set(APP_SRC
   # Application
   src/main.cpp
   src/Server.cpp
+  src/Room.cpp
   )
 
 #############################################################################
