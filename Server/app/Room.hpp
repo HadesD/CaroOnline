@@ -50,7 +50,7 @@ namespace app {
       int m_seqNo;
       std::size_t m_turn;
       bool m_isGameOver;
-      const std::shared_ptr<Server> &m_pServer;
+      std::shared_ptr<Server> m_pServer;
 
   };
 

@@ -99,17 +99,34 @@ namespace app {
 
   void Server::onReceiveHandle(const std::string &data)
   {
-    if (m_roomList.size() <= 0)
+    try
     {
-      m_roomList.emplace_back(
-        std::make_shared<Room>(this->shared_from_this())
-        );
-    }
+      if (m_roomList.size() <= 0)
+      {
+        auto room = std::make_shared<Room>(this->shared_from_this());
+        m_roomList.emplace_back(room);
+      }
 
-    for (auto &room : m_roomList)
+      Log::info(
+        "We have "
+        + std::to_string(m_roomList.size())
+        + " rooms now"
+        );
+
+      for (auto &room : m_roomList)
+      {
+        // room->onReceiveHandle(m_workingClient, data);
+        return;
+      }
+
+    }
+    catch(const std::exception &e)
     {
-      room->onReceiveHandle(m_workingClient, data);
-      return;
+      Log::error(e.what());
+    }
+    catch(...)
+    {
+      Log::error("Somethings has been go away without ERROR CODE");
     }
   }
 
