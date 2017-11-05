@@ -60,11 +60,11 @@ namespace app {
 
             Log::info("Username:" + acc.at(0) + " - Pass:" + acc.at(1));
 
-            auto from_player = this->getOrCreatePlayer(cli);
+            std::size_t from_player = this->getOrCreatePlayer(cli);
             char cmd = static_cast<char>(common::MessageType::LOGIN);
 
             std::string msg = std::string(sizeof(cmd), cmd)
-              + std::to_string(from_player)
+              + std::to_string(m_playerList.at(from_player)->mark)
               ;
 
             m_pServer->send(cli, msg);
@@ -313,6 +313,8 @@ namespace app {
 
   std::size_t Room::getOrCreatePlayer(const app::Client &client)
   {
+    Log::info("We have " + std::to_string(m_playerList.size()) + " players");
+
     {
       std::size_t id = this->getPlayer(client);
       if (id != m_playerList.size())
@@ -320,10 +322,11 @@ namespace app {
         return id;
       }
     }
+
     auto p = std::make_shared<Player>(
         client,
-        "fsdfsdf",
-        (m_playerList.size() > 0) ? (m_playerList.back()->mark + 1) : 1
+        "Player Name",
+        m_playerList.size() + 1
         );
 
     m_playerList.emplace_back(p);
