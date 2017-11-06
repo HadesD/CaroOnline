@@ -116,9 +116,12 @@ namespace app {
 
               m_seqNo++;
 
-              if (m_gameBoard.isWinPoint(common::Point2D(x,y), m_turn))
+              if (m_gameBoard.isWinPoint(
+                  common::Point2D(x,y), m_playerList.at(m_turn)->mark
+                  ))
               {
                 m_isGameOver = true;
+                Log::info("FOUND WINNER");
               }
               else
               {
@@ -204,6 +207,7 @@ namespace app {
 
     for (const auto &c : m_playerList)
     {
+      Log::info("Send GAME_OVER to player Mark: " + std::to_string(c->mark));
       m_pServer->send(c->client, msg);
     }
 

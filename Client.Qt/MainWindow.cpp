@@ -82,10 +82,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_udpSocket.send(
           msg, m_udpServerEndpoint,
           [this](const std::error_code &, const std::size_t &){
-      //      QDebug() << "F";
-      //      qDebug() << "Sent Login data";
-
-      //      QMessageBox::warning(ui->passwordInput, "Error", "Password is empty");
     });
   });
 
@@ -251,7 +247,7 @@ void MainWindow::drawGameBoard()
       pal.setColor(QPalette::Button, bcolor);
       btn->setPalette(pal);
 
-      if ((m_turn == m_playerId) && (m_turn != 0))
+      if ((m_turn == m_playerId) && (m_turn != -1))
       {
         btn->setDisabled(false);
       }
