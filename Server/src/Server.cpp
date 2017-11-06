@@ -87,12 +87,20 @@ namespace app {
       );
   }
 
+  void Server::send(const Client &cli, const std::string &msg)
+  {
+    m_udpSocket.send(
+      msg, cli,
+      [](const std::error_code &, const std::size_t ){
+      }
+      );
+  }
+
   void Server::send(const Client &cli, const common::MessageStruct &msg)
   {
     m_udpSocket.send(
-      std::to_string(static_cast<char>(msg.msgType))+msg.msg, cli,
+      msg.data, cli,
       [](const std::error_code &, const std::size_t ){
-
       }
       );
   }
@@ -101,11 +109,6 @@ namespace app {
   {
     try
     {
-      if (m_roomList.size() <= 0)
-      {
-        this->addRoom();
-      }
-
       Log::info(
         "We have "
         + std::to_string(m_roomList.size())
@@ -119,38 +122,78 @@ namespace app {
         return;
       }
 
-      bool processed_player = false;
-      for (auto &room : m_roomList)
+      std::size_t roomId = this->getRoom(m_workingClient);
+
+      // Not found
+      if (ms.msgType == common::MessageType::LOGIN)
       {
-        if (ms.msgType == common::MessageType::LOGIN)
+        if (roomId == m_roomList.size())
         {
-          if (room->getPlayer(m_workingClient) != room->getPlayerList().size())
+          if (m_roomList.size() <= 0)
           {
-            room->removePlayer(room->getPlayer(m_workingClient));
-          }
-          if (room->getPlayerList().size() < 2)
-          {
-            room->onPlayerLogin(m_workingClient, ms);
-            processed_player = true;
+            this->addRoom();
           }
         }
         else
         {
-          if (room->getPlayer(m_workingClient) != room->getPlayerList().size())
-          {
-            room->onReceiveHandle(m_workingClient, data);
-            room->sendGameDataToAllPlayers();
-            return;
-          }
+          m_roomList.at(roomId)->removePlayer(
+            m_roomList.at(roomId)->getPlayer(m_workingClient)
+            );
         }
-      }
-
-      // On notfound
-      if (!processed_player)
-      {
-        this->addRoom();
+        roomId = 0;
+        bool foundJoinableRoom = false;
+        for (auto &r : m_roomList)
+        {
+          if (r->getPlayerList().size() < 2)
+          {
+            foundJoinableRoom = true;
+            break;
+          }
+          roomId++;
+        }
+        if (!foundJoinableRoom)
+        {
+          this->addRoom();
+        }
         m_roomList.back()->onPlayerLogin(m_workingClient, ms);
       }
+
+      if (roomId != m_roomList.size())
+      {
+        m_roomList.at(roomId)->onReceiveHandle(m_workingClient, ms.data);
+      }
+
+      // bool processed_player = false;
+      // for (auto &room : m_roomList)
+      // {
+      //   if (ms.msgType == common::MessageType::LOGIN)
+      //   {
+      //     if (room->getPlayer(m_workingClient) != room->getPlayerList().size())
+      //     {
+      //       room->removePlayer(room->getPlayer(m_workingClient));
+      //     }
+      //     if (room->getPlayerList().size() < 2)
+      //     {
+      //       room->onPlayerLogin(m_workingClient, ms);
+      //       processed_player = true;
+      //     }
+      //   }
+      //   else
+      //   {
+      //     if (room->getPlayer(m_workingClient) != room->getPlayerList().size())
+      //     {
+      //       room->onReceiveHandle(m_workingClient, data);
+      //       return;
+      //     }
+      //   }
+      // }
+      //
+      // // On notfound
+      // if (!processed_player)
+      // {
+      //   this->addRoom();
+      //   m_roomList.back()->onPlayerLogin(m_workingClient, ms);
+      // }
     }
     catch(const std::exception &e)
     {
@@ -165,6 +208,7 @@ namespace app {
   void Server::removeRoom(const std::shared_ptr<Room> &r)
   {
     auto rIndex = std::find(m_roomList.cbegin(), m_roomList.cend(), r);
+
     if (rIndex != m_roomList.cend())
     {
       Log::info("Removing Room " + std::to_string(rIndex->get()->getId()));
@@ -175,6 +219,8 @@ namespace app {
     {
       Log::error("Not found Room to Delete");
     }
+
+    Log::info("Now we have " + std::to_string(m_roomList.size()) + " rooms");
   }
 
   void Server::addRoom()
@@ -186,6 +232,22 @@ namespace app {
     }
     m_roomList.emplace_back(std::make_shared<Room>(this));
     m_roomList.back()->setId(lastId + 1);
+  }
+
+  std::size_t Server::getRoom(const Client &cli) const
+  {
+    std::size_t i = 0;
+
+    for (const auto &r : m_roomList)
+    {
+      if (r->getPlayer(cli) != r->getPlayerList().size())
+      {
+        break;
+      }
+      i++;
+    }
+
+    return i;
   }
 
 }

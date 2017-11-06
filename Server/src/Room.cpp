@@ -50,7 +50,7 @@ namespace app {
       {
         case common::MessageType::QUIT_GAME:
           {
-            Log::info("Server :: onReceiveHandle() :: QUIT_GAME");
+            Log::info("Room :: onReceiveHandle() :: QUIT_GAME");
 
             std::size_t pIndex = this->getPlayer(cli);
             auto player = m_playerList.at(pIndex);
@@ -69,7 +69,7 @@ namespace app {
           break;
         case common::MessageType::SET_MOVE:
           {
-            Log::info("Server :: onReceiveHandle() :: SET_MOVE");
+            Log::info("Room :: onReceiveHandle() :: SET_MOVE");
 
             if (m_playerList.size() < 2)
             {
@@ -80,7 +80,7 @@ namespace app {
 
             if ((pIndex != m_turn) || (pIndex == m_playerList.size()))
             {
-              Log::error("Server :: onReceiveHandle() :: ERROR TURN");
+              Log::error("Room :: onReceiveHandle() :: ERROR TURN");
               return;
             }
 
@@ -132,14 +132,14 @@ namespace app {
           break;
         default:
           {
-            Log::info("Server :: onReceiveHandle() :: NOTHING");
+            Log::info("Room :: onReceiveHandle() :: NOTHING");
           }
-          return;
+          break;
       }
     }
     catch (...)
     {
-      Log::error("Server :: onReceiveHandle() :: ERROR");
+      Log::error("Room :: onReceiveHandle() :: ERROR");
     }
   }
 
@@ -160,7 +160,7 @@ namespace app {
 
       std::string msg = std::string(sizeof(cmd), cmd)
         + std::to_string(m_seqNo) + "|"
-        + std::to_string(m_turn+1) + "|"
+        + std::to_string(m_turn + 1) + "|"
         + std::to_string(m_playerList.size()) + "|"
         + m_gameBoard.toString()
         ;
@@ -178,7 +178,7 @@ namespace app {
     }
     catch (...)
     {
-      Log::error("Server :: sendGameDataToAllClients() :: Error");
+      Log::error("Room :: sendGameDataToAllClients() :: Error");
     }
   }
 
@@ -241,7 +241,11 @@ namespace app {
 
     m_playerList.emplace_back(p);
 
-    Log::info("We have " + std::to_string(m_playerList.size()) + " players");
+    Log::info(
+      "Room "
+      + std::to_string(m_id)
+      + " has " + std::to_string(m_playerList.size()) + " players"
+      );
 
     return m_playerList.size() - 1;
   }
@@ -292,8 +296,16 @@ namespace app {
 
   void Room::onPlayerLogin(const Client &cli, const common::MessageStruct &ms)
   {
-    Log::info("Server :: onReceiveHandle() :: LOGIN");
-    std::vector<std::string> acc = Util::split(ms.msg, ':');
+    Log::info("Room :: onPlayerLogin()");
+
+    common::MessageStruct recv(ms);
+
+    if (!recv.isValidSum())
+    {
+      return;
+    }
+
+    std::vector<std::string> acc = Util::split(recv.msg, ':');
 
     if (acc.size() != 2)
     {
@@ -317,9 +329,7 @@ namespace app {
       + std::to_string(this->getPlayerList().at(from_player)->mark)
       ;
 
-    common::MessageStruct sendms(msg);
-
-    m_pServer->send(cli, sendms);
+    m_pServer->send(cli, msg);
 
     m_seqNo++;
 

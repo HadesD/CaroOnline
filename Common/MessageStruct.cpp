@@ -12,13 +12,20 @@ namespace common {
     auto config_sum = common::config::networkCheckSum;
 
     // Must check received data has correct sum 's size
-    if (!data.empty() && (data.size() >= config_sum.size()))
+    try
     {
-      // Sum
-      sum = std::string(data.cbegin(), data.cbegin() + config_sum.size());
+      if (!data.empty() && (data.size() >= config_sum.size()))
+      {
+        // Sum
+        sum = std::string(data.cbegin(), data.cbegin() + config_sum.size());
 
-      // Request Method
-      msgType = static_cast<MessageType>(data.at(sum.size()));
+        // Request Method
+        msgType = static_cast<MessageType>(data.at(sum.size()));
+      }
+    }
+    catch(...)
+    {
+      Log::error("MessageStruct :: Constructor :: Error");
     }
   }
 

@@ -22,7 +22,7 @@ namespace app { namespace objects {
   {
     this->waitKeyboardEvent();
     std::cout << "Your Id: " << m_id << " - Mark: ";
-    std::cout << "<" << Util::getMark(m_id) << ">" << std::endl;
+    std::cout << "<" << Util::getMark(m_mark) << ">" << std::endl;
   }
 
   void Player::waitKeyboardEvent()
