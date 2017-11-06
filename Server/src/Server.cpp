@@ -103,7 +103,7 @@ namespace app {
     {
       if (m_roomList.size() <= 0)
       {
-        m_roomList.emplace_back(std::make_shared<Room>(this));
+        this->addRoom();
       }
 
       Log::info(
@@ -148,7 +148,7 @@ namespace app {
       // On notfound
       if (!processed_player)
       {
-        m_roomList.emplace_back(std::make_shared<Room>(this));
+        this->addRoom();
         m_roomList.back()->onPlayerLogin(m_workingClient, ms);
       }
     }
@@ -160,6 +160,32 @@ namespace app {
     {
       Log::error("Somethings has been go away without ERROR CODE");
     }
+  }
+
+  void Server::removeRoom(const std::shared_ptr<Room> &r)
+  {
+    auto rIndex = std::find(m_roomList.cbegin(), m_roomList.cend(), r);
+    if (rIndex != m_roomList.cend())
+    {
+      Log::info("Removing Room " + std::to_string(rIndex->get()->getId()));
+
+      m_roomList.erase(rIndex);
+    }
+    else
+    {
+      Log::error("Not found Room to Delete");
+    }
+  }
+
+  void Server::addRoom()
+  {
+    int lastId = 0;
+    if (m_roomList.size())
+    {
+      lastId = m_roomList.back()->getId();
+    }
+    m_roomList.emplace_back(std::make_shared<Room>(this));
+    m_roomList.back()->setId(lastId + 1);
   }
 
 }

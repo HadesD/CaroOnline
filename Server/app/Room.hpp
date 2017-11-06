@@ -10,7 +10,7 @@ namespace app {
 
   class Server;
 
-  class Room
+  class Room : public std::enable_shared_from_this<Room>
   {
     public:
       typedef common::GameBoard GameBoard;
@@ -55,6 +55,7 @@ namespace app {
       void setSeqNo(const int seqNo);
       int getSeqNo() const;
       GameBoard getGameBoard() const;
+      int getId() const;
 
     private:
       int m_id;

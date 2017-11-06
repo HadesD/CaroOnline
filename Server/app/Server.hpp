@@ -22,12 +22,14 @@ namespace app {
     public:
       void run();
       void send(const Client &cli, const common::MessageStruct &msg);
+      void removeRoom(const std::shared_ptr<Room> &r);
 
     private:
       void init();
       void run_service();
       void receive();
       // void update(const float #<{(| dt |)}>#);
+      void addRoom();
 
     private:
       // Client::first_type getClientIndex(

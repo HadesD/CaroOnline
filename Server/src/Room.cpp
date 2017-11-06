@@ -191,9 +191,9 @@ namespace app {
 
   void Room::onGameOver()
   {
-    m_turn = 0;
-    m_seqNo = 0;
-    m_isGameOver = false;
+    // m_turn = 0;
+    // m_seqNo = 0;
+    // m_isGameOver = false;
 
     if (m_playerList.size() < 2)
     {
@@ -210,10 +210,12 @@ namespace app {
     }
 
     // Reset game
-    m_turn = 0;
-    m_seqNo = 0;
-    m_playerList.clear();
-    m_gameBoard = common::GameBoard();
+    // m_turn = 0;
+    // m_seqNo = 0;
+    // m_playerList.clear();
+    // m_gameBoard = common::GameBoard();
+
+    m_pServer->removeRoom(this->shared_from_this());
   }
 
   std::vector< std::shared_ptr<Room::Player> > Room::getPlayerList() const
@@ -316,6 +318,16 @@ namespace app {
     {
       this->setTurn(from_player);
     }
+  }
+
+  int Room::getId() const
+  {
+    return m_id;
+  }
+
+  void Room::setId(const int id)
+  {
+    this->m_id = id;
   }
 
 }
