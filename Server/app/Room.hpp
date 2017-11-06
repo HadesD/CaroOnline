@@ -39,8 +39,8 @@ namespace app {
     public:
       void sendGameDataToAllPlayers();
       void onReceiveHandle(const Client &cli , const std::string &/* data */);
-      GameBoard getGameBoard() const;
       void onGameOver();
+      void onPlayerLogin(const Client &cli, const common::MessageStruct &ms);
 
     public:
       void addPlayer(const std::shared_ptr<Player> &player);
@@ -50,11 +50,16 @@ namespace app {
       std::size_t getPlayer(const Client &client) const;
       std::vector< std::shared_ptr<Player> > getPlayerList() const;
       void setId(const int id);
+      std::size_t getTurn() const;
+      void setTurn(const std::size_t turn);
+      void setSeqNo(const int seqNo);
+      int getSeqNo() const;
+      GameBoard getGameBoard() const;
 
     private:
+      int m_id;
       GameBoard m_gameBoard;
       std::vector< std::shared_ptr<Player> > m_playerList;
-      int m_id;
       int m_seqNo;
       std::size_t m_turn;
       bool m_isGameOver;

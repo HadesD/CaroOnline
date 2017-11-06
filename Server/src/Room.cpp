@@ -48,35 +48,6 @@ namespace app {
 
       switch (ms.msgType)
       {
-        case common::MessageType::LOGIN:
-          {
-            Log::info("Server :: onReceiveHandle() :: LOGIN");
-            std::vector<std::string> acc = Util::split(ms.msg, ':');
-
-            if (acc.size() != 2)
-            {
-              return;
-            }
-
-            Log::info("Username:" + acc.at(0) + " - Pass:" + acc.at(1));
-
-            std::size_t from_player = this->getOrCreatePlayer(cli);
-            char cmd = static_cast<char>(common::MessageType::LOGIN);
-
-            std::string msg = std::string(sizeof(cmd), cmd)
-              + std::to_string(m_playerList.at(from_player)->mark)
-              ;
-
-            m_pServer->send(cli, msg);
-
-            m_seqNo++;
-
-            if (m_playerList.size() == 1)
-            {
-              m_turn = from_player;
-            }
-          }
-          break;
         case common::MessageType::QUIT_GAME:
           {
             Log::info("Server :: onReceiveHandle() :: QUIT_GAME");
@@ -199,24 +170,6 @@ namespace app {
       for (const auto &player : m_playerList)
       {
         m_pServer->send(player->client, common::MessageStruct(msg));
-        // m_udpSocket.send(
-        //   msg, player,
-        //   [&](const std::error_code &e, const std::size_t &bytes){
-        //     if (e)
-        //     {
-        //       Log::error(e.message());
-        //     }
-        //     else
-        //     {
-        //       Log::info(
-        //         "Send to Player: "
-        //         + player->userName
-        //         + " " + std::to_string(bytes)
-        //         +" Bytes"
-        //         );
-        //     }
-        //   }
-        //   );
       }
 
       if (m_isGameOver)
@@ -254,19 +207,6 @@ namespace app {
     for (const auto &c : m_playerList)
     {
       m_pServer->send(c->client, msg);
-      // m_udpSocket.send(
-      //   msg, c,
-      //   [=](const std::error_code &e, const std::size_t &#<{(| bytes |)}>#){
-      //     if (e)
-      //     {
-      //       Log::error(e.message());
-      //     }
-      //     else
-      //     {
-      //       Log::info("Sent GAME_OVER message to: " + c->userName);
-      //     }
-      //   }
-      //   );
     }
 
     // Reset game
@@ -276,36 +216,6 @@ namespace app {
     m_gameBoard = common::GameBoard();
   }
 
-  // Client::first_type Room::getOrCreateClientIndex(
-  //   const ListClient::mapped_type &endpoint
-  //   )
-  // {
-  //   if (auto id = this->getClientIndex(endpoint))
-  //   {
-  //     return id;
-  //   }
-  //
-  //   auto id = (--this->m_clients.cend())->first + 1;
-  //   m_clients.insert(Client(id, endpoint));
-  //
-  //   return id;
-  // }
-  //
-  // Client::first_type Server::getClientIndex(
-  //   const Client::second_type &endpoint
-  //   ) const
-  // {
-  //   for (const auto &client : this->m_clients)
-  //   {
-  //     if (client.second == endpoint)
-  //     {
-  //       return client.first;
-  //     }
-  //   }
-  //
-  //   return 0;
-  // }
-
   std::vector< std::shared_ptr<Room::Player> > Room::getPlayerList() const
   {
     return m_playerList;
@@ -313,8 +223,6 @@ namespace app {
 
   std::size_t Room::getOrCreatePlayer(const app::Client &client)
   {
-    Log::info("We have " + std::to_string(m_playerList.size()) + " players");
-
     {
       std::size_t id = this->getPlayer(client);
       if (id != m_playerList.size())
@@ -330,6 +238,8 @@ namespace app {
         );
 
     m_playerList.emplace_back(p);
+
+    Log::info("We have " + std::to_string(m_playerList.size()) + " players");
 
     return m_playerList.size() - 1;
   }
@@ -356,6 +266,56 @@ namespace app {
   void Room::removePlayer(const std::size_t player)
   {
     m_playerList.erase(m_playerList.cbegin() + player);
+  }
+
+  void Room::setTurn(const std::size_t turn)
+  {
+    m_turn = turn;
+  }
+
+  std::size_t Room::getTurn() const
+  {
+    return m_turn;
+  }
+
+  void Room::setSeqNo(const int seqNo)
+  {
+    m_seqNo = seqNo;
+  }
+
+  int Room::getSeqNo() const
+  {
+    return m_seqNo;
+  }
+
+  void Room::onPlayerLogin(const Client &cli, const common::MessageStruct &ms)
+  {
+    Log::info("Server :: onReceiveHandle() :: LOGIN");
+    std::vector<std::string> acc = Util::split(ms.msg, ':');
+
+    if (acc.size() != 2)
+    {
+      Log::error("Account invalid");
+      return;
+    }
+
+    Log::info("Username:" + acc.at(0) + " - Pass:" + acc.at(1));
+
+    std::size_t from_player = this->getOrCreatePlayer(cli);
+    char cmd = static_cast<char>(common::MessageType::LOGIN);
+
+    std::string msg = std::string(sizeof(cmd), cmd)
+      + std::to_string(this->getPlayerList().at(from_player)->mark)
+      ;
+
+    m_pServer->send(cli, msg);
+
+    this->setSeqNo(this->getSeqNo() + 1);
+
+    if (this->getPlayerList().size() == 1)
+    {
+      this->setTurn(from_player);
+    }
   }
 
 }
