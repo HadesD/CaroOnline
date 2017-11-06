@@ -122,9 +122,9 @@ namespace app {
               }
               else
               {
-                if ((++m_turn) > 2 /* m_clients.size() */)
+                if ((++m_turn) >= 2 /* m_clients.size() */)
                 {
-                  m_turn = m_playerList.cbegin()->get()->mark;
+                  m_turn = 0;
                 }
               }
             }
@@ -160,14 +160,14 @@ namespace app {
 
       std::string msg = std::string(sizeof(cmd), cmd)
         + std::to_string(m_seqNo) + "|"
-        + std::to_string(m_turn + 1) + "|"
+        + std::to_string(m_turn) + "|"
         + std::to_string(m_playerList.size()) + "|"
         + m_gameBoard.toString()
         ;
 
       for (const auto &player : m_playerList)
       {
-        m_pServer->send(player->client, common::MessageStruct(msg));
+        m_pServer->send(player->client, msg);
       }
 
       if (m_isGameOver)

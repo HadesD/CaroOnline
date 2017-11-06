@@ -161,39 +161,9 @@ namespace app {
       if (roomId != m_roomList.size())
       {
         m_roomList.at(roomId)->onReceiveHandle(m_workingClient, ms.data);
+        m_roomList.at(roomId)->sendGameDataToAllPlayers();
       }
 
-      // bool processed_player = false;
-      // for (auto &room : m_roomList)
-      // {
-      //   if (ms.msgType == common::MessageType::LOGIN)
-      //   {
-      //     if (room->getPlayer(m_workingClient) != room->getPlayerList().size())
-      //     {
-      //       room->removePlayer(room->getPlayer(m_workingClient));
-      //     }
-      //     if (room->getPlayerList().size() < 2)
-      //     {
-      //       room->onPlayerLogin(m_workingClient, ms);
-      //       processed_player = true;
-      //     }
-      //   }
-      //   else
-      //   {
-      //     if (room->getPlayer(m_workingClient) != room->getPlayerList().size())
-      //     {
-      //       room->onReceiveHandle(m_workingClient, data);
-      //       return;
-      //     }
-      //   }
-      // }
-      //
-      // // On notfound
-      // if (!processed_player)
-      // {
-      //   this->addRoom();
-      //   m_roomList.back()->onPlayerLogin(m_workingClient, ms);
-      // }
     }
     catch(const std::exception &e)
     {
