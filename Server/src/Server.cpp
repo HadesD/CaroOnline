@@ -90,7 +90,7 @@ namespace app {
   void Server::send(const Client &cli, const common::MessageStruct &msg)
   {
     m_udpSocket.send(
-      msg.data, cli,
+      std::to_string(static_cast<char>(msg.msgType))+msg.msg, cli,
       [](const std::error_code &, const std::size_t ){
 
       }

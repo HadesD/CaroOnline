@@ -52,8 +52,8 @@ namespace app {
           {
             Log::info("Server :: onReceiveHandle() :: QUIT_GAME");
 
-            std::size_t pid = this->getPlayer(cli);
-            auto player = m_playerList.at(pid);
+            std::size_t pIndex = this->getPlayer(cli);
+            auto player = m_playerList.at(pIndex);
 
             int id = player->mark;
 
@@ -63,7 +63,7 @@ namespace app {
             }
             else
             {
-              this->removePlayer(pid);
+              this->removePlayer(pIndex);
             }
           }
           break;
@@ -76,60 +76,58 @@ namespace app {
               return;
             }
 
-            std::size_t pid = this->getPlayer(cli);
+            std::size_t pIndex = this->getPlayer(cli);
 
-            // auto senderIndex = this->getClientIndex(m_workingClient.second);
-            // if ((senderIndex != m_turn) || (senderIndex == 0))
-            // {
-            //   Log::error("Server :: onReceiveHandle() :: ERROR TURN");
-            //   return;
-            // }
-            //
-            // std::vector<std::string> xy = Util::split(ms.msg, ':');
-            //
-            // if (xy.size() != 2)
-            // {
-            //   return;
-            // }
-            //
-            // {
-            //   auto x = std::stoi(xy.at(0));
-            //   auto y = std::stoi(xy.at(1));
-            //
-            //   if (m_gameBoard.getBoard().at(x).at(y) != 0)
-            //   {
-            //     Log::error(
-            //       "Had value at x,y:"
-            //       + std::to_string(x)
-            //       + ","
-            //       + std::to_string(y)
-            //       );
-            //
-            //     return;
-            //   }
-            //
-            //   Log::info("X:" + std::to_string(x) + " - Y:" + std::to_string(y));
-            //
-            //   common::GameBoard::Board board = this->m_gameBoard.getBoard();
-            //   board[x][y] = senderIndex;
-            //
-            //   this->m_gameBoard.setBoard(board);
-            //
-            //   m_seqNo++;
-            //
-            //   if (m_gameBoard.isWinPoint(common::Point2D(x,y), m_turn))
-            //   {
-            //     m_isGameOver = true;
-            //   }
-            //   else
-            //   {
-            //     if ((++m_turn) > 2 #<{(| m_clients.size() |)}>#)
-            //     {
-            //       m_turn = m_clients.cbegin()->first;
-            //     }
-            //   }
-            //
-            // }
+            if ((pIndex != m_turn) || (pIndex == m_playerList.size()))
+            {
+              Log::error("Server :: onReceiveHandle() :: ERROR TURN");
+              return;
+            }
+
+            std::vector<std::string> xy = Util::split(ms.msg, ':');
+
+            if (xy.size() != 2)
+            {
+              return;
+            }
+
+            {
+              auto x = std::stoi(xy.at(0));
+              auto y = std::stoi(xy.at(1));
+
+              if (m_gameBoard.getBoard().at(x).at(y) != 0)
+              {
+                Log::error(
+                  "Had value at x,y:"
+                  + std::to_string(x)
+                  + ","
+                  + std::to_string(y)
+                  );
+
+                return;
+              }
+
+              Log::info("X:" + std::to_string(x) + " - Y:" + std::to_string(y));
+
+              common::GameBoard::Board board = this->m_gameBoard.getBoard();
+              board[x][y] = m_playerList.at(pIndex)->mark;
+
+              this->m_gameBoard.setBoard(board);
+
+              m_seqNo++;
+
+              if (m_gameBoard.isWinPoint(common::Point2D(x,y), m_turn))
+              {
+                m_isGameOver = true;
+              }
+              else
+              {
+                if ((++m_turn) > 2 /* m_clients.size() */)
+                {
+                  m_turn = m_playerList.cbegin()->get()->mark;
+                }
+              }
+            }
           }
           break;
         default:
@@ -162,7 +160,7 @@ namespace app {
 
       std::string msg = std::string(sizeof(cmd), cmd)
         + std::to_string(m_seqNo) + "|"
-        + std::to_string(m_turn) + "|"
+        + std::to_string(m_turn+1) + "|"
         + std::to_string(m_playerList.size()) + "|"
         + m_gameBoard.toString()
         ;
@@ -214,6 +212,8 @@ namespace app {
     // m_seqNo = 0;
     // m_playerList.clear();
     // m_gameBoard = common::GameBoard();
+
+    m_playerList.clear();
 
     m_pServer->removeRoom(this->shared_from_this());
   }
@@ -304,19 +304,28 @@ namespace app {
     Log::info("Username:" + acc.at(0) + " - Pass:" + acc.at(1));
 
     std::size_t from_player = this->getOrCreatePlayer(cli);
+    if (from_player == m_playerList.size())
+    {
+      Log::error("Error add Player");
+    }
+
     char cmd = static_cast<char>(common::MessageType::LOGIN);
 
     std::string msg = std::string(sizeof(cmd), cmd)
+      + std::to_string(from_player)
+      + "|"
       + std::to_string(this->getPlayerList().at(from_player)->mark)
       ;
 
-    m_pServer->send(cli, msg);
+    common::MessageStruct sendms(msg);
 
-    this->setSeqNo(this->getSeqNo() + 1);
+    m_pServer->send(cli, sendms);
+
+    m_seqNo++;
 
     if (this->getPlayerList().size() == 1)
     {
-      this->setTurn(from_player);
+      m_turn = from_player;
     }
   }
 

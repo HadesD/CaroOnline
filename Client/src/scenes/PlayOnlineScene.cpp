@@ -20,10 +20,6 @@ namespace app { namespace scenes {
       common::config::serverAddr,
       common::config::serverPort
       );
-      // common::net::socket::Udp::EndPoint(
-      // asio::ip::address::from_string(common::config::serverAddr),
-      // common::config::serverPort
-      // );
 
 
     char cmd = static_cast<char>(common::MessageType::LOGIN);
@@ -167,17 +163,16 @@ namespace app { namespace scenes {
         case common::MessageType::LOGIN:
           {
             Log::info("PlayOnlineScene :: onReceiveHandle() :: RECV_ID");
-            auto id = std::stoi(ms.msg);
-            if (id)
+            std::vector< std::string > recv = Util::split(ms.msg, '|');
+            if (recv.size() != 2)
             {
-              m_listPlayer.front()->setId(id);
-              m_listPlayer.front()->setMark(id);
-            }
-            else
-            {
-              std::cout << "Error set ID" << std::endl;
+              Log::error("Error size when login");
               m_pGame->quit();
+              return;
             }
+
+            m_listPlayer.front()->setId(std::stoi(recv.at(0)));
+            m_listPlayer.front()->setMark(std::stoi(recv.at(1)));
           }
           break;
         case common::MessageType::UPDATE_GAME:
