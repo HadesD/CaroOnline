@@ -119,7 +119,7 @@ MainWindow::~MainWindow()
 void MainWindow::init()
 {
   m_seqNo = 0;
-  m_turn = 0;
+  m_turn = -1;
   m_playerId = 0;
   m_peopleCount = 0;
   m_gameBoard = common::GameBoard();
@@ -251,7 +251,7 @@ void MainWindow::drawGameBoard()
       pal.setColor(QPalette::Button, bcolor);
       btn->setPalette(pal);
 
-      if ((m_turn == static_cast<unsigned int>(m_playerId)) && (m_turn != 0))
+      if ((m_turn == m_playerId) && (m_turn != 0))
       {
         btn->setDisabled(false);
       }
@@ -308,14 +308,15 @@ void MainWindow::onReceiveHandle(const std::string &data)
       case common::MessageType::LOGIN:
       {
         Log::info("PlayOnlineScene :: onReceiveHandle() :: RECV_ID");
-        auto id = std::stoi(ms.msg);
-        if (id)
+        std::vector< std::string > recv = Util::split(ms.msg, '|');
+        if (recv.size() == 2)
         {
-          m_playerId = id;
+          m_playerId = std::stoi(recv.at(0));
           ui->playerInfoShowId->setText(QString::number(m_playerId));
-          ui->playerInfoMarkButton->setText(QString(QChar(Util::getMark(m_playerId))));
+          m_playerMark = std::stoi(recv.at(1));
+          ui->playerInfoMarkButton->setText(QString(QChar(Util::getMark(m_playerMark))));
           QPalette pal;
-          switch (m_playerId)
+          switch (m_playerMark)
           {
             case 1:
               pal.setColor(QPalette::Button, QColor(Qt::red));
@@ -332,6 +333,7 @@ void MainWindow::onReceiveHandle(const std::string &data)
         }
         else
         {
+          QMessageBox::warning(nullptr, "Login Error", "Data received from server has an error");
           this->disableLoginForm(false);
         }
       }
@@ -396,12 +398,12 @@ void MainWindow::onReceiveHandle(const std::string &data)
         }
         m_isGameOver = true;
         QString name = "Player " + QString::number(m_turn);
-        if (m_turn == static_cast<unsigned int>(m_playerId))
+        if (m_turn == m_playerId)
         {
           name = "You";
         }
         QMessageBox::information(nullptr, "Found a winner", name + " was won the game!\nClick Logout and Login again to create new game!");
-//        if (thread() == QThread::currentThread())
+        //        if (thread() == QThread::currentThread())
         {
           if (m_timer != nullptr)
           {
@@ -476,15 +478,16 @@ void MainWindow::setNextPlayer(const int p)
   }
   if (thread() == QThread::currentThread())
   {
+    qDebug() << "IN THREAD";
     QString playerName = "Player " + QString::number(p);
 
     if (p == m_playerId)
     {
+      qDebug() << "Is my turn";
       playerName = "You";
 
-      if (static_cast<unsigned int>(m_playerId) != m_turn)
+      if (m_playerId != m_turn)
       {
-        qDebug() << "IN THREAD";
         m_timer = new QTimer();
         QObject::connect(m_timer, SIGNAL(timeout()), this, SLOT(onTimerProgressBar()));
         m_timeLeft = common::config::maxWaitTime;
@@ -504,6 +507,7 @@ void MainWindow::setNextPlayer(const int p)
   else
   {
     qDebug() << "NOT IN THREAD";
+//    qRegisterMetaType<std::size_t>();
     QMetaObject::invokeMethod(this, "setNextPlayer", Qt::QueuedConnection, Q_ARG(int, p));
     return;
   }

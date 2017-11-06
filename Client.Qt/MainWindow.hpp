@@ -23,7 +23,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
   public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
   public:
@@ -34,7 +34,7 @@ class MainWindow : public QMainWindow
     void run_service();
 
   private:
-    void onGbBtnClicked(GbButton *obj = 0);
+    void onGbBtnClicked(GbButton *obj);
     void onReceiveHandle(const std::string &/* data */);
     void disableLoginForm(const bool disable);
     void closeEvent(QCloseEvent *event);
@@ -63,9 +63,10 @@ class MainWindow : public QMainWindow
     // Server
     common::net::socket::Udp::EndPoint m_udpServerEndpoint;
     common::net::socket::Udp::EndPoint m_udpCurrentEndpoint;
-    unsigned int m_turn;
+    int m_turn;
     int m_seqNo;
     int m_playerId;
+    common::PlayerMark m_playerMark;
     bool m_isGameOver;
     int m_timeLeft;
     int m_peopleCount;
