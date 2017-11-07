@@ -36,9 +36,9 @@ Quit Game
 
 ## Road Map
 
-- Multiple Player (UDP/IP) - Completed
+- Multiple Player (UDP/IP) - **Completed**
 - Single Player with Computer (AI)
-- Make GUI app (with 2D or 3D renderer) - Had GUI WinForm app (Qt) already
+- Make GUI app (with 2D or 3D renderer) - **Had GUI WinForm app (Qt) already**
 
 ## TODO
 
