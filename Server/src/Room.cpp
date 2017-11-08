@@ -271,6 +271,7 @@ namespace app {
 
   void Room::removePlayer(const std::shared_ptr<Player> &player)
   {
+    this->removePlayer(this->getPlayer(player->client));
   }
 
   void Room::removePlayer(const std::size_t player)

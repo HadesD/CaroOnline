@@ -48,11 +48,12 @@ int main(int argc, char *argv[])
       if (!ec)
       {
         stream <<
-          "HTTP/1.1 502 Error\r\n"
-          "Accept-Ranges: bytes\r\n"
-          "Server: Apache/2.2.14 (Win32)\r\n"
-          "Connection: close\r\n"
-          "Content-Length: 0\r\n"
+          "HTTP/1.1 404 Notfound"
+          "Allow: GET, HEAD"
+          "Server: CaroOnline/0.0.1"
+          "Content-Type: text/html; charset=utf-8"
+          "Content-Length: 0"
+          "Connection: close"
           ;
       }
     }

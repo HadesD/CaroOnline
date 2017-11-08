@@ -37,7 +37,7 @@ namespace common {
 #ifdef USE_SPDLOG
       file->info(s);
 #endif
-#ifdef DEBUG
+#if defined(DEBUG) || defined(IS_SERVER)
 #  ifdef USE_SPDLOG
       console->info(s);
 #  endif
@@ -52,7 +52,7 @@ namespace common {
 #ifdef USE_SPDLOG
       file->info(s);
 #endif
-#ifdef DEBUG
+#if defined(DEBUG) || defined(IS_SERVER)
 #  ifdef USE_SPDLOG
       console->error(s);
 #  endif

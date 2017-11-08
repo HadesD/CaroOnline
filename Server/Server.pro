@@ -36,6 +36,7 @@ CONFIG += console c++14
 CONFIG -= app_bundle
 CONFIG -= qt
 DEFINES += USE_SPDLOG
+DEFINES += IS_SERVER
 
 INCLUDEPATH += ../Common/third_party/asio/asio/include \
             ../Common/third_party/spdlog/include \

@@ -35,7 +35,6 @@ class MainWindow : public QMainWindow
 
   private:
     void onGbBtnClicked(GbButton *obj);
-    void onReceiveHandle(const std::string &/* data */);
     void disableLoginForm(const bool disable);
     void closeEvent(QCloseEvent *event);
     void onLogoutClicked();
@@ -43,6 +42,7 @@ class MainWindow : public QMainWindow
   private slots:
     void onTimerProgressBar();
     void setNextPlayer(const int p);
+    void onReceiveHandle(const std::string &/* data */);
 
   private:
     std::size_t getGbBtnIndex(const common::Point2D &/* p */) const;
