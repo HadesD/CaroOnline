@@ -120,13 +120,11 @@ void MainWindow::init()
   m_peopleCount = 0;
   m_gameBoard = common::GameBoard();
   m_isGameOver = false;
+  m_isLosed = false;
   ui->gameInfoShowSequence->setText("0");
   ui->gameInfoShowTurn->setText("You must login first");
   ui->gameInfoShowViewerCount->setText("0");
   ui->playerInfoMarkButton->setText("");
-  QPalette pal;
-  pal.setColor(QPalette::Button, QColor(Qt::white));
-  ui->playerInfoMarkButton->setPalette(pal);
   ui->playerInfoShowId->setText("");
   ui->gameInfotimeLeftProgressBar->setValue(0);
   if (m_timer != nullptr)
@@ -319,20 +317,26 @@ void MainWindow::onReceiveHandle(const std::string &data)
           ui->playerInfoShowId->setText(QString::number(m_playerId));
           m_playerMark = std::stoi(recv.at(1));
           ui->playerInfoMarkButton->setText(QString(QChar(Util::getMark(m_playerMark))));
-          QPalette pal;
+          QString bcolor;
           switch (m_playerMark)
           {
             case 1:
-              pal.setColor(QPalette::Button, QColor(Qt::red));
+            {
+              bcolor = "background-color: #00aaff;color:#fff;font-weight:bold;";
+            }
               break;
             case 2:
-              pal.setColor(QPalette::Button, QColor(Qt::blue));
+            {
+              bcolor = "background-color: #ff4322;color:#fff;font-weight:bold;";
+            }
               break;
             default:
-              pal.setColor(QPalette::Button, QColor(Qt::white));
+            {
+              bcolor = "background-color: #f3f3f4;";
+            }
               break;
           }
-          ui->playerInfoMarkButton->setPalette(pal);
+          ui->playerInfoMarkButton->setStyleSheet(bcolor);
           ui->gameInfoShowTurn->setText("Waiting for player...");
         }
         else
@@ -400,20 +404,7 @@ void MainWindow::onReceiveHandle(const std::string &data)
         {
           return;
         }
-        m_isGameOver = true;
-        QString name = "Player " + QString::number(m_turn);
-        if (m_turn == m_playerId)
-        {
-          name = "You";
-        }
-        QMessageBox::information(nullptr, "Found a winner", name + " was won the game!\nClick Logout and Login again to create new game!");
-        //        if (thread() == QThread::currentThread())
-        {
-          if (m_timer != nullptr)
-          {
-            m_timer->stop();
-          }
-        }
+        this->onGameOver();
       }
         break;
       default:
@@ -442,16 +433,10 @@ void MainWindow::onLogoutClicked()
     return;
   }
 
-  // Send to Server
-  char cmd = static_cast<char>(common::MessageType::QUIT_GAME);
-  std::string msg = std::string(sizeof(cmd), cmd);
-  m_udpSocket.send(
-        msg, m_udpServerEndpoint,
-        [](const std::error_code &, const std::size_t &){
-  });
-
   this->disableLoginForm(false);
   this->init();
+
+  this->sendQuitGame();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -523,6 +508,34 @@ void MainWindow::setNextPlayer(const int p)
   }
 }
 
+void MainWindow::onGameOver()
+{
+  if (m_isGameOver)
+  {
+    return;
+  }
+  if (m_timer != nullptr)
+  {
+    m_timer->stop();
+  }
+
+  this->sendQuitGame();
+
+  QMessageBox::information(nullptr, "Game Over", "Login again to create new game!");
+}
+
+void MainWindow::sendQuitGame()
+{
+  // Send to Server
+  char cmd = static_cast<char>(common::MessageType::QUIT_GAME);
+  std::string msg = std::string(sizeof(cmd), cmd);
+  m_udpSocket.send(
+        msg, m_udpServerEndpoint,
+        [](const std::error_code &, const std::size_t &){
+  });
+
+}
+
 void MainWindow::onTimerProgressBar()
 {
   qDebug() << "onTimerProgressBar :: running()";
@@ -540,6 +553,6 @@ void MainWindow::onTimerProgressBar()
 
   if (nextValue <= minValue)
   {
-    m_timer->stop();
+    this->onGameOver();
   }
 }

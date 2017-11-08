@@ -32,12 +32,14 @@ class MainWindow : public QMainWindow
   private:
     void drawGameBoard();
     void run_service();
+    void sendQuitGame();
 
   private:
     void onGbBtnClicked(GbButton *obj);
     void disableLoginForm(const bool disable);
     void closeEvent(QCloseEvent *event);
     void onLogoutClicked();
+    void onGameOver();
 
   private slots:
     void onTimerProgressBar();
@@ -68,6 +70,7 @@ class MainWindow : public QMainWindow
     int m_playerId;
     common::PlayerMark m_playerMark;
     bool m_isGameOver;
+    bool m_isLosed;
     int m_timeLeft;
     int m_peopleCount;
 };
