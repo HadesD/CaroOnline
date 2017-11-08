@@ -234,28 +234,26 @@ void MainWindow::drawGameBoard()
       QPushButton *btn = m_gameBoardButtonList.at(b_pos);
 
       btn->setText(mark);
-      QPalette pal = btn->palette();
-      QColor bcolor;
+      QString bcolor;
       switch (mark_id)
       {
         case 1:
         {
-          bcolor = Qt::red;
+          bcolor = "background-color: #00aaff;color:#fff;font-weight:bold;";
         }
           break;
         case 2:
         {
-          bcolor = Qt::blue;
+          bcolor = "background-color: #ff4322;color:#fff;font-weight:bold;";
         }
           break;
         default:
         {
-          bcolor = Qt::white;
+          bcolor = "background-color: #f3f3f4;";
         }
           break;
       }
-      pal.setColor(QPalette::Button, bcolor);
-      btn->setPalette(pal);
+      btn->setStyleSheet(bcolor);
 
       if ((m_turn == m_playerId) && (m_turn != -1))
       {

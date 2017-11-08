@@ -11,6 +11,9 @@ class GbButton : public QPushButton
   public:
     explicit GbButton(QWidget *parent = nullptr);
 
+  public:
+    void paintEvent(QPaintEvent *);
+
   signals:
 
   public slots:
