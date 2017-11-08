@@ -62,4 +62,5 @@ FORMS += \
         MainWindow.ui
 
 DISTFILES += \
-    styles.qml
+    styles.qml \
+    darkorange.stylesheet
