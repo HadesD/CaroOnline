@@ -30,7 +30,7 @@ CONFIG(debug, debug|release) {
     DESTDIR = build/debug
 } else {
     DESTDIR = build/release
-    CONFIG += static
+#    CONFIG += static
 }
 
 INCLUDEPATH += ../Common/third_party/asio/asio/include \
