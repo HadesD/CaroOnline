@@ -227,11 +227,10 @@ void MainWindow::drawGameBoard()
       std::size_t b_pos = this->getGbBtnIndex(common::Point2D(x, y));
 
       auto mark_id = m_gameBoard.getBoard().at(x).at(y);
-      QString mark = QChar(Util::getMark(mark_id));
 
       QPushButton *btn = m_gameBoardButtonList.at(b_pos);
 
-      btn->setText(mark);
+      btn->setText(QString(QChar(Util::getMark(mark_id))));
       QString bcolor;
       switch (mark_id)
       {
