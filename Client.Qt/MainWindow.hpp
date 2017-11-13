@@ -33,6 +33,7 @@ class MainWindow : public QMainWindow
     void drawGameBoard();
     void run_service();
     void sendQuitGame();
+    void computerRun();
 
   private:
     void onGbBtnClicked(GbButton *obj);

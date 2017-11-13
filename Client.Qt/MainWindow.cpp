@@ -50,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
       QMessageBox::warning(ui->passwordInput, "Error", "Password is empty");
       return;
     }
+    this->init();
 
     std::string serverAddr = common::config::serverAddr;
     short serverPort = common::config::serverPort;
@@ -149,6 +150,13 @@ void MainWindow::init()
       m_gameBoardButtonList.emplace_back(btn);
       ui->gameBoardLayout->addWidget(btn, x, y);
     }
+  }
+
+  if (ui->loginButton->isEnabled())
+  {
+    m_playerId = 0;
+    m_playerMark = 1;
+    m_turn = 0;
   }
 
   this->drawGameBoard();
@@ -266,30 +274,41 @@ void MainWindow::drawGameBoard()
 
 void MainWindow::onGbBtnClicked(GbButton *obj)
 {
-  if (m_isGameOver)
+  if (ui->loginButton->isEnabled())
   {
-    QMessageBox::warning(this, "Game Over!", "You must logout from this game to create a new game!");
-    return;
+    auto gb = m_gameBoard.getBoard();
+    common::Point2D pos = this->getGbPointOfGbBtn(obj);
+    gb[pos.x][pos.y] = m_playerMark;
+    m_gameBoard.setBoard(gb);
   }
-  common::Point2D pos = this->getGbPointOfGbBtn(obj);
-  if (m_gameBoard.getBoard().at(pos.x).at(pos.y) != 0)
+  else
   {
-    return;
+    if (m_isGameOver)
+    {
+      QMessageBox::warning(this, "Game Over!", "You must logout from this game to create a new game!");
+      return;
+    }
+    common::Point2D pos = this->getGbPointOfGbBtn(obj);
+    if (m_gameBoard.getBoard().at(pos.x).at(pos.y) != 0)
+    {
+      return;
+    }
+
+    char cmd = static_cast<char>(common::MessageType::SET_MOVE);
+
+    std::string msg = std::string(sizeof(cmd), cmd)
+        + std::to_string(pos.x)
+        + ":"
+        + std::to_string(pos.y)
+        ;
+
+    m_udpSocket.send(
+          msg, m_udpServerEndpoint,
+          [](const std::error_code &, const std::size_t &){
+    });
+    m_timer->stop();
   }
-
-  char cmd = static_cast<char>(common::MessageType::SET_MOVE);
-
-  std::string msg = std::string(sizeof(cmd), cmd)
-      + std::to_string(pos.x)
-      + ":"
-      + std::to_string(pos.y)
-      ;
-
-  m_udpSocket.send(
-        msg, m_udpServerEndpoint,
-        [](const std::error_code &, const std::size_t &){
-  });
-  m_timer->stop();
+  this->drawGameBoard();
 }
 
 void MainWindow::onReceiveHandle(const std::string &data)
@@ -554,4 +573,9 @@ void MainWindow::onTimerProgressBar()
   {
     this->onGameOver();
   }
+}
+
+void MainWindow::computerRun()
+{
+
 }
