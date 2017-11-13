@@ -276,10 +276,24 @@ void MainWindow::onGbBtnClicked(GbButton *obj)
 {
   if (ui->loginButton->isEnabled())
   {
-    auto gb = m_gameBoard.getBoard();
     common::Point2D pos = this->getGbPointOfGbBtn(obj);
+    if (m_gameBoard.isWinPoint(pos, m_playerMark))
+    {
+      m_isGameOver = true;
+    }
+    auto gb = m_gameBoard.getBoard();
     gb[pos.x][pos.y] = m_playerMark;
     m_gameBoard.setBoard(gb);
+    m_turn = 1;
+    this->drawGameBoard();
+    if (m_isGameOver)
+    {
+      this->onGameOver();
+    }
+    else
+    {
+      this->computerRun();
+    }
   }
   else
   {
@@ -308,7 +322,6 @@ void MainWindow::onGbBtnClicked(GbButton *obj)
     });
     m_timer->stop();
   }
-  this->drawGameBoard();
 }
 
 void MainWindow::onReceiveHandle(const std::string &data)
@@ -528,18 +541,25 @@ void MainWindow::setNextPlayer(const int p)
 
 void MainWindow::onGameOver()
 {
-  if (m_isGameOver)
+  if (ui->loginButton->isEnabled())
   {
-    return;
+    QMessageBox::information(nullptr, "Game Over", "Let open new game");
   }
-  if (m_timer != nullptr)
+  else
   {
-    m_timer->stop();
+    if (m_isGameOver)
+    {
+      return;
+    }
+    if (m_timer != nullptr)
+    {
+      m_timer->stop();
+    }
+
+    this->sendQuitGame();
+
+    QMessageBox::information(nullptr, "Game Over", "Login again to create new game!");
   }
-
-  this->sendQuitGame();
-
-  QMessageBox::information(nullptr, "Game Over", "Login again to create new game!");
 }
 
 void MainWindow::sendQuitGame()
@@ -578,4 +598,6 @@ void MainWindow::onTimerProgressBar()
 void MainWindow::computerRun()
 {
 
+  m_turn = 0;
+  this->drawGameBoard();
 }
