@@ -277,13 +277,13 @@ void MainWindow::onGbBtnClicked(GbButton *obj)
   if (ui->loginButton->isEnabled())
   {
     common::Point2D pos = this->getGbPointOfGbBtn(obj);
+    auto gb = m_gameBoard.getBoard();
+    gb[pos.x][pos.y] = m_playerMark;
+    m_gameBoard.setBoard(gb);
     if (m_gameBoard.isWinPoint(pos, m_playerMark))
     {
       m_isGameOver = true;
     }
-    auto gb = m_gameBoard.getBoard();
-    gb[pos.x][pos.y] = m_playerMark;
-    m_gameBoard.setBoard(gb);
     m_turn = 1;
     this->drawGameBoard();
     if (m_isGameOver)
@@ -597,6 +597,30 @@ void MainWindow::onTimerProgressBar()
 
 void MainWindow::computerRun()
 {
+  common::Point2D pos(
+        qrand() % common::config::gameBoardRows,
+        qrand() % common::config::gameBoardCols
+        );
+  while (true)
+  {
+    if (m_gameBoard.getBoard().at(pos.x).at(pos.y) == 0)
+    {
+      break;
+    }
+    pos = common::Point2D(
+          qrand() % common::config::gameBoardRows,
+          qrand() % common::config::gameBoardCols
+          );
+  }
+
+  auto gb = m_gameBoard.getBoard();
+  gb[pos.x][pos.y] = 2;
+  m_gameBoard.setBoard(gb);
+  if (m_gameBoard.isWinPoint(pos, 2))
+  {
+    m_isGameOver = true;
+    this->onGameOver();
+  }
 
   m_turn = 0;
   this->drawGameBoard();
