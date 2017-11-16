@@ -260,7 +260,7 @@ void MainWindow::drawGameBoard()
       }
       btn->setStyleSheet(bcolor);
 
-      if ((m_turn == m_playerId) && (m_turn != -1))
+      if (((m_turn == m_playerId) && (m_turn != -1)) || (mark_id != 0))
       {
         btn->setDisabled(false);
       }
@@ -278,6 +278,10 @@ void MainWindow::onGbBtnClicked(GbButton *obj)
   {
     common::Point2D pos = this->getGbPointOfGbBtn(obj);
     auto gb = m_gameBoard.getBoard();
+    if (gb.at(pos.x).at(pos.y) != 0)
+    {
+      return;
+    }
     gb[pos.x][pos.y] = m_playerMark;
     m_gameBoard.setBoard(gb);
     if (m_gameBoard.isWinPoint(pos, m_playerMark))

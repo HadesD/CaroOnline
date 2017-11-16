@@ -31,7 +31,7 @@ namespace Util {
         m = ' ';
         break;
       case 1:
-        m = 'x';
+        m = 'X';
         break;
       case 2:
         m = 'o';
