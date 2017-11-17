@@ -8,7 +8,11 @@ namespace common {
     Point2D();
     Point2D(int x, int y);
     ~Point2D();
+
     bool operator==(const Point2D &c);
+    bool operator<(const Point2D &c);
+    bool operator>(const Point2D &c);
+
     int x;
     int y;
   };

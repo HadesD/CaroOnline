@@ -47,6 +47,42 @@ namespace common {
     }
   }
 
+  std::vector< common::Point2D > GameBoard::getAvailablePoints() const
+  {
+    std::vector< common::Point2D > points;
+
+    for (std::size_t x = 0; x < m_board.size(); x++)
+    {
+      for (std::size_t y = 0; y < m_board.at(x).size(); y++)
+      {
+        if (m_board.at(x).at(y) == 0)
+        {
+          points.emplace_back(common::Point2D(x, y));
+        }
+      }
+    }
+
+    return points;
+  }
+
+  std::vector< common::Point2D > GameBoard::getSelectedPoints() const
+  {
+    std::vector< common::Point2D > points;
+
+    for (std::size_t x = 0; x < m_board.size(); x++)
+    {
+      for (std::size_t y = 0; y < m_board.at(x).size(); y++)
+      {
+        if (m_board.at(x).at(y) != 0)
+        {
+          points.emplace_back(common::Point2D(x, y));
+        }
+      }
+    }
+
+    return points;
+  }
+
   std::string GameBoard::toString() const
   {
     std::string gb;
@@ -81,6 +117,7 @@ namespace common {
 
     x0 = std::max(xP - common::config::maxCoupleCount, 0);
     y0 = std::max(yP - common::config::maxCoupleCount, 0);
+    common::Point2D p0(x0, y0);
 
     xMaxSize = std::min(
       xP + common::config::maxCoupleCount + 1,
@@ -88,8 +125,10 @@ namespace common {
       );
     yMaxSize = std::min(
       yP + common::config::maxCoupleCount + 1,
-      static_cast<int>(m_board.at(xMaxSize-1).size())
+      static_cast<int>(m_board.at(xMaxSize - 1).size())
       );
+    common::Point2D pM(xMaxSize, yMaxSize);
+    GameBoard::Rect r(p0, pM);
 
     // Game board likes:
     // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
@@ -131,15 +170,28 @@ namespace common {
     // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
     // |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
     // +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-    int count;
 
     // Check Hoz line
-    count = 0;
-    for (int y = y0; y < yMaxSize - 1; y++)
+    return this->getHorizontalCount(p, mark, r) >= common::config::maxCoupleCount ||
+        this->getVerticalCount(p, mark, r) >= common::config::maxCoupleCount ||
+        this->getLeftDiagonalCount(p, mark, r) >= common::config::maxCoupleCount ||
+        this->getRightDiagonalCount(p, mark, r) >= common::config::maxCoupleCount
+        ;
+  }
+
+  std::size_t GameBoard::getHorizontalCount(
+      const common::Point2D &p,
+      const common::PlayerMark m,
+      const GameBoard::Rect &r
+      ) const
+  {
+    int count = 0;
+
+    for (int y = r.p0.y; y < r.pM.y - 1; y++)
     {
       if (
-        (m_board.at(xP).at(y) == mark) &&
-        (m_board.at(xP).at(y + 1) == mark)
+        (m_board.at(p.x).at(y) == m) &&
+        (m_board.at(p.x).at(y + 1) == m)
         )
       {
         count++;
@@ -151,17 +203,26 @@ namespace common {
 
       if (count >= common::config::maxCoupleCount)
       {
-        return true;
+        break;
       }
     }
 
-    // Check vert
-    count = 0;
-    for (int x = x0; x < xMaxSize - 1; x++)
+    return count;
+  }
+
+  std::size_t GameBoard::getVerticalCount(
+      const common::Point2D &p,
+      const common::PlayerMark m,
+      const GameBoard::Rect &r
+      ) const
+  {
+    int count = 0;
+
+    for (int x = r.p0.x; x < r.pM.x - 1; x++)
     {
       if (
-        (m_board.at(x).at(yP) == mark) &&
-        (m_board.at(x + 1).at(yP) == mark)
+        (m_board.at(x).at(p.y) == m) &&
+        (m_board.at(x + 1).at(p.y) == m)
         )
       {
         count++;
@@ -173,21 +234,29 @@ namespace common {
 
       if (count >= common::config::maxCoupleCount)
       {
-        return true;
+        break;
       }
     }
 
-    // Check diagonal L->R
-    count = 0;
-    for (int x = x0, y = y0; x < xMaxSize - 1; x++, y++)
+    return count;
+  }
+
+  std::size_t GameBoard::getLeftDiagonalCount(
+      const common::Point2D &p,
+      const common::PlayerMark m,
+      const GameBoard::Rect &r
+      ) const
+  {
+    int count = 0;
+    for (int x = r.p0.x, y = r.p0.y; x < r.pM.x - 1; x++, y++)
     {
-      if (y >= yMaxSize - 1)
+      if (y >= r.pM.y - 1)
       {
         break;
       }
       if (
-        (m_board.at(x).at(y) == mark) &&
-        (m_board.at(x + 1).at(y + 1) == mark)
+        (m_board.at(x).at(y) == m) &&
+        (m_board.at(x + 1).at(y + 1) == m)
         )
       {
         count++;
@@ -199,22 +268,30 @@ namespace common {
 
       if (count >= common::config::maxCoupleCount)
       {
-        return true;
+        break;
       }
     }
+    return count;
+  }
 
-    // Check diagonal R->L
-    count = 0;
-    for (int x = x0, y = yMaxSize - 1; x < xMaxSize - 1; x++, y--)
+  std::size_t GameBoard::getRightDiagonalCount(
+      const common::Point2D &p,
+      const common::PlayerMark m,
+      const GameBoard::Rect &r
+      ) const
+  {
+    int count = 0;
+
+    for (int x = r.p0.x, y = r.pM.y - 1; x < r.pM.x - 1; x++, y--)
     {
-      if (y <= y0)
+      if (y <= r.p0.y)
       {
         break;
       }
       if (
-        (m_board.at(x).at(y) == mark) &&
-        (m_board.at(x + 1).at(y - 1) == mark)
-        )
+          (m_board.at(x).at(y) == m) &&
+          (m_board.at(x + 1).at(y - 1) == m)
+          )
       {
         count++;
       }
@@ -225,11 +302,10 @@ namespace common {
 
       if (count >= common::config::maxCoupleCount)
       {
-        return true;
+        break;
       }
     }
-
-    return false;
+    return count;
   }
 
 }

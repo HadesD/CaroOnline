@@ -27,9 +27,9 @@ DEFINES += IS_QT_CLIENT
 win32: LIBS += $$PWD/../Lfs/libs/WS2_32.Lib
 
 CONFIG(debug, debug|release) {
-    DESTDIR = build/debug
+    DESTDIR = Build/debug
 } else {
-    DESTDIR = build/release
+    DESTDIR = Build/release
 #    CONFIG += static
 }
 
@@ -49,14 +49,17 @@ SOURCES += \
         main.cpp \
         MainWindow.cpp \
         AppConfig.cpp \
-        GbButton.cpp
+        GbButton.cpp \
+    Minimax.cpp
 
 HEADERS += \
         ../Common/Util.hpp \
+        ../Common/GameBoard.hpp \
         ../Common/Logger.hpp \
         MainWindow.hpp \
         AppConfig.hpp \
-        GbButton.hpp
+        GbButton.hpp \
+    Minimax.hpp
 
 FORMS += \
         MainWindow.ui

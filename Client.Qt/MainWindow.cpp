@@ -5,6 +5,7 @@
 
 #include "MainWindow.hpp"
 #include "ui_MainWindow.h"
+#include "Minimax.hpp"
 
 #include "../Common/MessageStruct.hpp"
 #include "../Common/Logger.hpp"
@@ -573,8 +574,10 @@ void MainWindow::sendQuitGame()
   std::string msg = std::string(sizeof(cmd), cmd);
   m_udpSocket.send(
         msg, m_udpServerEndpoint,
-        [](const std::error_code &, const std::size_t &){
-  });
+        [](const std::error_code &, const std::size_t &) -> void
+  {
+  }
+  );
 
 }
 
@@ -601,31 +604,19 @@ void MainWindow::onTimerProgressBar()
 
 void MainWindow::computerRun()
 {
-  common::Point2D pos(
-        qrand() % common::config::gameBoardRows,
-        qrand() % common::config::gameBoardCols
-        );
-  while (true)
-  {
-    if (m_gameBoard.getBoard().at(pos.x).at(pos.y) == 0)
-    {
-      break;
-    }
-    pos = common::Point2D(
-          qrand() % common::config::gameBoardRows,
-          qrand() % common::config::gameBoardCols
-          );
-  }
+  Minimax minimax;
+  common::Point2D pos = minimax.getBestMove(m_gameBoard, 2);
 
   auto gb = m_gameBoard.getBoard();
   gb[pos.x][pos.y] = 2;
   m_gameBoard.setBoard(gb);
+
+  m_turn = 0;
+  this->drawGameBoard();
+
   if (m_gameBoard.isWinPoint(pos, 2))
   {
     m_isGameOver = true;
     this->onGameOver();
   }
-
-  m_turn = 0;
-  this->drawGameBoard();
 }

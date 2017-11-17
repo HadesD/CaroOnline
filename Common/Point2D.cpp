@@ -19,4 +19,14 @@ namespace common {
     return (x == c.x) && (y == c.y);
   }
 
+  bool Point2D::operator>(const Point2D &c)
+  {
+    return (x > c.x) && (y > c.y);
+  }
+
+  bool Point2D::operator<(const Point2D &c)
+  {
+    return (x < c.x) && (y < c.y);
+  }
+
 }
