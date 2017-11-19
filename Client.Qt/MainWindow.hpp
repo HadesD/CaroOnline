@@ -50,6 +50,7 @@ class MainWindow : public QMainWindow
   private:
     std::size_t getGbBtnIndex(const common::Point2D &/* p */) const;
     common::Point2D getGbPointOfGbBtn(const GbButton * /* index */) const;
+    void setBtnMark(QPushButton* btn, const common::PlayerMark mark);
 
   private:
     Ui::MainWindow *ui;

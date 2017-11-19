@@ -36,21 +36,21 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->serverPortEdit->setText(std::to_string(common::config::serverPort).c_str());
 
   // Login
-  ui->userNameInput->setHidden(true);
-  ui->passwordInput->setHidden(true);
-  ui->userNameLabel->setHidden(true);
-  ui->passwordLabel->setHidden(true);
+//  ui->userNameInput->setHidden(true);
+//  ui->passwordInput->setHidden(true);
+//  ui->userNameLabel->setHidden(true);
+//  ui->passwordLabel->setHidden(true);
   QObject::connect(ui->loginButton, &QPushButton::clicked, [this](){
-    if (ui->userNameInput->text().isEmpty())
-    {
-      QMessageBox::warning(ui->userNameInput, "Error", "User Name is empty");
-      return;
-    }
-    if (ui->passwordInput->text().isEmpty())
-    {
-      QMessageBox::warning(ui->passwordInput, "Error", "Password is empty");
-      return;
-    }
+//    if (ui->userNameInput->text().isEmpty())
+//    {
+//      QMessageBox::warning(ui->userNameInput, "Error", "User Name is empty");
+//      return;
+//    }
+//    if (ui->passwordInput->text().isEmpty())
+//    {
+//      QMessageBox::warning(ui->passwordInput, "Error", "Password is empty");
+//      return;
+//    }
     this->init();
 
     std::string serverAddr = common::config::serverAddr;
@@ -76,9 +76,11 @@ MainWindow::MainWindow(QWidget *parent) :
     char cmd = static_cast<char>(common::MessageType::LOGIN);
 
     std::string msg = std::string(sizeof(cmd), cmd)
-        + ui->userNameInput->text().toStdString()
+//        + ui->userNameInput->text().toStdString()
+        + "Dark.Hades"
         + ":"
-        + ui->passwordInput->text().toStdString()
+//        + ui->passwordInput->text().toStdString()
+        "password"
         ;
 
     m_udpSocket.send(
@@ -221,10 +223,11 @@ void MainWindow::disableLoginForm(const bool disable)
 {
   ui->serverAddrEdit->setDisabled(disable);
   ui->serverPortEdit->setDisabled(disable);
-  ui->userNameInput->setDisabled(disable);
-  ui->passwordInput->setDisabled(disable);
+//  ui->userNameInput->setDisabled(disable);
+//  ui->passwordInput->setDisabled(disable);
   ui->loginButton->setDisabled(disable);
   ui->logoutButton->setDisabled(!disable);
+  ui->newGameButton->setDisabled(disable);
 }
 
 void MainWindow::drawGameBoard()
@@ -239,27 +242,7 @@ void MainWindow::drawGameBoard()
 
       QPushButton *btn = m_gameBoardButtonList.at(b_pos);
 
-      btn->setText(QString(QChar(Util::getMark(mark_id))));
-      QString bcolor;
-      switch (mark_id)
-      {
-        case 1:
-        {
-          bcolor = "background-color: #00aaff;color:#fff;font-weight:bold;";
-        }
-          break;
-        case 2:
-        {
-          bcolor = "background-color: #ff4322;color:#fff;font-weight:bold;";
-        }
-          break;
-        default:
-        {
-          bcolor = "background-color: #f3f3f4;";
-        }
-          break;
-      }
-      btn->setStyleSheet(bcolor);
+      this->setBtnMark(btn, mark_id);
 
       if (((m_turn == m_playerId) && (m_turn != -1)) || (mark_id != 0))
       {
@@ -352,27 +335,7 @@ void MainWindow::onReceiveHandle(const std::string &data)
           m_playerId = std::stoi(recv.at(0));
           ui->playerInfoShowId->setText(QString::number(m_playerId));
           m_playerMark = std::stoi(recv.at(1));
-          ui->playerInfoMarkButton->setText(QString(QChar(Util::getMark(m_playerMark))));
-          QString bcolor;
-          switch (m_playerMark)
-          {
-            case 1:
-            {
-              bcolor = "background-color: #00aaff;color:#fff;font-weight:bold;";
-            }
-              break;
-            case 2:
-            {
-              bcolor = "background-color: #ff4322;color:#fff;font-weight:bold;";
-            }
-              break;
-            default:
-            {
-              bcolor = "background-color: #f3f3f4;";
-            }
-              break;
-          }
-          ui->playerInfoMarkButton->setStyleSheet(bcolor);
+          this->setBtnMark(ui->playerInfoMarkButton, m_playerMark);
           ui->gameInfoShowTurn->setText("Waiting for player...");
         }
         else
@@ -489,6 +452,31 @@ void MainWindow::closeEvent(QCloseEvent *event)
     qApp->closeAllWindows();
     qApp->exit();
   }
+}
+
+void MainWindow::setBtnMark(QPushButton* btn, const common::PlayerMark mark)
+{
+  btn->setText(QString(QChar(Util::getMark(mark))));
+  QString bcolor;
+  switch (mark)
+  {
+    case 1:
+    {
+      bcolor = "background-color: #00aaff;color:#fff;font-weight:bold;";
+    }
+      break;
+    case 2:
+    {
+      bcolor = "background-color: #ff4322;color:#fff;font-weight:bold;";
+    }
+      break;
+    default:
+    {
+      bcolor = "background-color: #f3f3f4;";
+    }
+      break;
+  }
+  btn->setStyleSheet(bcolor);
 }
 
 std::size_t MainWindow::getGbBtnIndex(const common::Point2D &p) const
