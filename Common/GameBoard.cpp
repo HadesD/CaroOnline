@@ -186,6 +186,7 @@ namespace common {
       ) const
   {
     int count = 0;
+    int max_count = 0;
 
     for (int y = r.p0.y; y < r.pM.y - 1; y++)
     {
@@ -195,19 +196,24 @@ namespace common {
         )
       {
         count++;
+
+        if (count > max_count)
+        {
+          max_count = count;
+        }
+
+        if (count >= common::config::maxCoupleCount)
+        {
+          break;
+        }
       }
       else
       {
         count = 0;
       }
-
-      if (count >= common::config::maxCoupleCount)
-      {
-        break;
-      }
     }
 
-    return count;
+    return max_count;
   }
 
   std::size_t GameBoard::getVerticalCount(
@@ -217,28 +223,34 @@ namespace common {
       ) const
   {
     int count = 0;
+    int max_count = 0;
 
     for (int x = r.p0.x; x < r.pM.x - 1; x++)
     {
       if (
-        (m_board.at(x).at(p.y) == m) &&
-        (m_board.at(x + 1).at(p.y) == m)
-        )
+          (m_board.at(x).at(p.y) == m) &&
+          (m_board.at(x + 1).at(p.y) == m)
+          )
       {
         count++;
+
+        if (count > max_count)
+        {
+          max_count = count;
+        }
+
+        if (count >= common::config::maxCoupleCount)
+        {
+          break;
+        }
       }
       else
       {
         count = 0;
       }
-
-      if (count >= common::config::maxCoupleCount)
-      {
-        break;
-      }
     }
 
-    return count;
+    return max_count;
   }
 
   std::size_t GameBoard::getLeftDiagonalCount(
@@ -248,6 +260,8 @@ namespace common {
       ) const
   {
     int count = 0;
+    int max_count = 0;
+
     for (int x = r.p0.x, y = r.p0.y; x < r.pM.x - 1; x++, y++)
     {
       if (y >= r.pM.y - 1)
@@ -255,23 +269,29 @@ namespace common {
         break;
       }
       if (
-        (m_board.at(x).at(y) == m) &&
-        (m_board.at(x + 1).at(y + 1) == m)
-        )
+          (m_board.at(x).at(y) == m) &&
+          (m_board.at(x + 1).at(y + 1) == m)
+          )
       {
         count++;
+
+        if (count > max_count)
+        {
+          max_count = count;
+        }
+
+        if (count >= common::config::maxCoupleCount)
+        {
+          break;
+        }
       }
       else
       {
         count = 0;
       }
-
-      if (count >= common::config::maxCoupleCount)
-      {
-        break;
-      }
     }
-    return count;
+
+    return max_count;
   }
 
   std::size_t GameBoard::getRightDiagonalCount(
@@ -281,6 +301,7 @@ namespace common {
       ) const
   {
     int count = 0;
+    int max_count = 0;
 
     for (int x = r.p0.x, y = r.pM.y - 1; x < r.pM.x - 1; x++, y--)
     {
@@ -294,19 +315,23 @@ namespace common {
           )
       {
         count++;
+
+        if (count > max_count)
+        {
+          max_count = count;
+        }
+
+        if (count >= common::config::maxCoupleCount)
+        {
+          break;
+        }
       }
       else
       {
         count = 0;
       }
-
-      if (count >= common::config::maxCoupleCount)
-      {
-        break;
-      }
     }
-    return count;
+    return max_count;
   }
 
 }
-

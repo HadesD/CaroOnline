@@ -24,6 +24,10 @@ MainWindow::MainWindow(QWidget *parent) :
     this->init();
   });
 
+  QObject::connect(ui->newGameButton, &QPushButton::clicked, [this](){
+    this->init();
+  });
+
   QObject::connect(ui->actionQuit, &QAction::triggered, [this](){
     this->onLogoutClicked();
     if (!ui->logoutButton->isEnabled())
@@ -160,6 +164,7 @@ void MainWindow::init()
     m_playerId = 0;
     m_playerMark = 1;
     m_turn = 0;
+    this->setBtnMark(ui->playerInfoMarkButton, m_playerMark);
   }
 
   this->drawGameBoard();
