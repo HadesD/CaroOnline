@@ -17,6 +17,7 @@ class Minimax
 
   private:
     double evaluate() const;
+    common::Point2D getRandPointAround(const common::Point2D& p) const;
 
 };
 
